@@ -5,7 +5,7 @@ Copyright (c) 2020. All Rights Reserved.
 import tensorflow as tf
 
 
-def mobilenet_v2(features):
+def MobileNet(features):
     mu = 0
     sigma = 1e-2
 
@@ -493,7 +493,7 @@ def mobilenet_v2(features):
         conv52 = tf.nn.conv2d(conv51, weight52, strides=(1, 1, 1, 1), padding="SAME")
         conv52 = tf.add(conv52, bias52)
         conv52 = tf.nn.relu(conv52)
-        print("C8/1: Input {} Output {}".format(conv51.get_shape(), conv52.get_shape()))
+        print("C8: Input {} Output {}".format(conv51.get_shape(), conv52.get_shape()))
 
     # [avgpool 7x7] Input 7x7x1280 Output 1x1x1280
     # t = ?, c = ?, n = 1, s = ?
@@ -508,26 +508,64 @@ def mobilenet_v2(features):
         bias54 = tf.Variable(tf.zeros(shape=(1001)))
         conv54 = tf.nn.conv2d(pool53, weight54, strides=(1, 1, 1, 1), padding="SAME")
         conv54 = tf.nn.bias_add(conv54, bias54)
-        print("C10/1: Input {} Output {}".format(pool53.get_shape(), conv54.get_shape()))
+        print("C10: Input {} Output {}".format(pool53.get_shape(), conv54.get_shape()))
 
     # [Squeeze] Input 1x1xk Output 1xk
     # t = ?, c = k, n = ?, s = ?
     with tf.compat.v1.variable_scope("M11"):
         squeeze55 = tf.squeeze(conv54, axis=[1, 2])
-        print("M11/1: Input {} Output {}".format(conv54.get_shape(), squeeze55.get_shape()))
+        print("M11: Input {} Output {}".format(conv54.get_shape(), squeeze55.get_shape()))
 
     return squeeze55
 
 
-def main():
-    # prepare model to classify
-    # features = tf.compat.v1.placeholder(tf.float32, (None, None, None, 3), name='features')
-    # labels = tf.placeholder(tf.int64, None, name='labels')
+def train():
+    # Fetch and format the mnist data
+    (mnist_images, mnist_labels), _ = tf.keras.datasets.mnist.load_data()
 
-    logits = mobilenet_v2(tf.random.truncated_normal(shape=[1, 227, 227, 3]))
-    logits = tf.stop_gradient(logits)
-    pass
+    dataset = tf.data.Dataset.from_tensor_slices((tf.cast(mnist_images[...,tf.newaxis]/255, tf.float32), tf.cast(mnist_labels,tf.int64)))
+    dataset = dataset.shuffle(1000).batch(32)
 
+    for images,labels in dataset.take(1):
+        # img = tf.squeeze(images[0], axis=[3, 4, 5])
+        img = tf.image.grayscale_to_rgb(images[0:1])
+        print("Image: {}".format(img.get_shape()))
+        logits = MobileNet(img)
+        print("Logits: ", logits.get_shape())
+        print("Logits: ", logits.numpy())
 
+def load_img(path_to_img):
+    max_dim = 512
+    img = tf.io.read_file(path_to_img)
+    img = tf.image.decode_image(img, channels=3)
+    img = tf.image.convert_image_dtype(img, tf.float32)
+
+    shape = tf.cast(tf.shape(img)[:-1], tf.float32)
+    long_dim = max(shape)
+    scale = max_dim / long_dim
+
+    new_shape = tf.cast(shape * scale, tf.int32)
+
+    img = tf.image.resize(img, new_shape)
+    img = img[tf.newaxis, :]
+    return img
+
+def main(image_path):
+    image = tf.io.read_file(image_path)
+    image = tf.image.decode_image(image, channels=3)
+    image = tf.expand_dims(image, 0)
+
+    logits = MobileNet(image)
+
+    print("logits: ", logits.get_shape())
+    print("logits: ", logits.numpy())
+
+    
 if __name__ == "__main__":
-    main()
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--image", help="Image Path", default="./grace_hopper.jpg")
+    args = parser.parse_args()
+
+    main(args.image)
