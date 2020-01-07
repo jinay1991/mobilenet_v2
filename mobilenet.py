@@ -519,37 +519,6 @@ def MobileNet(features):
     return squeeze55
 
 
-def train():
-    # Fetch and format the mnist data
-    (mnist_images, mnist_labels), _ = tf.keras.datasets.mnist.load_data()
-
-    dataset = tf.data.Dataset.from_tensor_slices((tf.cast(mnist_images[...,tf.newaxis]/255, tf.float32), tf.cast(mnist_labels,tf.int64)))
-    dataset = dataset.shuffle(1000).batch(32)
-
-    for images,labels in dataset.take(1):
-        # img = tf.squeeze(images[0], axis=[3, 4, 5])
-        img = tf.image.grayscale_to_rgb(images[0:1])
-        print("Image: {}".format(img.get_shape()))
-        logits = MobileNet(img)
-        print("Logits: ", logits.get_shape())
-        print("Logits: ", logits.numpy())
-
-def load_img(path_to_img):
-    max_dim = 512
-    img = tf.io.read_file(path_to_img)
-    img = tf.image.decode_image(img, channels=3)
-    img = tf.image.convert_image_dtype(img, tf.float32)
-
-    shape = tf.cast(tf.shape(img)[:-1], tf.float32)
-    long_dim = max(shape)
-    scale = max_dim / long_dim
-
-    new_shape = tf.cast(shape * scale, tf.int32)
-
-    img = tf.image.resize(img, new_shape)
-    img = img[tf.newaxis, :]
-    return img
-
 def main(image_path):
     image = tf.io.read_file(image_path)
     image = tf.image.decode_image(image, channels=3)
@@ -560,7 +529,7 @@ def main(image_path):
     print("logits: ", logits.get_shape())
     print("logits: ", logits.numpy())
 
-    
+
 if __name__ == "__main__":
     import argparse
 
