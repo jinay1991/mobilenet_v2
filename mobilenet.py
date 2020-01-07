@@ -4,23 +4,26 @@ Copyright (c) 2020. All Rights Reserved.
 
 import tensorflow as tf
 
+
 def mobilenet_v2(features):
     mu = 0
     sigma = 1e-2
 
+    print("*** MobileNet v2 Architecture ***")
     # Input ?x?x3 Output 224x224x3
     with tf.compat.v1.variable_scope('P0'):
         p0 = tf.image.resize(features, (224, 224))
         print("P0: Input {} Output {}".format(features.get_shape(), p0.get_shape()))
 
-    # [Conv2d] Input 224x224x3 Output 112x112x32
-    with tf.compat.v1.variable_scope("C1"):
+    # [conv2d 3x3] Input 224x224x3 Output 112x112x32
+    # t = ?, c = 32, n = 1, s = 2
+    with tf.compat.v1.variable_scope("C0"):
         weight1 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 3, 32), mean=mu, stddev=sigma))
         bias1 = tf.Variable(tf.zeros(shape=(32)))
         conv1 = tf.nn.conv2d(p0, weight1, strides=(1, 2, 2, 1), padding="SAME")
         conv1 = tf.add(conv1, bias1)
         conv1 = tf.nn.relu(conv1)
-        print("C1: Input {} Output {}".format(p0.get_shape(), conv1.get_shape()))
+        print("C0: Input {} Output {}".format(p0.get_shape(), conv1.get_shape()))
 
     # [bottleneck (1)] Input 112x112x32 Output 112x112x16
     # t = 1, c = 16, n = 1, s = 1
@@ -178,8 +181,7 @@ def mobilenet_v2(features):
         conv18 = tf.add(conv18, conv15)
         print("B3/11: Input {} Output {}".format(conv18.get_shape(), conv18.get_shape()))
 
-
-    # [bottleneck (3)] Input 28x28x32 Output 14x14x64
+    # [bottleneck (4)] Input 28x28x32 Output 14x14x64
     # t = 6, c = 64, n = 4, s = 2
     with tf.compat.v1.variable_scope("B4"):
         # ------ n = 1 ------
@@ -290,7 +292,232 @@ def mobilenet_v2(features):
         conv30 = tf.add(conv30, conv27)
         print("B4/15: Input {} Output {}".format(conv30.get_shape(), conv30.get_shape()))
 
-    return conv30
+    # [bottleneck (5)] Input 14x14x64 Output 14x14x96
+    # t = 6, c = 96, n = 3, s = 1
+    with tf.compat.v1.variable_scope("B5"):
+        # ------ n = 1 ------
+        # expand
+        weight31 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 64, 384), mean=mu, stddev=sigma))
+        bias31 = tf.Variable(tf.zeros(shape=(384)))
+        conv31 = tf.nn.conv2d(conv30, weight31, strides=(1, 1, 1, 1), padding="SAME")
+        conv31 = tf.add(conv31, bias31)
+        conv31 = tf.nn.relu(conv31)
+        print("B5/1: Input {} Output {}".format(conv30.get_shape(), conv31.get_shape()))
+
+        # depthwise
+        weight32 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 384, 1), mean=mu, stddev=sigma))
+        bias32 = tf.Variable(tf.zeros(shape=(384)))
+        conv32 = tf.nn.depthwise_conv2d(conv31, weight32, strides=(1, 1, 1, 1), padding="SAME")
+        conv32 = tf.add(conv32, bias32)
+        conv32 = tf.nn.relu(conv32)
+        print("B5/2: Input {} Output {}".format(conv31.get_shape(), conv32.get_shape()))
+
+        # conv
+        weight33 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 384, 96), mean=mu, stddev=sigma))
+        bias33 = tf.Variable(tf.zeros(shape=(96)))
+        conv33 = tf.nn.conv2d(conv32, weight33, strides=(1, 1, 1, 1), padding="SAME")
+        conv33 = tf.add(conv33, bias33)
+        print("B5/3: Input {} Output {}".format(conv32.get_shape(), conv33.get_shape()))
+
+        # ------ n = 2 ------
+        # expand
+        weight34 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 96, 576), mean=mu, stddev=sigma))
+        bias34 = tf.Variable(tf.zeros(shape=(576)))
+        conv34 = tf.nn.conv2d(conv33, weight34, strides=(1, 1, 1, 1), padding="SAME")
+        conv34 = tf.add(conv34, bias34)
+        conv34 = tf.nn.relu(conv34)
+        print("B5/4: Input {} Output {}".format(conv33.get_shape(), conv34.get_shape()))
+
+        # depthwise
+        weight35 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 576, 1), mean=mu, stddev=sigma))
+        bias35 = tf.Variable(tf.zeros(shape=(576)))
+        conv35 = tf.nn.depthwise_conv2d(conv34, weight35, strides=(1, 1, 1, 1), padding="SAME")
+        conv35 = tf.add(conv35, bias35)
+        conv35 = tf.nn.relu(conv35)
+        print("B5/5: Input {} Output {}".format(conv34.get_shape(), conv35.get_shape()))
+
+        # conv
+        weight36 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 576, 96), mean=mu, stddev=sigma))
+        bias36 = tf.Variable(tf.zeros(shape=(96)))
+        conv36 = tf.nn.conv2d(conv35, weight36, strides=(1, 1, 1, 1), padding="SAME")
+        conv36 = tf.add(conv36, bias36)
+        print("B5/6: Input {} Output {}".format(conv35.get_shape(), conv36.get_shape()))
+
+        # add
+        conv36 = tf.add(conv36, conv33)
+        print("B5/7: Input {} Output {}".format(conv36.get_shape(), conv36.get_shape()))
+
+        # ------ n = 3 ------
+        # expand
+        weight37 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 96, 576), mean=mu, stddev=sigma))
+        bias37 = tf.Variable(tf.zeros(shape=(576)))
+        conv37 = tf.nn.conv2d(conv36, weight37, strides=(1, 1, 1, 1), padding="SAME")
+        conv37 = tf.add(conv37, bias37)
+        conv37 = tf.nn.relu(conv37)
+        print("B5/8: Input {} Output {}".format(conv36.get_shape(), conv37.get_shape()))
+
+        # depthwise
+        weight38 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 576, 1), mean=mu, stddev=sigma))
+        bias38 = tf.Variable(tf.zeros(shape=(576)))
+        conv38 = tf.nn.depthwise_conv2d(conv37, weight38, strides=(1, 1, 1, 1), padding="SAME")
+        conv38 = tf.add(conv38, bias38)
+        conv38 = tf.nn.relu(conv38)
+        print("B5/9: Input {} Output {}".format(conv37.get_shape(), conv38.get_shape()))
+
+        # conv
+        weight39 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 576, 96), mean=mu, stddev=sigma))
+        bias39 = tf.Variable(tf.zeros(shape=(96)))
+        conv39 = tf.nn.conv2d(conv38, weight39, strides=(1, 1, 1, 1), padding="SAME")
+        conv39 = tf.add(conv39, bias39)
+        print("B5/10: Input {} Output {}".format(conv38.get_shape(), conv39.get_shape()))
+
+        # add
+        conv39 = tf.add(conv39, conv36)
+        print("B5/11: Input {} Output {}".format(conv39.get_shape(), conv39.get_shape()))
+
+    # [bottleneck (6)] Input 14x14x96 Output 7x7x160
+    # t = 6, c = 160, n = 3, s = 2
+    with tf.compat.v1.variable_scope("B6"):
+        # ------ n = 1 ------
+        # expand
+        weight40 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 96, 576), mean=mu, stddev=sigma))
+        bias40 = tf.Variable(tf.zeros(shape=(576)))
+        conv40 = tf.nn.conv2d(conv39, weight40, strides=(1, 1, 1, 1), padding="SAME")
+        conv40 = tf.add(conv40, bias40)
+        conv40 = tf.nn.relu(conv40)
+        print("B6/1: Input {} Output {}".format(conv39.get_shape(), conv40.get_shape()))
+
+        # depthwise
+        weight41 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 576, 1), mean=mu, stddev=sigma))
+        bias41 = tf.Variable(tf.zeros(shape=(576)))
+        conv41 = tf.nn.depthwise_conv2d(conv40, weight41, strides=(1, 2, 2, 1), padding="SAME")
+        conv41 = tf.add(conv41, bias41)
+        conv41 = tf.nn.relu(conv41)
+        print("B6/2: Input {} Output {}".format(conv40.get_shape(), conv41.get_shape()))
+
+        # conv
+        weight42 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 576, 160), mean=mu, stddev=sigma))
+        bias42 = tf.Variable(tf.zeros(shape=(160)))
+        conv42 = tf.nn.conv2d(conv41, weight42, strides=(1, 1, 1, 1), padding="SAME")
+        conv42 = tf.add(conv42, bias42)
+        print("B6/3: Input {} Output {}".format(conv41.get_shape(), conv42.get_shape()))
+
+        # ------ n = 2 ------
+        # expand
+        weight43 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 160, 960), mean=mu, stddev=sigma))
+        bias43 = tf.Variable(tf.zeros(shape=(960)))
+        conv43 = tf.nn.conv2d(conv42, weight43, strides=(1, 1, 1, 1), padding="SAME")
+        conv43 = tf.add(conv43, bias43)
+        conv43 = tf.nn.relu(conv43)
+        print("B6/4: Input {} Output {}".format(conv42.get_shape(), conv43.get_shape()))
+
+        # depthwise
+        weight44 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 960, 1), mean=mu, stddev=sigma))
+        bias44 = tf.Variable(tf.zeros(shape=(960)))
+        conv44 = tf.nn.depthwise_conv2d(conv43, weight44, strides=(1, 1, 1, 1), padding="SAME")
+        conv44 = tf.add(conv44, bias44)
+        conv44 = tf.nn.relu(conv44)
+        print("B6/5: Input {} Output {}".format(conv43.get_shape(), conv44.get_shape()))
+
+        # conv
+        weight45 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 960, 160), mean=mu, stddev=sigma))
+        bias45 = tf.Variable(tf.zeros(shape=(160)))
+        conv45 = tf.nn.conv2d(conv44, weight45, strides=(1, 1, 1, 1), padding="SAME")
+        conv45 = tf.add(conv45, bias45)
+        print("B6/6: Input {} Output {}".format(conv44.get_shape(), conv45.get_shape()))
+
+        # add
+        conv45 = tf.add(conv45, conv42)
+        print("B6/7: Input {} Output {}".format(conv45.get_shape(), conv45.get_shape()))
+
+        # ------ n = 3 ------
+        # expand
+        weight46 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 160, 960), mean=mu, stddev=sigma))
+        bias46 = tf.Variable(tf.zeros(shape=(960)))
+        conv46 = tf.nn.conv2d(conv45, weight46, strides=(1, 1, 1, 1), padding="SAME")
+        conv46 = tf.add(conv46, bias46)
+        conv46 = tf.nn.relu(conv46)
+        print("B6/8: Input {} Output {}".format(conv45.get_shape(), conv46.get_shape()))
+
+        # depthwise
+        weight47 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 960, 1), mean=mu, stddev=sigma))
+        bias47 = tf.Variable(tf.zeros(shape=(960)))
+        conv47 = tf.nn.depthwise_conv2d(conv46, weight47, strides=(1, 1, 1, 1), padding="SAME")
+        conv47 = tf.add(conv47, bias47)
+        conv47 = tf.nn.relu(conv47)
+        print("B6/9: Input {} Output {}".format(conv46.get_shape(), conv47.get_shape()))
+
+        # conv
+        weight48 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 960, 160), mean=mu, stddev=sigma))
+        bias48 = tf.Variable(tf.zeros(shape=(160)))
+        conv48 = tf.nn.conv2d(conv47, weight48, strides=(1, 1, 1, 1), padding="SAME")
+        conv48 = tf.add(conv48, bias48)
+        print("B6/10: Input {} Output {}".format(conv47.get_shape(), conv48.get_shape()))
+
+        # add
+        conv48 = tf.add(conv48, conv45)
+        print("B6/11: Input {} Output {}".format(conv48.get_shape(), conv48.get_shape()))
+
+    # [bottleneck (7)] Input 7x7x160 Output 7x7x320
+    # t = 6, c = 320, n = 1, s = 1
+    with tf.compat.v1.variable_scope("B7"):
+        # ------ n = 1 ------
+        # expand
+        weight49 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 160, 960), mean=mu, stddev=sigma))
+        bias49 = tf.Variable(tf.zeros(shape=(960)))
+        conv49 = tf.nn.conv2d(conv48, weight49, strides=(1, 1, 1, 1), padding="SAME")
+        conv49 = tf.add(conv49, bias49)
+        conv49 = tf.nn.relu(conv49)
+        print("B7/1: Input {} Output {}".format(conv48.get_shape(), conv49.get_shape()))
+
+        # depthwise
+        weight50 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 960, 1), mean=mu, stddev=sigma))
+        bias50 = tf.Variable(tf.zeros(shape=(960)))
+        conv50 = tf.nn.depthwise_conv2d(conv49, weight50, strides=(1, 1, 1, 1), padding="SAME")
+        conv50 = tf.add(conv50, bias50)
+        conv50 = tf.nn.relu(conv50)
+        print("B7/2: Input {} Output {}".format(conv49.get_shape(), conv50.get_shape()))
+
+        # conv
+        weight51 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 960, 320), mean=mu, stddev=sigma))
+        bias51 = tf.Variable(tf.zeros(shape=(320)))
+        conv51 = tf.nn.conv2d(conv50, weight51, strides=(1, 1, 1, 1), padding="SAME")
+        conv51 = tf.add(conv51, bias51)
+        print("B7/3: Input {} Output {}".format(conv50.get_shape(), conv51.get_shape()))
+
+    # [conv2d 1x1] Input 7x7x320 Output 7x7x1280
+    # t = ?, c = 1280, n = 1, s = 1
+    with tf.compat.v1.variable_scope("C8"):
+        weight52 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 320, 1280), mean=mu, stddev=sigma))
+        bias52 = tf.Variable(tf.zeros(shape=(1280)))
+        conv52 = tf.nn.conv2d(conv51, weight52, strides=(1, 1, 1, 1), padding="SAME")
+        conv52 = tf.add(conv52, bias52)
+        conv52 = tf.nn.relu(conv52)
+        print("C8/1: Input {} Output {}".format(conv51.get_shape(), conv52.get_shape()))
+
+    # [avgpool 7x7] Input 7x7x1280 Output 1x1x1280
+    # t = ?, c = ?, n = 1, s = ?
+    with tf.compat.v1.variable_scope("S9"):
+        pool53 = tf.nn.avg_pool(conv52, ksize=(1, 3, 3, 1), strides=(1, 7, 7, 1), padding="SAME")
+        print("S9: Input {} Output {}".format(conv52.get_shape(), pool53.get_shape()))
+
+    # [conv2d 1x1] Input 1x1x1280 Output 1x1xk
+    # t = ?, c = k, n = ?, s = ?
+    with tf.compat.v1.variable_scope("C10"):
+        weight54 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 1280, 1001), mean=mu, stddev=sigma))
+        bias54 = tf.Variable(tf.zeros(shape=(1001)))
+        conv54 = tf.nn.conv2d(pool53, weight54, strides=(1, 1, 1, 1), padding="SAME")
+        conv54 = tf.nn.bias_add(conv54, bias54)
+        print("C10/1: Input {} Output {}".format(pool53.get_shape(), conv54.get_shape()))
+
+    # [Squeeze] Input 1x1xk Output 1xk
+    # t = ?, c = k, n = ?, s = ?
+    with tf.compat.v1.variable_scope("M11"):
+        squeeze55 = tf.squeeze(conv54, axis=[1, 2])
+        print("M11/1: Input {} Output {}".format(conv54.get_shape(), squeeze55.get_shape()))
+
+    return squeeze55
+
 
 def main():
     # prepare model to classify
@@ -300,7 +527,6 @@ def main():
     logits = mobilenet_v2(tf.random.truncated_normal(shape=[1, 227, 227, 3]))
     logits = tf.stop_gradient(logits)
     pass
-
 
 
 if __name__ == "__main__":
