@@ -3,11 +3,11 @@ Copyright (c) 2020. All Rights Reserved.
 """
 import tensorflow as tf
 
+mu = 0
+sigma = 1e-2
 
 @tf.function
 def MobileNet(features):
-    mu = 0
-    sigma = 1e-2
 
     print("*** MobileNet v2 Architecture ***")
     # Input ?x?x3 Output 224x224x3
@@ -527,13 +527,84 @@ def load_image(path):
 
     return image
 
+class InputLayer(tf.keras.layers.Layer):
+    def __init__(self):
+        super(InputLayer, self).__init__()
+    
+    def call(self, inputs):
+        with tf.compat.v1.variable_scope('P0'):
+            p0 = tf.image.resize(inputs, (224, 224))
+            print("P0: Input {} Output {}".format(inputs.get_shape(), p0.get_shape()))
+        return p0
+
+    def compute_output_shape(self, input_shape):
+        shape = tf.TensorShape(input_shape).as_list()
+        shape[-1] = self.num_classes
+        return tf.TensorShape(shape)
+
+class Conv2D(tf.keras.layers.Layer):
+    def __init__(self, in_ch, out_ch, ksize, stride, activation=True):
+        super(Conv2D, self).__init__()
+        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, out_ch), mean=mu, stddev=sigma))
+        self.bias = tf.Variable(tf.zeros(shape=(out_ch)))
+        self.stride = stride
+        self.activation = activation
+    
+    def call(self, inputs):
+        with tf.compat.v1.variable_scope("C0"):
+            conv = tf.nn.conv2d(inputs, self.weight, strides=(1, self.stride, self.stride, 1), padding="SAME")
+            conv = tf.add(conv, self.bias)
+            if self.activation:
+                conv = tf.nn.relu(conv)
+            print("C0: Input {} Output {}".format(inputs.get_shape(), conv.get_shape()))
+
+        return conv
+
+
+class Bottleneck(tf.keras.layers.Layer):
+    def __init__(self, in_ch, out_ch, ksize, stride, multiplier, expand=True):
+        super(Bottleneck, self).__init__()
+        self.weight1 = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, in_ch * multiplier), mean=mu, stddev=sigma))
+        self.bias1 = tf.Variable(tf.zeros(shape=(in_ch * multiplier)))
+        self.weight2 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, in_ch * multiplier, 1), mean=mu, stddev=sigma))
+        self.bias2 = tf.Variable(tf.zeros(shape=(in_ch * multiplier)))
+        self.weight3 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, in_ch * multiplier, out_ch), mean=mu, stddev=sigma))
+        self.bias3 = tf.Variable(tf.zeros(shape=(out_ch)))
+        self.stride = stride
+        self.expand = expand
+    
+    def call(self, inputs):
+        with tf.compat.v1.variable_scope("B1"):
+            if self.expand:
+                # expand
+                conv1 = tf.nn.conv2d(inputs, self.weight1, strides=(1, 1, 1, 1), padding="SAME")
+                conv1 = tf.add(conv1, self.bias1)
+                conv1 = tf.nn.relu(conv1)
+                print("B1/1: Input {} Output {}".format(inputs.get_shape(), conv1.get_shape()))
+            else:
+                conv1 = inputs
+
+            # depthwise
+            conv2 = tf.nn.depthwise_conv2d(conv1, self.weight2, strides=(1, self.stride, self.stride, 1), padding="SAME")
+            conv2 = tf.add(conv2, self.bias2)
+            conv2 = tf.nn.relu(conv2)
+            print("B1/2: Input {} Output {}".format(conv1.get_shape(), conv2.get_shape()))
+
+            # norm
+            conv3 = tf.nn.conv2d(conv2, self.weight3, strides=(1, 1, 1, 1), padding="SAME")
+            conv3 = tf.add(conv3, self.bias3)
+            print("B1/3: Input {} Output {}".format(conv2.get_shape(), conv3.get_shape()))
+
+        return conv3
+        
+        
+       
 class MobileNetModel(tf.keras.Model):
     def __init__(self):
         super(MobileNetModel, self).__init__()
-        mu = 0
-        sigma = 1e-2
-        self.weight1 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 3, 32), mean=mu, stddev=sigma))
-        self.bias1 = tf.Variable(tf.zeros(shape=(32)))
+        self.input_layer = InputLayer()
+        self.conv2d_3x3 = Conv2D(in_ch=3, out_ch=32, ksize=3, stride=2)
+        self.bottleneck_1 = Bottleneck(in_ch=32, out_ch=16, ksize=3, stride=1, multiplier=1, expand=False)
         self.weight2 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 32, 1), mean=mu, stddev=sigma))
         self.bias2 = tf.Variable(tf.zeros(shape=(32)))
         self.weight3 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 32, 16), mean=mu, stddev=sigma))
@@ -641,31 +712,15 @@ class MobileNetModel(tf.keras.Model):
         
     def call(self, inputs):
         # Input ?x?x3 Output 224x224x3
-        with tf.compat.v1.variable_scope('P0'):
-            p0 = tf.image.resize(inputs, (224, 224))
-            print("P0: Input {} Output {}".format(inputs.get_shape(), p0.get_shape()))
+        tensor = self.input_layer(inputs)
 
         # [conv2d 3x3] Input 224x224x3 Output 112x112x32
         # t = ?, c = 32, n = 1, s = 2
-        with tf.compat.v1.variable_scope("C0"):
-            conv1 = tf.nn.conv2d(p0, self.weight1, strides=(1, 2, 2, 1), padding="SAME")
-            conv1 = tf.add(conv1, self.bias1)
-            conv1 = tf.nn.relu(conv1)
-            print("C0: Input {} Output {}".format(p0.get_shape(), conv1.get_shape()))
-
+        tensor = self.conv2d_3x3(tensor)
+        
         # [bottleneck (1)] Input 112x112x32 Output 112x112x16
         # t = 1, c = 16, n = 1, s = 1
-        with tf.compat.v1.variable_scope("B1"):
-            # n = 1
-            conv2 = tf.nn.depthwise_conv2d(conv1, self.weight2, strides=(1, 1, 1, 1), padding="SAME")
-            conv2 = tf.add(conv2, self.bias2)
-            conv2 = tf.nn.relu(conv2)
-            print("B1/1: Input {} Output {}".format(conv1.get_shape(), conv2.get_shape()))
-
-            conv3 = tf.nn.conv2d(conv2, self.weight3, strides=(1, 1, 1, 1), padding="SAME")
-            conv3 = tf.add(conv3, self.bias3)
-            # conv3 = tf.nn.relu(conv3)
-            print("B1/2: Input {} Output {}".format(conv2.get_shape(), conv3.get_shape()))
+        conv3 = self.bottleneck_1(tensor)
         
         # [bottleneck (2)] Input 112x112x16 Output 56x56x24
         # t = 6, c = 24, n = 2, s = 2
@@ -1045,13 +1100,14 @@ class MobileNetModel(tf.keras.Model):
 
 def main(path):
     """ Main Function """
-    dataset = tf.keras.datasets.cifar10.load_data()
-    (x_train, y_train), (x_test, y_test) = dataset
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+    dataset = dataset.batch(32)
 
-    x_val = x_train[-10000:]
-    y_val = y_train[-10000:]
-    x_train = x_train[:-10000]
-    y_train = y_train[:-10000]
+    x_val = x_train[-100:]
+    y_val = y_train[-100:]
+    x_train = x_train[:100]
+    y_train = y_train[:100]
 
     # MobileNet(load_image(path)) # init weights
 
@@ -1061,6 +1117,7 @@ def main(path):
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                   metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
     model.fit(x_train, y_train, epochs=1)
+    model.summary()
     # print("logits: ", logits.get_shape())
     # print("logits: ", logits.numpy())
 
