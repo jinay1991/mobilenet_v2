@@ -537,16 +537,6 @@ def load_image(path, normalize=True):
     return image
 
 
-@tf.function
-def train(model_fn, dataset, optimizer, loss_fn):
-    for x, y in dataset:
-        with tf.GradientTape() as tape:
-            prediction = model_fn(x)
-            loss = loss_fn(prediction, y)
-        gradients = tape.gradient(loss, model.trainable_variables)
-        optimizer.apply_gradients(zip(gradients, model.trainable_variables))
-
-
 if __name__ == "__main__":
     import argparse
 
