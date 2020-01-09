@@ -150,48 +150,6 @@ class MobileNetV2(tf.keras.Model):
         return tensor
 
 
-def format_example(image):
-    image = tf.cast(image, tf.float32)
-    image = tf.subtract(tf.divide(image, 127.5), 1)
-    image = tf.image.resize(image, (224, 224))
-    return image
-
-
-def main(path, train=True):
-    """ Main Function """
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-    dataset = dataset.batch(32)
-
-    x_val = format_example(x_train[-100:])
-    y_val = tf.convert_to_tensor(y_train[-100:])
-    x_train = format_example(x_train[:100])
-    y_train = tf.convert_to_tensor(y_train[:100])
-
-    if train:
-        model = MobileNetV2()
-
-        model.compile(optimizer=tf.keras.optimizers.Adadelta(),
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-                      metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
-
-        logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-
-        model.fit(x_train, y_train, epochs=2, validation_data=(x_val, y_val), callbacks=[tensorboard_callback])
-        model.save(path, save_format='tf')
-    else:
-        model = tf.keras.models.load_model('model')
-
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
-    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
-    converter.experimental_new_converter = True
-    tflite_model = converter.convert()
-
-    with open("model.tflite", "wb") as fp:
-        fp.write(tflite_model)
-
-
 if __name__ == "__main__":
     import argparse
 
@@ -206,4 +164,41 @@ if __name__ == "__main__":
     else:
         logging.basicConfig(level=logging.FATAL)
 
-    main(args.save_model_to, args.train)
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
+    dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
+    dataset = dataset.batch(32)
+
+    def normalize_and_resize(image):
+        image = tf.cast(image, tf.float32)
+        image = tf.subtract(tf.divide(image, 127.5), 1)
+        image = tf.image.resize(image, (224, 224))
+        return image
+
+    x_val = normalize_and_resize(x_train[-100:])
+    y_val = tf.convert_to_tensor(y_train[-100:])
+    x_train = normalize_and_resize(x_train[:100])
+    y_train = tf.convert_to_tensor(y_train[:100])
+
+    if args.train:
+        model = MobileNetV2()
+
+        model.compile(optimizer=tf.keras.optimizers.Adadelta(),
+                      loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+                      metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
+
+        logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+
+        model.fit(x_train, y_train, epochs=2, validation_data=(x_val, y_val), callbacks=[tensorboard_callback])
+        model.summary()
+        model.save(args.save_model_to, save_format='tf')
+    else:
+        model = tf.keras.models.load_model('model')
+
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+    converter.experimental_new_converter = True
+    tflite_model = converter.convert()
+
+    with open("model.tflite", "wb") as fp:
+        fp.write(tflite_model)
