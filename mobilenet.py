@@ -6,6 +6,7 @@ from datetime import datetime
 
 import six
 import tensorflow as tf
+import tensorflow_datasets as tfds
 
 mu = 0
 sigma = 1e-2
@@ -537,9 +538,9 @@ class InputLayer(tf.keras.layers.Layer):
 
     def call(self, inputs):
         with tf.compat.v1.variable_scope('P0'):
-            p0 = tf.image.resize(inputs, (224, 224))
-            p0 = tf.cast(p0, tf.float32) / 255.0
-            p0 -= 1
+            p0 = tf.cast(inputs, tf.float32)
+            p0 = tf.subtract(tf.divide(inputs, 127.5), 1)
+            p0 = tf.image.resize(p0, (224, 224))
             print("P0: Input {} Output {}".format(inputs.get_shape(), p0.get_shape()))
         return p0
 
@@ -609,7 +610,7 @@ class Bottleneck(tf.keras.layers.Layer):
 class MobileNetModel(tf.keras.Model):
     def __init__(self):
         super(MobileNetModel, self).__init__()
-        self.input_layer = InputLayer()
+        # self.input_layer = InputLayer()
         self.conv2d_3x3 = Conv2D(in_ch=3, out_ch=32, ksize=3, stride=2)
         self.bottleneck_1 = Bottleneck(in_ch=32, out_ch=16, ksize=3, stride=1, multiplier=1, expand=False)
         self.weight2 = tf.Variable(tf.random.truncated_normal(shape=(3, 3, 32, 1), mean=mu, stddev=sigma))
@@ -718,12 +719,12 @@ class MobileNetModel(tf.keras.Model):
         self.bias54 = tf.Variable(tf.zeros(shape=(10)))
 
     def call(self, inputs):
-        # Input ?x?x3 Output 224x224x3
-        tensor = self.input_layer(inputs)
+        # # Input ?x?x3 Output 224x224x3
+        # tensor = self.input_layer(inputs)
 
         # [conv2d 3x3] Input 224x224x3 Output 112x112x32
         # t = ?, c = 32, n = 1, s = 2
-        tensor = self.conv2d_3x3(tensor)
+        tensor = self.conv2d_3x3(inputs)
 
         # [bottleneck (1)] Input 112x112x32 Output 112x112x16
         # t = 1, c = 16, n = 1, s = 1
@@ -1104,63 +1105,51 @@ class MobileNetModel(tf.keras.Model):
 
         return squeeze55
 
+def format_example(image):
+  image = tf.cast(image, tf.float32)
+  image = tf.subtract(tf.divide(image, 127.5), 1)
+  image = tf.image.resize(image, (224, 224))
+  return image
 
-def train(path):
+def main(path, train=True):
     """ Main Function """
+
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
     dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
     dataset = dataset.batch(32)
 
-    x_val = x_train[-100:]
-    y_val = y_train[-100:]
-    x_train = x_train[:100]
-    y_train = y_train[:100]
+    x_val = format_example(x_train[-100:])
+    y_val = tf.convert_to_tensor(y_train[-100:])
+    x_train = format_example(x_train[:100])
+    y_train = tf.convert_to_tensor(y_train[:100])
 
-    model = MobileNetModel()
+    if train:
+        model = MobileNetModel()
 
-    model.compile(optimizer=tf.keras.optimizers.Adadelta(),
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-                  metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
+        model.compile(optimizer=tf.keras.optimizers.Adadelta(),
+                    loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+                    metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
 
-    # Define the Keras TensorBoard callback.
-    logdir="logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+        # Define the Keras TensorBoard callback.
+        logdir="logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
 
-    model.fit(x_train, y_train, epochs=1, validation_data=(x_val, y_val), callbacks=[tensorboard_callback])
+        model.fit(x_train, y_train, epochs=1, validation_data=(x_val, y_val), callbacks=[tensorboard_callback])
 
-    model.summary()
-    # serialize your model to a SavedModel object
-    # It includes the entire graph, all variables and weights
-    model.save(path, save_format='tf')
+        model.summary()
+        # serialize your model to a SavedModel object
+        # It includes the entire graph, all variables and weights
+        model.save(path, save_format='tf')
+    else:
+        model = tf.keras.models.load_model('model')
 
+        converter = tf.lite.TFLiteConverter.from_keras_model(model)
+        converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+        converter.experimental_new_converter = True
+        tflite_model = converter.convert()
 
-    # # load your saved model
-    # model = tf.keras.models.load_model('model')
-    # # create a TF Lite converter
-    # converter = tf.lite.TFLiteConverter.from_keras_model(model)
-
-    # # performs model quantization to reduce the size of the model and improve latency
-    # converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
-    # input_arrays = converter.get_input_arrays()
-    # converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
-
-    # tflite_model = converter.convert()
-
-    # with open("model.tflite", "wb") as fp:
-    #     fp.write(six.ensure_binary(tflite_model))
-
-def convert(path):
-    model = tf.keras.models.load_model(path)
-
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
-    converter.optimizations = [tf.lite.Optimize.DEFAULT]
-    converter.experimental_new_converter = True
-
-    tflite_model = converter.convert()
-
-    with open(os.path.join(path, "saved_model.tflite"), "wb") as fp:
-        fp.write(six.ensure_binary(tflite_model))
-
+        with open("model.tflite", "wb") as fp:
+            fp.write(tflite_model)
 
 
 if __name__ == "__main__":
@@ -1171,7 +1160,4 @@ if __name__ == "__main__":
     parser.add_argument("--save_model_to", help="Save Model to ", default="model")
     args = parser.parse_args()
 
-    if args.train:
-        train(args.save_model_to)
-    else:
-        convert(args.save_model_to)
+    main(args.save_model_to, args.train)

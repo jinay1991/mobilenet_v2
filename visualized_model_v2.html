@@ -1,0 +1,2159 @@
+
+<html>
+<head>
+<style>
+body {font-family: sans-serif; background-color: #fa0;}
+table {background-color: #eca;}
+th {background-color: black; color: white;}
+h1 {
+  background-color: ffaa00;
+  padding:5px;
+  color: black;
+}
+
+svg {
+  margin: 10px;
+  border: 2px;
+  border-style: solid;
+  border-color: black;
+  background: white;
+}
+
+div {
+  border-radius: 5px;
+  background-color: #fec;
+  padding:5px;
+  margin:5px;
+}
+
+.tooltip {color: blue;}
+.tooltip .tooltipcontent  {
+    visibility: hidden;
+    color: black;
+    background-color: yellow;
+    padding: 5px;
+    border-radius: 4px;
+    position: absolute;
+    z-index: 1;
+}
+.tooltip:hover .tooltipcontent {
+    visibility: visible;
+}
+
+.edges line {
+  stroke: #333;
+}
+
+text {
+  font-weight: bold;
+}
+
+.nodes text {
+  color: black;
+  pointer-events: none;
+  font-family: sans-serif;
+  font-size: 11px;
+}
+</style>
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+
+</head>
+<body>
+<h1>TensorFlow Lite Model</h2><table>
+<tr><th>filename</th><td>/home/hinton/workspace/mobilenet_v2/model.tflite</td></tr>
+<tr><th>version</th><td>3</td></tr>
+<tr><th>description</th><td>TOCO Converted.</td></tr>
+</table>
+<div class='subgraph'><h2>Subgraph 0</h2>
+<h3>Inputs/Outputs</h3>
+<table><tr>
+<tr>
+<th>inputs</th><th>outputs</th></tr>
+<tr>
+<td><span class='tooltip'><span class='tooltipcontent'>1 input_1 FLOAT32 [1, 224, 224, 3]<br></span>[1]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>0 Identity FLOAT32 [1, 10]<br></span>[0]</span></td>
+</tr>
+</table>
+<h3>Tensors</h3>
+<table><tr>
+<tr>
+<th>index</th><th>name</th><th>type</th><th>shape</th><th>buffer</th><th>quantization</th></tr>
+<tr>
+<td>0</td><td>Identity</td>
+<td>FLOAT32</td>
+<td>[1, 10]</td>
+<td>52</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>1</td><td>input_1</td>
+<td>FLOAT32</td>
+<td>[1, 224, 224, 3]</td>
+<td>79</td>
+<td>{u'quantized_dimension': 0, u'max': [255.0], u'details_type': 0, u'min': [0.0]}</td>
+</tr>
+<tr>
+<td>2</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Add_6</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 24]</td>
+<td>110</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>3</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[96, 1, 1, 16]</td>
+<td>51</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>4</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 24]</td>
+<td>108</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>5</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[24, 1, 1, 96]</td>
+<td>106</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>6</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1_bias</td>
+<td>FLOAT32</td>
+<td>[24]</td>
+<td>49</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>7</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[144, 1, 1, 24]</td>
+<td>48</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>8</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_3</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 24]</td>
+<td>111</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>9</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_3/ReadVariableOp</td>
+<td>INT8</td>
+<td>[24, 1, 1, 144]</td>
+<td>46</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>10</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 112, 112, 96]</td>
+<td>75</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>11</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_1</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 96]</td>
+<td>107</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>12</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_2</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 144]</td>
+<td>109</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>13</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_3</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 144]</td>
+<td>81</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>14</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise/ReadVariableOp</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 96]</td>
+<td>50</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>15</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 144]</td>
+<td>47</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>16</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_10</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 32]</td>
+<td>122</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>17</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_6</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 32]</td>
+<td>76</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>18</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[144, 1, 1, 24]</td>
+<td>45</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>19</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_1</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 32]</td>
+<td>114</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>20</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[32, 1, 1, 144]</td>
+<td>42</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>21</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[192, 1, 1, 32]</td>
+<td>41</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>22</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_3</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 32]</td>
+<td>99</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>23</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_3/ReadVariableOp</td>
+<td>INT8</td>
+<td>[32, 1, 1, 192]</td>
+<td>118</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>24</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_4/ReadVariableOp</td>
+<td>INT8</td>
+<td>[192, 1, 1, 32]</td>
+<td>40</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>25</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 32]</td>
+<td>82</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>26</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5/ReadVariableOp</td>
+<td>INT8</td>
+<td>[32, 1, 1, 192]</td>
+<td>38</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>27</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5_bias</td>
+<td>FLOAT32</td>
+<td>[32]</td>
+<td>37</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>28</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 56, 56, 144]</td>
+<td>95</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>29</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_1</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 144]</td>
+<td>112</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>30</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_2</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 192]</td>
+<td>116</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>31</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_3</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 192]</td>
+<td>115</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>32</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_4</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 192]</td>
+<td>120</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>33</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_5</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 192]</td>
+<td>91</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>34</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 144]</td>
+<td>44</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000156], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>35</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 192]</td>
+<td>117</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>36</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 192]</td>
+<td>39</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000156], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>37</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_bias</td>
+<td>FLOAT32</td>
+<td>[144]</td>
+<td>43</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>38</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_10</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>86</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>39</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_14</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>66</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>40</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_6</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>132</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>41</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[192, 1, 1, 32]</td>
+<td>36</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>42</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_1</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>84</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>43</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[64, 1, 1, 192]</td>
+<td>34</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>44</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[384, 1, 1, 64]</td>
+<td>33</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>45</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_3</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>131</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>46</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_3/ReadVariableOp</td>
+<td>INT8</td>
+<td>[64, 1, 1, 384]</td>
+<td>69</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>47</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_4/ReadVariableOp</td>
+<td>INT8</td>
+<td>[384, 1, 1, 64]</td>
+<td>90</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>48</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_5</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>134</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>49</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_5/ReadVariableOp</td>
+<td>INT8</td>
+<td>[64, 1, 1, 384]</td>
+<td>30</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>50</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_6/ReadVariableOp</td>
+<td>INT8</td>
+<td>[384, 1, 1, 64]</td>
+<td>29</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>51</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 64]</td>
+<td>67</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>52</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7/ReadVariableOp</td>
+<td>INT8</td>
+<td>[64, 1, 1, 384]</td>
+<td>27</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>53</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7_bias</td>
+<td>FLOAT32</td>
+<td>[64]</td>
+<td>26</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>54</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 28, 28, 192]</td>
+<td>123</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>55</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_1</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 192]</td>
+<td>72</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>56</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_2</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>126</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>57</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_3</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>129</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>58</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_4</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>102</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>59</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_5</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>133</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>60</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_6</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>70</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>61</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_7</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>71</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>62</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 192]</td>
+<td>103</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>63</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 384]</td>
+<td>32</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>64</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 384]</td>
+<td>31</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>65</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_3/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 384]</td>
+<td>28</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>66</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias</td>
+<td>FLOAT32</td>
+<td>[192]</td>
+<td>35</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>67</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_10</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 96]</td>
+<td>60</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>68</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_6</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 96]</td>
+<td>63</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>69</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[384, 1, 1, 64]</td>
+<td>80</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>70</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_1</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 96]</td>
+<td>64</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>71</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[96, 1, 1, 384]</td>
+<td>23</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>72</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[576, 1, 1, 96]</td>
+<td>92</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>73</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_3</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 96]</td>
+<td>121</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>74</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_3/ReadVariableOp</td>
+<td>INT8</td>
+<td>[96, 1, 1, 576]</td>
+<td>22</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>75</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_4/ReadVariableOp</td>
+<td>INT8</td>
+<td>[576, 1, 1, 96]</td>
+<td>21</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>76</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 96]</td>
+<td>61</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>77</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5/ReadVariableOp</td>
+<td>INT8</td>
+<td>[96, 1, 1, 576]</td>
+<td>19</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>78</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5_bias</td>
+<td>FLOAT32</td>
+<td>[96]</td>
+<td>18</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>79</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>94</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>80</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_1</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 384]</td>
+<td>65</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>81</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_2</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 576]</td>
+<td>85</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>82</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_3</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 576]</td>
+<td>104</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>83</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_4</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 576]</td>
+<td>97</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>84</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_5</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 576]</td>
+<td>62</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>85</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 384]</td>
+<td>25</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>86</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 576]</td>
+<td>83</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>87</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 576]</td>
+<td>20</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>88</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias</td>
+<td>FLOAT32</td>
+<td>[384]</td>
+<td>24</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>89</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_10</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 160]</td>
+<td>77</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>90</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_6</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 160]</td>
+<td>57</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>91</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[576, 1, 1, 96]</td>
+<td>17</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>92</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_1</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 160]</td>
+<td>74</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>93</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[160, 1, 1, 576]</td>
+<td>15</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>94</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[960, 1, 1, 160]</td>
+<td>93</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>95</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_3</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 160]</td>
+<td>127</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>96</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_3/ReadVariableOp</td>
+<td>INT8</td>
+<td>[160, 1, 1, 960]</td>
+<td>13</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>97</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_4/ReadVariableOp</td>
+<td>INT8</td>
+<td>[960, 1, 1, 160]</td>
+<td>12</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>98</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 160]</td>
+<td>68</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>99</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5/ReadVariableOp</td>
+<td>INT8</td>
+<td>[160, 1, 1, 960]</td>
+<td>87</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>100</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5_bias</td>
+<td>FLOAT32</td>
+<td>[160]</td>
+<td>11</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>101</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias</td>
+<td>FLOAT32</td>
+<td>[576]</td>
+<td>16</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>102</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 14, 14, 576]</td>
+<td>78</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>103</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_1</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 576]</td>
+<td>59</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>104</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_2</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 960]</td>
+<td>58</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>105</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_3</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 960]</td>
+<td>130</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>106</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_4</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 960]</td>
+<td>73</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>107</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_5</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 960]</td>
+<td>56</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>108</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 576]</td>
+<td>119</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>109</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 960]</td>
+<td>14</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>110</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_2/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 960]</td>
+<td>96</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>111</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[960, 1, 1, 160]</td>
+<td>10</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>112</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 320]</td>
+<td>88</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>113</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1/ReadVariableOp</td>
+<td>INT8</td>
+<td>[320, 1, 1, 960]</td>
+<td>7</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>114</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1_bias</td>
+<td>FLOAT32</td>
+<td>[320]</td>
+<td>6</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>115</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias</td>
+<td>FLOAT32</td>
+<td>[960]</td>
+<td>9</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>116</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 960]</td>
+<td>55</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>117</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Relu_1</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 960]</td>
+<td>124</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>118</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/depthwise/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1, 3, 3, 960]</td>
+<td>8</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>119</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D</td>
+<td>FLOAT32</td>
+<td>[1, 1, 1, 10]</td>
+<td>53</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>120</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[10, 1, 1, 1280]</td>
+<td>3</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>121</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D_bias</td>
+<td>FLOAT32</td>
+<td>[10]</td>
+<td>2</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>122</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Conv2D/ReadVariableOp</td>
+<td>INT8</td>
+<td>[1280, 1, 1, 320]</td>
+<td>5</td>
+<td>{u'quantized_dimension': 0, u'scale': [0.000157], u'details_type': 0, u'zero_point': [0]}</td>
+</tr>
+<tr>
+<td>123</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Conv2D_bias</td>
+<td>FLOAT32</td>
+<td>[1280]</td>
+<td>4</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>124</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 7, 7, 1280]</td>
+<td>54</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>125</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/M11/Squeeze_shape</td>
+<td>INT32</td>
+<td>[2]</td>
+<td>1</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>126</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/S9/AvgPool</td>
+<td>FLOAT32</td>
+<td>[1, 1, 1, 1280]</td>
+<td>98</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>127</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D</td>
+<td>FLOAT32</td>
+<td>[1, 112, 112, 16]</td>
+<td>105</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>128</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D/ReadVariableOp</td>
+<td>FLOAT32</td>
+<td>[16, 1, 1, 32]</td>
+<td>125</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>129</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D_bias</td>
+<td>FLOAT32</td>
+<td>[16]</td>
+<td>128</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>130</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 112, 112, 32]</td>
+<td>89</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>131</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/depthwise/ReadVariableOp</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 32]</td>
+<td>101</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>132</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/conv2d/StatefulPartitionedCall/C0/Conv2D/ReadVariableOp</td>
+<td>FLOAT32</td>
+<td>[32, 3, 3, 3]</td>
+<td>113</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>133</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/conv2d/StatefulPartitionedCall/C0/Relu</td>
+<td>FLOAT32</td>
+<td>[1, 112, 112, 32]</td>
+<td>100</td>
+<td>{u'quantized_dimension': 0, u'details_type': 0}</td>
+</tr>
+<tr>
+<td>134</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_2/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 384]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>135</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_2/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 192]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>136</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_2/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 960]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>137</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 192]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>138</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_1/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 576]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>139</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_1/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 384]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>140</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_3/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 384]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>141</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 144]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>142</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise_1/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 144]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>143</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 576]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>144</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 384]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>145</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_1/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 192]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>146</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_2/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 576]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>147</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_1/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 960]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+<tr>
+<td>148</td><td>mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/depthwise/ReadVariableOp_dequantize</td>
+<td>FLOAT32</td>
+<td>[1, 3, 3, 960]</td>
+<td>0</td>
+<td>None</td>
+</tr>
+</table>
+<h3>Ops</h3>
+<table><tr>
+<tr>
+<th>index</th><th>inputs</th><th>outputs</th><th>builtin_options</th><th>opcode_index</th></tr>
+<tr>
+<td>0</td><td><span class='tooltip'><span class='tooltipcontent'>1 input_1 FLOAT32 [1, 224, 224, 3]<br>132 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/conv2d/StatefulPartitionedCall/C0/Conv2D/ReadVariableOp FLOAT32 [32, 3, 3, 3]<br>27 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5_bias FLOAT32 [32]<br></span>[1, 132, 27]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>133 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/conv2d/StatefulPartitionedCall/C0/Relu FLOAT32 [1, 112, 112, 32]<br></span>[133]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 2, u'padding': u'SAME', u'stride_w': 2, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>1</td><td><span class='tooltip'><span class='tooltipcontent'>133 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/conv2d/StatefulPartitionedCall/C0/Relu FLOAT32 [1, 112, 112, 32]<br>131 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/depthwise/ReadVariableOp FLOAT32 [1, 3, 3, 32]<br>27 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5_bias FLOAT32 [32]<br></span>[133, 131, 27]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>130 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Relu FLOAT32 [1, 112, 112, 32]<br></span>[130]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>2</td><td><span class='tooltip'><span class='tooltipcontent'>130 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Relu FLOAT32 [1, 112, 112, 32]<br>128 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D/ReadVariableOp FLOAT32 [16, 1, 1, 32]<br>129 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D_bias FLOAT32 [16]<br></span>[130, 128, 129]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>127 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D FLOAT32 [1, 112, 112, 16]<br></span>[127]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>3</td><td><span class='tooltip'><span class='tooltipcontent'>127 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/bottleneck/StatefulPartitionedCall/B1/Conv2D FLOAT32 [1, 112, 112, 16]<br>3 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D/ReadVariableOp INT8 [96, 1, 1, 16]<br>78 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5_bias FLOAT32 [96]<br></span>[127, 3, 78]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>10 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu FLOAT32 [1, 112, 112, 96]<br></span>[10]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>4</td><td><span class='tooltip'><span class='tooltipcontent'>10 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu FLOAT32 [1, 112, 112, 96]<br>14 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise/ReadVariableOp FLOAT32 [1, 3, 3, 96]<br>78 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5_bias FLOAT32 [96]<br></span>[10, 14, 78]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>11 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_1 FLOAT32 [1, 56, 56, 96]<br></span>[11]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 2, u'padding': u'SAME', u'stride_w': 2, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>5</td><td><span class='tooltip'><span class='tooltipcontent'>11 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_1 FLOAT32 [1, 56, 56, 96]<br>5 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1/ReadVariableOp INT8 [24, 1, 1, 96]<br>6 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1_bias FLOAT32 [24]<br></span>[11, 5, 6]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>4 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1 FLOAT32 [1, 56, 56, 24]<br></span>[4]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>6</td><td><span class='tooltip'><span class='tooltipcontent'>4 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1 FLOAT32 [1, 56, 56, 24]<br>7 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_2/ReadVariableOp INT8 [144, 1, 1, 24]<br>37 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_bias FLOAT32 [144]<br></span>[4, 7, 37]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>12 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_2 FLOAT32 [1, 56, 56, 144]<br></span>[12]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>7</td><td><span class='tooltip'><span class='tooltipcontent'>15 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise_1/ReadVariableOp INT8 [1, 3, 3, 144]<br></span>[15]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>142 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 144]<br></span>[142]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>8</td><td><span class='tooltip'><span class='tooltipcontent'>12 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_2 FLOAT32 [1, 56, 56, 144]<br>142 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 144]<br>37 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_bias FLOAT32 [144]<br></span>[12, 142, 37]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>13 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_3 FLOAT32 [1, 56, 56, 144]<br></span>[13]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>9</td><td><span class='tooltip'><span class='tooltipcontent'>13 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Relu_3 FLOAT32 [1, 56, 56, 144]<br>9 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_3/ReadVariableOp INT8 [24, 1, 1, 144]<br>6 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1_bias FLOAT32 [24]<br></span>[13, 9, 6]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>8 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_3 FLOAT32 [1, 56, 56, 24]<br></span>[8]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>10</td><td><span class='tooltip'><span class='tooltipcontent'>8 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_3 FLOAT32 [1, 56, 56, 24]<br>4 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Conv2D_1 FLOAT32 [1, 56, 56, 24]<br></span>[8, 4]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>2 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Add_6 FLOAT32 [1, 56, 56, 24]<br></span>[2]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>11</td><td><span class='tooltip'><span class='tooltipcontent'>2 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B2/Add_6 FLOAT32 [1, 56, 56, 24]<br>18 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D/ReadVariableOp INT8 [144, 1, 1, 24]<br>37 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_bias FLOAT32 [144]<br></span>[2, 18, 37]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>28 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu FLOAT32 [1, 56, 56, 144]<br></span>[28]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>12</td><td><span class='tooltip'><span class='tooltipcontent'>34 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise/ReadVariableOp INT8 [1, 3, 3, 144]<br></span>[34]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>141 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 144]<br></span>[141]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>13</td><td><span class='tooltip'><span class='tooltipcontent'>28 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu FLOAT32 [1, 56, 56, 144]<br>141 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 144]<br>37 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_bias FLOAT32 [144]<br></span>[28, 141, 37]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>29 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_1 FLOAT32 [1, 28, 28, 144]<br></span>[29]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 2, u'padding': u'SAME', u'stride_w': 2, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>14</td><td><span class='tooltip'><span class='tooltipcontent'>29 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_1 FLOAT32 [1, 28, 28, 144]<br>20 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_1/ReadVariableOp INT8 [32, 1, 1, 144]<br>27 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5_bias FLOAT32 [32]<br></span>[29, 20, 27]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>19 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_1 FLOAT32 [1, 28, 28, 32]<br></span>[19]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>15</td><td><span class='tooltip'><span class='tooltipcontent'>19 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_1 FLOAT32 [1, 28, 28, 32]<br>21 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_2/ReadVariableOp INT8 [192, 1, 1, 32]<br>66 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias FLOAT32 [192]<br></span>[19, 21, 66]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>30 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_2 FLOAT32 [1, 28, 28, 192]<br></span>[30]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>16</td><td><span class='tooltip'><span class='tooltipcontent'>35 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_1/ReadVariableOp INT8 [1, 3, 3, 192]<br></span>[35]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>145 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 192]<br></span>[145]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>17</td><td><span class='tooltip'><span class='tooltipcontent'>30 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_2 FLOAT32 [1, 28, 28, 192]<br>145 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 192]<br>66 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias FLOAT32 [192]<br></span>[30, 145, 66]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>31 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_3 FLOAT32 [1, 28, 28, 192]<br></span>[31]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>18</td><td><span class='tooltip'><span class='tooltipcontent'>31 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_3 FLOAT32 [1, 28, 28, 192]<br>23 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_3/ReadVariableOp INT8 [32, 1, 1, 192]<br>27 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5_bias FLOAT32 [32]<br></span>[31, 23, 27]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>22 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_3 FLOAT32 [1, 28, 28, 32]<br></span>[22]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>19</td><td><span class='tooltip'><span class='tooltipcontent'>22 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_3 FLOAT32 [1, 28, 28, 32]<br>19 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_1 FLOAT32 [1, 28, 28, 32]<br></span>[22, 19]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>17 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_6 FLOAT32 [1, 28, 28, 32]<br></span>[17]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>20</td><td><span class='tooltip'><span class='tooltipcontent'>17 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_6 FLOAT32 [1, 28, 28, 32]<br>24 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_4/ReadVariableOp INT8 [192, 1, 1, 32]<br>66 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias FLOAT32 [192]<br></span>[17, 24, 66]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>32 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_4 FLOAT32 [1, 28, 28, 192]<br></span>[32]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>21</td><td><span class='tooltip'><span class='tooltipcontent'>36 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_2/ReadVariableOp INT8 [1, 3, 3, 192]<br></span>[36]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>135 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 192]<br></span>[135]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>22</td><td><span class='tooltip'><span class='tooltipcontent'>32 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_4 FLOAT32 [1, 28, 28, 192]<br>135 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 192]<br>66 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias FLOAT32 [192]<br></span>[32, 135, 66]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>33 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_5 FLOAT32 [1, 28, 28, 192]<br></span>[33]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>23</td><td><span class='tooltip'><span class='tooltipcontent'>33 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Relu_5 FLOAT32 [1, 28, 28, 192]<br>26 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5/ReadVariableOp INT8 [32, 1, 1, 192]<br>27 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5_bias FLOAT32 [32]<br></span>[33, 26, 27]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>25 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5 FLOAT32 [1, 28, 28, 32]<br></span>[25]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>24</td><td><span class='tooltip'><span class='tooltipcontent'>25 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Conv2D_5 FLOAT32 [1, 28, 28, 32]<br>17 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_6 FLOAT32 [1, 28, 28, 32]<br></span>[25, 17]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>16 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_10 FLOAT32 [1, 28, 28, 32]<br></span>[16]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>25</td><td><span class='tooltip'><span class='tooltipcontent'>16 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B3/Add_10 FLOAT32 [1, 28, 28, 32]<br>41 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D/ReadVariableOp INT8 [192, 1, 1, 32]<br>66 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias FLOAT32 [192]<br></span>[16, 41, 66]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>54 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu FLOAT32 [1, 28, 28, 192]<br></span>[54]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>26</td><td><span class='tooltip'><span class='tooltipcontent'>62 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise/ReadVariableOp INT8 [1, 3, 3, 192]<br></span>[62]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>137 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 192]<br></span>[137]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>27</td><td><span class='tooltip'><span class='tooltipcontent'>54 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu FLOAT32 [1, 28, 28, 192]<br>137 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 192]<br>66 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_bias FLOAT32 [192]<br></span>[54, 137, 66]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>55 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_1 FLOAT32 [1, 14, 14, 192]<br></span>[55]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 2, u'padding': u'SAME', u'stride_w': 2, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>28</td><td><span class='tooltip'><span class='tooltipcontent'>55 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_1 FLOAT32 [1, 14, 14, 192]<br>43 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_1/ReadVariableOp INT8 [64, 1, 1, 192]<br>53 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7_bias FLOAT32 [64]<br></span>[55, 43, 53]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>42 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_1 FLOAT32 [1, 14, 14, 64]<br></span>[42]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>29</td><td><span class='tooltip'><span class='tooltipcontent'>42 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_1 FLOAT32 [1, 14, 14, 64]<br>44 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_2/ReadVariableOp INT8 [384, 1, 1, 64]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[42, 44, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>56 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_2 FLOAT32 [1, 14, 14, 384]<br></span>[56]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>30</td><td><span class='tooltip'><span class='tooltipcontent'>63 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_1/ReadVariableOp INT8 [1, 3, 3, 384]<br></span>[63]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>139 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br></span>[139]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>31</td><td><span class='tooltip'><span class='tooltipcontent'>56 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_2 FLOAT32 [1, 14, 14, 384]<br>139 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[56, 139, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>57 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_3 FLOAT32 [1, 14, 14, 384]<br></span>[57]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>32</td><td><span class='tooltip'><span class='tooltipcontent'>57 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_3 FLOAT32 [1, 14, 14, 384]<br>46 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_3/ReadVariableOp INT8 [64, 1, 1, 384]<br>53 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7_bias FLOAT32 [64]<br></span>[57, 46, 53]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>45 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_3 FLOAT32 [1, 14, 14, 64]<br></span>[45]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>33</td><td><span class='tooltip'><span class='tooltipcontent'>45 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_3 FLOAT32 [1, 14, 14, 64]<br>42 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_1 FLOAT32 [1, 14, 14, 64]<br></span>[45, 42]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>40 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_6 FLOAT32 [1, 14, 14, 64]<br></span>[40]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>34</td><td><span class='tooltip'><span class='tooltipcontent'>40 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_6 FLOAT32 [1, 14, 14, 64]<br>47 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_4/ReadVariableOp INT8 [384, 1, 1, 64]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[40, 47, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>58 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_4 FLOAT32 [1, 14, 14, 384]<br></span>[58]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>35</td><td><span class='tooltip'><span class='tooltipcontent'>64 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_2/ReadVariableOp INT8 [1, 3, 3, 384]<br></span>[64]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>134 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br></span>[134]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>36</td><td><span class='tooltip'><span class='tooltipcontent'>58 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_4 FLOAT32 [1, 14, 14, 384]<br>134 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[58, 134, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>59 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_5 FLOAT32 [1, 14, 14, 384]<br></span>[59]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>37</td><td><span class='tooltip'><span class='tooltipcontent'>59 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_5 FLOAT32 [1, 14, 14, 384]<br>49 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_5/ReadVariableOp INT8 [64, 1, 1, 384]<br>53 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7_bias FLOAT32 [64]<br></span>[59, 49, 53]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>48 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_5 FLOAT32 [1, 14, 14, 64]<br></span>[48]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>38</td><td><span class='tooltip'><span class='tooltipcontent'>48 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_5 FLOAT32 [1, 14, 14, 64]<br>40 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_6 FLOAT32 [1, 14, 14, 64]<br></span>[48, 40]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>38 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_10 FLOAT32 [1, 14, 14, 64]<br></span>[38]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>39</td><td><span class='tooltip'><span class='tooltipcontent'>38 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_10 FLOAT32 [1, 14, 14, 64]<br>50 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_6/ReadVariableOp INT8 [384, 1, 1, 64]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[38, 50, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>60 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_6 FLOAT32 [1, 14, 14, 384]<br></span>[60]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>40</td><td><span class='tooltip'><span class='tooltipcontent'>65 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_3/ReadVariableOp INT8 [1, 3, 3, 384]<br></span>[65]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>140 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_3/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br></span>[140]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>41</td><td><span class='tooltip'><span class='tooltipcontent'>60 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_6 FLOAT32 [1, 14, 14, 384]<br>140 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/depthwise_3/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[60, 140, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>61 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_7 FLOAT32 [1, 14, 14, 384]<br></span>[61]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>42</td><td><span class='tooltip'><span class='tooltipcontent'>61 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Relu_7 FLOAT32 [1, 14, 14, 384]<br>52 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7/ReadVariableOp INT8 [64, 1, 1, 384]<br>53 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7_bias FLOAT32 [64]<br></span>[61, 52, 53]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>51 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7 FLOAT32 [1, 14, 14, 64]<br></span>[51]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>43</td><td><span class='tooltip'><span class='tooltipcontent'>51 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Conv2D_7 FLOAT32 [1, 14, 14, 64]<br>38 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_10 FLOAT32 [1, 14, 14, 64]<br></span>[51, 38]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>39 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_14 FLOAT32 [1, 14, 14, 64]<br></span>[39]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>44</td><td><span class='tooltip'><span class='tooltipcontent'>39 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B4/Add_14 FLOAT32 [1, 14, 14, 64]<br>69 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D/ReadVariableOp INT8 [384, 1, 1, 64]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[39, 69, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>79 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu FLOAT32 [1, 14, 14, 384]<br></span>[79]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>45</td><td><span class='tooltip'><span class='tooltipcontent'>85 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise/ReadVariableOp INT8 [1, 3, 3, 384]<br></span>[85]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>144 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br></span>[144]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>46</td><td><span class='tooltip'><span class='tooltipcontent'>79 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu FLOAT32 [1, 14, 14, 384]<br>144 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 384]<br>88 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_bias FLOAT32 [384]<br></span>[79, 144, 88]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>80 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_1 FLOAT32 [1, 14, 14, 384]<br></span>[80]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>47</td><td><span class='tooltip'><span class='tooltipcontent'>80 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_1 FLOAT32 [1, 14, 14, 384]<br>71 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_1/ReadVariableOp INT8 [96, 1, 1, 384]<br>78 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5_bias FLOAT32 [96]<br></span>[80, 71, 78]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>70 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_1 FLOAT32 [1, 14, 14, 96]<br></span>[70]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>48</td><td><span class='tooltip'><span class='tooltipcontent'>70 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_1 FLOAT32 [1, 14, 14, 96]<br>72 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_2/ReadVariableOp INT8 [576, 1, 1, 96]<br>101 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias FLOAT32 [576]<br></span>[70, 72, 101]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>81 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_2 FLOAT32 [1, 14, 14, 576]<br></span>[81]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>49</td><td><span class='tooltip'><span class='tooltipcontent'>86 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_1/ReadVariableOp INT8 [1, 3, 3, 576]<br></span>[86]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>138 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 576]<br></span>[138]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>50</td><td><span class='tooltip'><span class='tooltipcontent'>81 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_2 FLOAT32 [1, 14, 14, 576]<br>138 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 576]<br>101 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias FLOAT32 [576]<br></span>[81, 138, 101]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>82 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_3 FLOAT32 [1, 14, 14, 576]<br></span>[82]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>51</td><td><span class='tooltip'><span class='tooltipcontent'>82 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_3 FLOAT32 [1, 14, 14, 576]<br>74 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_3/ReadVariableOp INT8 [96, 1, 1, 576]<br>78 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5_bias FLOAT32 [96]<br></span>[82, 74, 78]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>73 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_3 FLOAT32 [1, 14, 14, 96]<br></span>[73]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>52</td><td><span class='tooltip'><span class='tooltipcontent'>73 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_3 FLOAT32 [1, 14, 14, 96]<br>70 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_1 FLOAT32 [1, 14, 14, 96]<br></span>[73, 70]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>68 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_6 FLOAT32 [1, 14, 14, 96]<br></span>[68]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>53</td><td><span class='tooltip'><span class='tooltipcontent'>68 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_6 FLOAT32 [1, 14, 14, 96]<br>75 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_4/ReadVariableOp INT8 [576, 1, 1, 96]<br>101 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias FLOAT32 [576]<br></span>[68, 75, 101]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>83 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_4 FLOAT32 [1, 14, 14, 576]<br></span>[83]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>54</td><td><span class='tooltip'><span class='tooltipcontent'>87 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_2/ReadVariableOp INT8 [1, 3, 3, 576]<br></span>[87]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>146 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 576]<br></span>[146]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>55</td><td><span class='tooltip'><span class='tooltipcontent'>83 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_4 FLOAT32 [1, 14, 14, 576]<br>146 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 576]<br>101 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias FLOAT32 [576]<br></span>[83, 146, 101]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>84 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_5 FLOAT32 [1, 14, 14, 576]<br></span>[84]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>56</td><td><span class='tooltip'><span class='tooltipcontent'>84 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Relu_5 FLOAT32 [1, 14, 14, 576]<br>77 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5/ReadVariableOp INT8 [96, 1, 1, 576]<br>78 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5_bias FLOAT32 [96]<br></span>[84, 77, 78]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>76 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5 FLOAT32 [1, 14, 14, 96]<br></span>[76]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>57</td><td><span class='tooltip'><span class='tooltipcontent'>76 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Conv2D_5 FLOAT32 [1, 14, 14, 96]<br>68 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_6 FLOAT32 [1, 14, 14, 96]<br></span>[76, 68]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>67 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_10 FLOAT32 [1, 14, 14, 96]<br></span>[67]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>58</td><td><span class='tooltip'><span class='tooltipcontent'>67 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B5/Add_10 FLOAT32 [1, 14, 14, 96]<br>91 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D/ReadVariableOp INT8 [576, 1, 1, 96]<br>101 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias FLOAT32 [576]<br></span>[67, 91, 101]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>102 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu FLOAT32 [1, 14, 14, 576]<br></span>[102]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>59</td><td><span class='tooltip'><span class='tooltipcontent'>108 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise/ReadVariableOp INT8 [1, 3, 3, 576]<br></span>[108]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>143 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 576]<br></span>[143]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>60</td><td><span class='tooltip'><span class='tooltipcontent'>102 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu FLOAT32 [1, 14, 14, 576]<br>143 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 576]<br>101 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_bias FLOAT32 [576]<br></span>[102, 143, 101]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>103 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_1 FLOAT32 [1, 7, 7, 576]<br></span>[103]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 2, u'padding': u'SAME', u'stride_w': 2, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>61</td><td><span class='tooltip'><span class='tooltipcontent'>103 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_1 FLOAT32 [1, 7, 7, 576]<br>93 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_1/ReadVariableOp INT8 [160, 1, 1, 576]<br>100 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5_bias FLOAT32 [160]<br></span>[103, 93, 100]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>92 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_1 FLOAT32 [1, 7, 7, 160]<br></span>[92]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>62</td><td><span class='tooltip'><span class='tooltipcontent'>92 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_1 FLOAT32 [1, 7, 7, 160]<br>94 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_2/ReadVariableOp INT8 [960, 1, 1, 160]<br>115 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias FLOAT32 [960]<br></span>[92, 94, 115]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>104 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_2 FLOAT32 [1, 7, 7, 960]<br></span>[104]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>63</td><td><span class='tooltip'><span class='tooltipcontent'>109 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_1/ReadVariableOp INT8 [1, 3, 3, 960]<br></span>[109]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>147 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 960]<br></span>[147]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>64</td><td><span class='tooltip'><span class='tooltipcontent'>104 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_2 FLOAT32 [1, 7, 7, 960]<br>147 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_1/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 960]<br>115 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias FLOAT32 [960]<br></span>[104, 147, 115]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>105 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_3 FLOAT32 [1, 7, 7, 960]<br></span>[105]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>65</td><td><span class='tooltip'><span class='tooltipcontent'>105 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_3 FLOAT32 [1, 7, 7, 960]<br>96 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_3/ReadVariableOp INT8 [160, 1, 1, 960]<br>100 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5_bias FLOAT32 [160]<br></span>[105, 96, 100]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>95 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_3 FLOAT32 [1, 7, 7, 160]<br></span>[95]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>66</td><td><span class='tooltip'><span class='tooltipcontent'>95 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_3 FLOAT32 [1, 7, 7, 160]<br>92 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_1 FLOAT32 [1, 7, 7, 160]<br></span>[95, 92]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>90 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_6 FLOAT32 [1, 7, 7, 160]<br></span>[90]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>67</td><td><span class='tooltip'><span class='tooltipcontent'>90 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_6 FLOAT32 [1, 7, 7, 160]<br>97 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_4/ReadVariableOp INT8 [960, 1, 1, 160]<br>115 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias FLOAT32 [960]<br></span>[90, 97, 115]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>106 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_4 FLOAT32 [1, 7, 7, 960]<br></span>[106]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>68</td><td><span class='tooltip'><span class='tooltipcontent'>110 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_2/ReadVariableOp INT8 [1, 3, 3, 960]<br></span>[110]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>136 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 960]<br></span>[136]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>69</td><td><span class='tooltip'><span class='tooltipcontent'>106 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_4 FLOAT32 [1, 7, 7, 960]<br>136 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/depthwise_2/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 960]<br>115 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias FLOAT32 [960]<br></span>[106, 136, 115]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>107 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_5 FLOAT32 [1, 7, 7, 960]<br></span>[107]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>70</td><td><span class='tooltip'><span class='tooltipcontent'>107 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Relu_5 FLOAT32 [1, 7, 7, 960]<br>99 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5/ReadVariableOp INT8 [160, 1, 1, 960]<br>100 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5_bias FLOAT32 [160]<br></span>[107, 99, 100]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>98 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5 FLOAT32 [1, 7, 7, 160]<br></span>[98]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>71</td><td><span class='tooltip'><span class='tooltipcontent'>98 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Conv2D_5 FLOAT32 [1, 7, 7, 160]<br>90 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_6 FLOAT32 [1, 7, 7, 160]<br></span>[98, 90]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>89 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_10 FLOAT32 [1, 7, 7, 160]<br></span>[89]</span></td>
+<td>{u'fused_activation_function': u'NONE'}</td>
+<td>ADD (0)</td>
+</tr>
+<tr>
+<td>72</td><td><span class='tooltip'><span class='tooltipcontent'>89 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B6/Add_10 FLOAT32 [1, 7, 7, 160]<br>111 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D/ReadVariableOp INT8 [960, 1, 1, 160]<br>115 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias FLOAT32 [960]<br></span>[89, 111, 115]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>116 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Relu FLOAT32 [1, 7, 7, 960]<br></span>[116]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>73</td><td><span class='tooltip'><span class='tooltipcontent'>118 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/depthwise/ReadVariableOp INT8 [1, 3, 3, 960]<br></span>[118]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>148 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 960]<br></span>[148]</span></td>
+<td>None</td>
+<td>DEQUANTIZE (5)</td>
+</tr>
+<tr>
+<td>74</td><td><span class='tooltip'><span class='tooltipcontent'>116 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Relu FLOAT32 [1, 7, 7, 960]<br>148 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/depthwise/ReadVariableOp_dequantize FLOAT32 [1, 3, 3, 960]<br>115 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_bias FLOAT32 [960]<br></span>[116, 148, 115]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>117 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Relu_1 FLOAT32 [1, 7, 7, 960]<br></span>[117]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'depth_multiplier': 1, u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>DEPTHWISE_CONV_2D (3)</td>
+</tr>
+<tr>
+<td>75</td><td><span class='tooltip'><span class='tooltipcontent'>117 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Relu_1 FLOAT32 [1, 7, 7, 960]<br>113 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1/ReadVariableOp INT8 [320, 1, 1, 960]<br>114 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1_bias FLOAT32 [320]<br></span>[117, 113, 114]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>112 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1 FLOAT32 [1, 7, 7, 320]<br></span>[112]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>76</td><td><span class='tooltip'><span class='tooltipcontent'>112 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/B7/Conv2D_1 FLOAT32 [1, 7, 7, 320]<br>122 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Conv2D/ReadVariableOp INT8 [1280, 1, 1, 320]<br>123 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Conv2D_bias FLOAT32 [1280]<br></span>[112, 122, 123]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>124 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Relu FLOAT32 [1, 7, 7, 1280]<br></span>[124]</span></td>
+<td>{u'fused_activation_function': u'RELU', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>77</td><td><span class='tooltip'><span class='tooltipcontent'>124 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C8/Relu FLOAT32 [1, 7, 7, 1280]<br></span>[124]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>126 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/S9/AvgPool FLOAT32 [1, 1, 1, 1280]<br></span>[126]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 7, u'padding': u'SAME', u'stride_w': 7, u'filter_height': 3, u'filter_width': 3}</td>
+<td>AVERAGE_POOL_2D (1)</td>
+</tr>
+<tr>
+<td>78</td><td><span class='tooltip'><span class='tooltipcontent'>126 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/S9/AvgPool FLOAT32 [1, 1, 1, 1280]<br>120 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D/ReadVariableOp INT8 [10, 1, 1, 1280]<br>121 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D_bias FLOAT32 [10]<br></span>[126, 120, 121]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>119 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D FLOAT32 [1, 1, 1, 10]<br></span>[119]</span></td>
+<td>{u'fused_activation_function': u'NONE', u'stride_h': 1, u'padding': u'SAME', u'stride_w': 1, u'dilation_h_factor': 1, u'dilation_w_factor': 1}</td>
+<td>CONV_2D (2)</td>
+</tr>
+<tr>
+<td>79</td><td><span class='tooltip'><span class='tooltipcontent'>119 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/C10/Conv2D FLOAT32 [1, 1, 1, 10]<br>125 mobile_net_model/StatefulPartitionedCall/StatefulPartitionedCall/M11/Squeeze_shape INT32 [2]<br></span>[119, 125]</span></td>
+<td><span class='tooltip'><span class='tooltipcontent'>0 Identity FLOAT32 [1, 10]<br></span>[0]</span></td>
+<td>{u'new_shape': [1, 10]}</td>
+<td>RESHAPE (4)</td>
+</tr>
+</table>
+<svg id='subgraph0' width='1600' height='900'></svg>
+
+  <script>
+    function buildGraph() {
+      // Build graph data
+      var graph = {"nodes": [{"y": 200, "x": 200, "group": 2, "id": "o0", "name": "CONV_2D (2)"}, {"y": 400, "x": 200, "group": 2, "id": "o1", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 600, "x": 200, "group": 2, "id": "o2", "name": "CONV_2D (2)"}, {"y": 800, "x": 200, "group": 2, "id": "o3", "name": "CONV_2D (2)"}, {"y": 1000, "x": 200, "group": 2, "id": "o4", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 1200, "x": 200, "group": 2, "id": "o5", "name": "CONV_2D (2)"}, {"y": 1400, "x": 200, "group": 2, "id": "o6", "name": "CONV_2D (2)"}, {"y": 1600, "x": 200, "group": 2, "id": "o7", "name": "DEQUANTIZE (5)"}, {"y": 1800, "x": 200, "group": 2, "id": "o8", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 2000, "x": 200, "group": 2, "id": "o9", "name": "CONV_2D (2)"}, {"y": 2200, "x": 200, "group": 2, "id": "o10", "name": "ADD (0)"}, {"y": 2400, "x": 200, "group": 2, "id": "o11", "name": "CONV_2D (2)"}, {"y": 2600, "x": 200, "group": 2, "id": "o12", "name": "DEQUANTIZE (5)"}, {"y": 2800, "x": 200, "group": 2, "id": "o13", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 3000, "x": 200, "group": 2, "id": "o14", "name": "CONV_2D (2)"}, {"y": 3200, "x": 200, "group": 2, "id": "o15", "name": "CONV_2D (2)"}, {"y": 3400, "x": 200, "group": 2, "id": "o16", "name": "DEQUANTIZE (5)"}, {"y": 3600, "x": 200, "group": 2, "id": "o17", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 3800, "x": 200, "group": 2, "id": "o18", "name": "CONV_2D (2)"}, {"y": 4000, "x": 200, "group": 2, "id": "o19", "name": "ADD (0)"}, {"y": 4200, "x": 200, "group": 2, "id": "o20", "name": "CONV_2D (2)"}, {"y": 4400, "x": 200, "group": 2, "id": "o21", "name": "DEQUANTIZE (5)"}, {"y": 4600, "x": 200, "group": 2, "id": "o22", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 4800, "x": 200, "group": 2, "id": "o23", "name": "CONV_2D (2)"}, {"y": 5000, "x": 200, "group": 2, "id": "o24", "name": "ADD (0)"}, {"y": 5200, "x": 200, "group": 2, "id": "o25", "name": "CONV_2D (2)"}, {"y": 5400, "x": 200, "group": 2, "id": "o26", "name": "DEQUANTIZE (5)"}, {"y": 5600, "x": 200, "group": 2, "id": "o27", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 5800, "x": 200, "group": 2, "id": "o28", "name": "CONV_2D (2)"}, {"y": 6000, "x": 200, "group": 2, "id": "o29", "name": "CONV_2D (2)"}, {"y": 6200, "x": 200, "group": 2, "id": "o30", "name": "DEQUANTIZE (5)"}, {"y": 6400, "x": 200, "group": 2, "id": "o31", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 6600, "x": 200, "group": 2, "id": "o32", "name": "CONV_2D (2)"}, {"y": 6800, "x": 200, "group": 2, "id": "o33", "name": "ADD (0)"}, {"y": 7000, "x": 200, "group": 2, "id": "o34", "name": "CONV_2D (2)"}, {"y": 7200, "x": 200, "group": 2, "id": "o35", "name": "DEQUANTIZE (5)"}, {"y": 7400, "x": 200, "group": 2, "id": "o36", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 7600, "x": 200, "group": 2, "id": "o37", "name": "CONV_2D (2)"}, {"y": 7800, "x": 200, "group": 2, "id": "o38", "name": "ADD (0)"}, {"y": 8000, "x": 200, "group": 2, "id": "o39", "name": "CONV_2D (2)"}, {"y": 8200, "x": 200, "group": 2, "id": "o40", "name": "DEQUANTIZE (5)"}, {"y": 8400, "x": 200, "group": 2, "id": "o41", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 8600, "x": 200, "group": 2, "id": "o42", "name": "CONV_2D (2)"}, {"y": 8800, "x": 200, "group": 2, "id": "o43", "name": "ADD (0)"}, {"y": 9000, "x": 200, "group": 2, "id": "o44", "name": "CONV_2D (2)"}, {"y": 9200, "x": 200, "group": 2, "id": "o45", "name": "DEQUANTIZE (5)"}, {"y": 9400, "x": 200, "group": 2, "id": "o46", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 9600, "x": 200, "group": 2, "id": "o47", "name": "CONV_2D (2)"}, {"y": 9800, "x": 200, "group": 2, "id": "o48", "name": "CONV_2D (2)"}, {"y": 10000, "x": 200, "group": 2, "id": "o49", "name": "DEQUANTIZE (5)"}, {"y": 10200, "x": 200, "group": 2, "id": "o50", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 10400, "x": 200, "group": 2, "id": "o51", "name": "CONV_2D (2)"}, {"y": 10600, "x": 200, "group": 2, "id": "o52", "name": "ADD (0)"}, {"y": 10800, "x": 200, "group": 2, "id": "o53", "name": "CONV_2D (2)"}, {"y": 11000, "x": 200, "group": 2, "id": "o54", "name": "DEQUANTIZE (5)"}, {"y": 11200, "x": 200, "group": 2, "id": "o55", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 11400, "x": 200, "group": 2, "id": "o56", "name": "CONV_2D (2)"}, {"y": 11600, "x": 200, "group": 2, "id": "o57", "name": "ADD (0)"}, {"y": 11800, "x": 200, "group": 2, "id": "o58", "name": "CONV_2D (2)"}, {"y": 12000, "x": 200, "group": 2, "id": "o59", "name": "DEQUANTIZE (5)"}, {"y": 12200, "x": 200, "group": 2, "id": "o60", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 12400, "x": 200, "group": 2, "id": "o61", "name": "CONV_2D (2)"}, {"y": 12600, "x": 200, "group": 2, "id": "o62", "name": "CONV_2D (2)"}, {"y": 12800, "x": 200, "group": 2, "id": "o63", "name": "DEQUANTIZE (5)"}, {"y": 13000, "x": 200, "group": 2, "id": "o64", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 13200, "x": 200, "group": 2, "id": "o65", "name": "CONV_2D (2)"}, {"y": 13400, "x": 200, "group": 2, "id": "o66", "name": "ADD (0)"}, {"y": 13600, "x": 200, "group": 2, "id": "o67", "name": "CONV_2D (2)"}, {"y": 13800, "x": 200, "group": 2, "id": "o68", "name": "DEQUANTIZE (5)"}, {"y": 14000, "x": 200, "group": 2, "id": "o69", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 14200, "x": 200, "group": 2, "id": "o70", "name": "CONV_2D (2)"}, {"y": 14400, "x": 200, "group": 2, "id": "o71", "name": "ADD (0)"}, {"y": 14600, "x": 200, "group": 2, "id": "o72", "name": "CONV_2D (2)"}, {"y": 14800, "x": 200, "group": 2, "id": "o73", "name": "DEQUANTIZE (5)"}, {"y": 15000, "x": 200, "group": 2, "id": "o74", "name": "DEPTHWISE_CONV_2D (3)"}, {"y": 15200, "x": 200, "group": 2, "id": "o75", "name": "CONV_2D (2)"}, {"y": 15400, "x": 200, "group": 2, "id": "o76", "name": "CONV_2D (2)"}, {"y": 15600, "x": 200, "group": 2, "id": "o77", "name": "AVERAGE_POOL_2D (1)"}, {"y": 15800, "x": 200, "group": 2, "id": "o78", "name": "CONV_2D (2)"}, {"y": 16000, "x": 200, "group": 2, "id": "o79", "name": "RESHAPE (4)"}, {"y": 16100.0, "x": 170, "group": 1, "id": "t0", "name": "[] (0)"}, {"y": 100.0, "x": 170, "group": 1, "id": "t1", "name": "[] (1)"}, {"y": 2300.0, "x": 170, "group": 1, "id": "t2", "name": "[] (2)"}, {"y": 700.0, "x": 340, "group": 1, "id": "t3", "name": "[] (3)"}, {"y": 1300.0, "x": 170, "group": 1, "id": "t4", "name": "[] (4)"}, {"y": 1100.0, "x": 340, "group": 1, "id": "t5", "name": "[] (5)"}, {"y": 1100.0, "x": 510, "group": 1, "id": "t6", "name": "[] (6)"}, {"y": 1300.0, "x": 340, "group": 1, "id": "t7", "name": "[] (7)"}, {"y": 2100.0, "x": 170, "group": 1, "id": "t8", "name": "[] (8)"}, {"y": 1900.0, "x": 340, "group": 1, "id": "t9", "name": "[] (9)"}, {"y": 900.0, "x": 170, "group": 1, "id": "t10", "name": "[] (10)"}, {"y": 1100.0, "x": 170, "group": 1, "id": "t11", "name": "[] (11)"}, {"y": 1700.0, "x": 170, "group": 1, "id": "t12", "name": "[] (12)"}, {"y": 1900.0, "x": 170, "group": 1, "id": "t13", "name": "[] (13)"}, {"y": 900.0, "x": 340, "group": 1, "id": "t14", "name": "[] (14)"}, {"y": 1500.0, "x": 170, "group": 1, "id": "t15", "name": "[] (15)"}, {"y": 5100.0, "x": 170, "group": 1, "id": "t16", "name": "[] (16)"}, {"y": 4100.0, "x": 170, "group": 1, "id": "t17", "name": "[] (17)"}, {"y": 2300.0, "x": 340, "group": 1, "id": "t18", "name": "[] (18)"}, {"y": 3100.0, "x": 170, "group": 1, "id": "t19", "name": "[] (19)"}, {"y": 2900.0, "x": 340, "group": 1, "id": "t20", "name": "[] (20)"}, {"y": 3100.0, "x": 340, "group": 1, "id": "t21", "name": "[] (21)"}, {"y": 3900.0, "x": 170, "group": 1, "id": "t22", "name": "[] (22)"}, {"y": 3700.0, "x": 340, "group": 1, "id": "t23", "name": "[] (23)"}, {"y": 4100.0, "x": 340, "group": 1, "id": "t24", "name": "[] (24)"}, {"y": 4900.0, "x": 170, "group": 1, "id": "t25", "name": "[] (25)"}, {"y": 4700.0, "x": 340, "group": 1, "id": "t26", "name": "[] (26)"}, {"y": 100.0, "x": 510, "group": 1, "id": "t27", "name": "[] (27)"}, {"y": 2700.0, "x": 170, "group": 1, "id": "t28", "name": "[] (28)"}, {"y": 2900.0, "x": 170, "group": 1, "id": "t29", "name": "[] (29)"}, {"y": 3500.0, "x": 170, "group": 1, "id": "t30", "name": "[] (30)"}, {"y": 3700.0, "x": 170, "group": 1, "id": "t31", "name": "[] (31)"}, {"y": 4500.0, "x": 170, "group": 1, "id": "t32", "name": "[] (32)"}, {"y": 4700.0, "x": 170, "group": 1, "id": "t33", "name": "[] (33)"}, {"y": 2500.0, "x": 170, "group": 1, "id": "t34", "name": "[] (34)"}, {"y": 3300.0, "x": 170, "group": 1, "id": "t35", "name": "[] (35)"}, {"y": 4300.0, "x": 170, "group": 1, "id": "t36", "name": "[] (36)"}, {"y": 1300.0, "x": 510, "group": 1, "id": "t37", "name": "[] (37)"}, {"y": 7900.0, "x": 170, "group": 1, "id": "t38", "name": "[] (38)"}, {"y": 8900.0, "x": 170, "group": 1, "id": "t39", "name": "[] (39)"}, {"y": 6900.0, "x": 170, "group": 1, "id": "t40", "name": "[] (40)"}, {"y": 5100.0, "x": 340, "group": 1, "id": "t41", "name": "[] (41)"}, {"y": 5900.0, "x": 170, "group": 1, "id": "t42", "name": "[] (42)"}, {"y": 5700.0, "x": 340, "group": 1, "id": "t43", "name": "[] (43)"}, {"y": 5900.0, "x": 340, "group": 1, "id": "t44", "name": "[] (44)"}, {"y": 6700.0, "x": 170, "group": 1, "id": "t45", "name": "[] (45)"}, {"y": 6500.0, "x": 340, "group": 1, "id": "t46", "name": "[] (46)"}, {"y": 6900.0, "x": 340, "group": 1, "id": "t47", "name": "[] (47)"}, {"y": 7700.0, "x": 170, "group": 1, "id": "t48", "name": "[] (48)"}, {"y": 7500.0, "x": 340, "group": 1, "id": "t49", "name": "[] (49)"}, {"y": 7900.0, "x": 340, "group": 1, "id": "t50", "name": "[] (50)"}, {"y": 8700.0, "x": 170, "group": 1, "id": "t51", "name": "[] (51)"}, {"y": 8500.0, "x": 340, "group": 1, "id": "t52", "name": "[] (52)"}, {"y": 5700.0, "x": 510, "group": 1, "id": "t53", "name": "[] (53)"}, {"y": 5500.0, "x": 170, "group": 1, "id": "t54", "name": "[] (54)"}, {"y": 5700.0, "x": 170, "group": 1, "id": "t55", "name": "[] (55)"}, {"y": 6300.0, "x": 170, "group": 1, "id": "t56", "name": "[] (56)"}, {"y": 6500.0, "x": 170, "group": 1, "id": "t57", "name": "[] (57)"}, {"y": 7300.0, "x": 170, "group": 1, "id": "t58", "name": "[] (58)"}, {"y": 7500.0, "x": 170, "group": 1, "id": "t59", "name": "[] (59)"}, {"y": 8300.0, "x": 170, "group": 1, "id": "t60", "name": "[] (60)"}, {"y": 8500.0, "x": 170, "group": 1, "id": "t61", "name": "[] (61)"}, {"y": 5300.0, "x": 170, "group": 1, "id": "t62", "name": "[] (62)"}, {"y": 6100.0, "x": 170, "group": 1, "id": "t63", "name": "[] (63)"}, {"y": 7100.0, "x": 170, "group": 1, "id": "t64", "name": "[] (64)"}, {"y": 8100.0, "x": 170, "group": 1, "id": "t65", "name": "[] (65)"}, {"y": 3100.0, "x": 510, "group": 1, "id": "t66", "name": "[] (66)"}, {"y": 11700.0, "x": 170, "group": 1, "id": "t67", "name": "[] (67)"}, {"y": 10700.0, "x": 170, "group": 1, "id": "t68", "name": "[] (68)"}, {"y": 8900.0, "x": 340, "group": 1, "id": "t69", "name": "[] (69)"}, {"y": 9700.0, "x": 170, "group": 1, "id": "t70", "name": "[] (70)"}, {"y": 9500.0, "x": 340, "group": 1, "id": "t71", "name": "[] (71)"}, {"y": 9700.0, "x": 340, "group": 1, "id": "t72", "name": "[] (72)"}, {"y": 10500.0, "x": 170, "group": 1, "id": "t73", "name": "[] (73)"}, {"y": 10300.0, "x": 340, "group": 1, "id": "t74", "name": "[] (74)"}, {"y": 10700.0, "x": 340, "group": 1, "id": "t75", "name": "[] (75)"}, {"y": 11500.0, "x": 170, "group": 1, "id": "t76", "name": "[] (76)"}, {"y": 11300.0, "x": 340, "group": 1, "id": "t77", "name": "[] (77)"}, {"y": 700.0, "x": 510, "group": 1, "id": "t78", "name": "[] (78)"}, {"y": 9300.0, "x": 170, "group": 1, "id": "t79", "name": "[] (79)"}, {"y": 9500.0, "x": 170, "group": 1, "id": "t80", "name": "[] (80)"}, {"y": 10100.0, "x": 170, "group": 1, "id": "t81", "name": "[] (81)"}, {"y": 10300.0, "x": 170, "group": 1, "id": "t82", "name": "[] (82)"}, {"y": 11100.0, "x": 170, "group": 1, "id": "t83", "name": "[] (83)"}, {"y": 11300.0, "x": 170, "group": 1, "id": "t84", "name": "[] (84)"}, {"y": 9100.0, "x": 170, "group": 1, "id": "t85", "name": "[] (85)"}, {"y": 9900.0, "x": 170, "group": 1, "id": "t86", "name": "[] (86)"}, {"y": 10900.0, "x": 170, "group": 1, "id": "t87", "name": "[] (87)"}, {"y": 5900.0, "x": 510, "group": 1, "id": "t88", "name": "[] (88)"}, {"y": 14500.0, "x": 170, "group": 1, "id": "t89", "name": "[] (89)"}, {"y": 13500.0, "x": 170, "group": 1, "id": "t90", "name": "[] (90)"}, {"y": 11700.0, "x": 340, "group": 1, "id": "t91", "name": "[] (91)"}, {"y": 12500.0, "x": 170, "group": 1, "id": "t92", "name": "[] (92)"}, {"y": 12300.0, "x": 340, "group": 1, "id": "t93", "name": "[] (93)"}, {"y": 12500.0, "x": 340, "group": 1, "id": "t94", "name": "[] (94)"}, {"y": 13300.0, "x": 170, "group": 1, "id": "t95", "name": "[] (95)"}, {"y": 13100.0, "x": 340, "group": 1, "id": "t96", "name": "[] (96)"}, {"y": 13500.0, "x": 340, "group": 1, "id": "t97", "name": "[] (97)"}, {"y": 14300.0, "x": 170, "group": 1, "id": "t98", "name": "[] (98)"}, {"y": 14100.0, "x": 340, "group": 1, "id": "t99", "name": "[] (99)"}, {"y": 12300.0, "x": 510, "group": 1, "id": "t100", "name": "[] (100)"}, {"y": 9700.0, "x": 510, "group": 1, "id": "t101", "name": "[] (101)"}, {"y": 12100.0, "x": 170, "group": 1, "id": "t102", "name": "[] (102)"}, {"y": 12300.0, "x": 170, "group": 1, "id": "t103", "name": "[] (103)"}, {"y": 12900.0, "x": 170, "group": 1, "id": "t104", "name": "[] (104)"}, {"y": 13100.0, "x": 170, "group": 1, "id": "t105", "name": "[] (105)"}, {"y": 13900.0, "x": 170, "group": 1, "id": "t106", "name": "[] (106)"}, {"y": 14100.0, "x": 170, "group": 1, "id": "t107", "name": "[] (107)"}, {"y": 11900.0, "x": 170, "group": 1, "id": "t108", "name": "[] (108)"}, {"y": 12700.0, "x": 170, "group": 1, "id": "t109", "name": "[] (109)"}, {"y": 13700.0, "x": 170, "group": 1, "id": "t110", "name": "[] (110)"}, {"y": 14500.0, "x": 340, "group": 1, "id": "t111", "name": "[] (111)"}, {"y": 15300.0, "x": 170, "group": 1, "id": "t112", "name": "[] (112)"}, {"y": 15100.0, "x": 340, "group": 1, "id": "t113", "name": "[] (113)"}, {"y": 15100.0, "x": 510, "group": 1, "id": "t114", "name": "[] (114)"}, {"y": 12500.0, "x": 510, "group": 1, "id": "t115", "name": "[] (115)"}, {"y": 14900.0, "x": 170, "group": 1, "id": "t116", "name": "[] (116)"}, {"y": 15100.0, "x": 170, "group": 1, "id": "t117", "name": "[] (117)"}, {"y": 14700.0, "x": 170, "group": 1, "id": "t118", "name": "[] (118)"}, {"y": 15900.0, "x": 170, "group": 1, "id": "t119", "name": "[] (119)"}, {"y": 15700.0, "x": 340, "group": 1, "id": "t120", "name": "[] (120)"}, {"y": 15700.0, "x": 510, "group": 1, "id": "t121", "name": "[] (121)"}, {"y": 15300.0, "x": 340, "group": 1, "id": "t122", "name": "[] (122)"}, {"y": 15300.0, "x": 510, "group": 1, "id": "t123", "name": "[] (123)"}, {"y": 15500.0, "x": 170, "group": 1, "id": "t124", "name": "[] (124)"}, {"y": 15900.0, "x": 340, "group": 1, "id": "t125", "name": "[] (125)"}, {"y": 15700.0, "x": 170, "group": 1, "id": "t126", "name": "[] (126)"}, {"y": 700.0, "x": 170, "group": 1, "id": "t127", "name": "[] (127)"}, {"y": 500.0, "x": 340, "group": 1, "id": "t128", "name": "[] (128)"}, {"y": 500.0, "x": 510, "group": 1, "id": "t129", "name": "[] (129)"}, {"y": 500.0, "x": 170, "group": 1, "id": "t130", "name": "[] (130)"}, {"y": 300.0, "x": 340, "group": 1, "id": "t131", "name": "[] (131)"}, {"y": 100.0, "x": 340, "group": 1, "id": "t132", "name": "[] (132)"}, {"y": 300.0, "x": 170, "group": 1, "id": "t133", "name": "[] (133)"}, {"y": 7300.0, "x": 340, "group": 1, "id": "t134", "name": "[] (134)"}, {"y": 4500.0, "x": 340, "group": 1, "id": "t135", "name": "[] (135)"}, {"y": 13900.0, "x": 340, "group": 1, "id": "t136", "name": "[] (136)"}, {"y": 5500.0, "x": 340, "group": 1, "id": "t137", "name": "[] (137)"}, {"y": 10100.0, "x": 340, "group": 1, "id": "t138", "name": "[] (138)"}, {"y": 6300.0, "x": 340, "group": 1, "id": "t139", "name": "[] (139)"}, {"y": 8300.0, "x": 340, "group": 1, "id": "t140", "name": "[] (140)"}, {"y": 2700.0, "x": 340, "group": 1, "id": "t141", "name": "[] (141)"}, {"y": 1700.0, "x": 340, "group": 1, "id": "t142", "name": "[] (142)"}, {"y": 12100.0, "x": 340, "group": 1, "id": "t143", "name": "[] (143)"}, {"y": 9300.0, "x": 340, "group": 1, "id": "t144", "name": "[] (144)"}, {"y": 3500.0, "x": 340, "group": 1, "id": "t145", "name": "[] (145)"}, {"y": 11100.0, "x": 340, "group": 1, "id": "t146", "name": "[] (146)"}, {"y": 12900.0, "x": 340, "group": 1, "id": "t147", "name": "[] (147)"}, {"y": 14900.0, "x": 340, "group": 1, "id": "t148", "name": "[] (148)"}], "edges": [{"source": "t1", "target": "o0"}, {"source": "t132", "target": "o0"}, {"source": "t27", "target": "o0"}, {"source": "o0", "target": "t133"}, {"source": "t133", "target": "o1"}, {"source": "t131", "target": "o1"}, {"source": "t27", "target": "o1"}, {"source": "o1", "target": "t130"}, {"source": "t130", "target": "o2"}, {"source": "t128", "target": "o2"}, {"source": "t129", "target": "o2"}, {"source": "o2", "target": "t127"}, {"source": "t127", "target": "o3"}, {"source": "t3", "target": "o3"}, {"source": "t78", "target": "o3"}, {"source": "o3", "target": "t10"}, {"source": "t10", "target": "o4"}, {"source": "t14", "target": "o4"}, {"source": "t78", "target": "o4"}, {"source": "o4", "target": "t11"}, {"source": "t11", "target": "o5"}, {"source": "t5", "target": "o5"}, {"source": "t6", "target": "o5"}, {"source": "o5", "target": "t4"}, {"source": "t4", "target": "o6"}, {"source": "t7", "target": "o6"}, {"source": "t37", "target": "o6"}, {"source": "o6", "target": "t12"}, {"source": "t15", "target": "o7"}, {"source": "o7", "target": "t142"}, {"source": "t12", "target": "o8"}, {"source": "t142", "target": "o8"}, {"source": "t37", "target": "o8"}, {"source": "o8", "target": "t13"}, {"source": "t13", "target": "o9"}, {"source": "t9", "target": "o9"}, {"source": "t6", "target": "o9"}, {"source": "o9", "target": "t8"}, {"source": "t8", "target": "o10"}, {"source": "t4", "target": "o10"}, {"source": "o10", "target": "t2"}, {"source": "t2", "target": "o11"}, {"source": "t18", "target": "o11"}, {"source": "t37", "target": "o11"}, {"source": "o11", "target": "t28"}, {"source": "t34", "target": "o12"}, {"source": "o12", "target": "t141"}, {"source": "t28", "target": "o13"}, {"source": "t141", "target": "o13"}, {"source": "t37", "target": "o13"}, {"source": "o13", "target": "t29"}, {"source": "t29", "target": "o14"}, {"source": "t20", "target": "o14"}, {"source": "t27", "target": "o14"}, {"source": "o14", "target": "t19"}, {"source": "t19", "target": "o15"}, {"source": "t21", "target": "o15"}, {"source": "t66", "target": "o15"}, {"source": "o15", "target": "t30"}, {"source": "t35", "target": "o16"}, {"source": "o16", "target": "t145"}, {"source": "t30", "target": "o17"}, {"source": "t145", "target": "o17"}, {"source": "t66", "target": "o17"}, {"source": "o17", "target": "t31"}, {"source": "t31", "target": "o18"}, {"source": "t23", "target": "o18"}, {"source": "t27", "target": "o18"}, {"source": "o18", "target": "t22"}, {"source": "t22", "target": "o19"}, {"source": "t19", "target": "o19"}, {"source": "o19", "target": "t17"}, {"source": "t17", "target": "o20"}, {"source": "t24", "target": "o20"}, {"source": "t66", "target": "o20"}, {"source": "o20", "target": "t32"}, {"source": "t36", "target": "o21"}, {"source": "o21", "target": "t135"}, {"source": "t32", "target": "o22"}, {"source": "t135", "target": "o22"}, {"source": "t66", "target": "o22"}, {"source": "o22", "target": "t33"}, {"source": "t33", "target": "o23"}, {"source": "t26", "target": "o23"}, {"source": "t27", "target": "o23"}, {"source": "o23", "target": "t25"}, {"source": "t25", "target": "o24"}, {"source": "t17", "target": "o24"}, {"source": "o24", "target": "t16"}, {"source": "t16", "target": "o25"}, {"source": "t41", "target": "o25"}, {"source": "t66", "target": "o25"}, {"source": "o25", "target": "t54"}, {"source": "t62", "target": "o26"}, {"source": "o26", "target": "t137"}, {"source": "t54", "target": "o27"}, {"source": "t137", "target": "o27"}, {"source": "t66", "target": "o27"}, {"source": "o27", "target": "t55"}, {"source": "t55", "target": "o28"}, {"source": "t43", "target": "o28"}, {"source": "t53", "target": "o28"}, {"source": "o28", "target": "t42"}, {"source": "t42", "target": "o29"}, {"source": "t44", "target": "o29"}, {"source": "t88", "target": "o29"}, {"source": "o29", "target": "t56"}, {"source": "t63", "target": "o30"}, {"source": "o30", "target": "t139"}, {"source": "t56", "target": "o31"}, {"source": "t139", "target": "o31"}, {"source": "t88", "target": "o31"}, {"source": "o31", "target": "t57"}, {"source": "t57", "target": "o32"}, {"source": "t46", "target": "o32"}, {"source": "t53", "target": "o32"}, {"source": "o32", "target": "t45"}, {"source": "t45", "target": "o33"}, {"source": "t42", "target": "o33"}, {"source": "o33", "target": "t40"}, {"source": "t40", "target": "o34"}, {"source": "t47", "target": "o34"}, {"source": "t88", "target": "o34"}, {"source": "o34", "target": "t58"}, {"source": "t64", "target": "o35"}, {"source": "o35", "target": "t134"}, {"source": "t58", "target": "o36"}, {"source": "t134", "target": "o36"}, {"source": "t88", "target": "o36"}, {"source": "o36", "target": "t59"}, {"source": "t59", "target": "o37"}, {"source": "t49", "target": "o37"}, {"source": "t53", "target": "o37"}, {"source": "o37", "target": "t48"}, {"source": "t48", "target": "o38"}, {"source": "t40", "target": "o38"}, {"source": "o38", "target": "t38"}, {"source": "t38", "target": "o39"}, {"source": "t50", "target": "o39"}, {"source": "t88", "target": "o39"}, {"source": "o39", "target": "t60"}, {"source": "t65", "target": "o40"}, {"source": "o40", "target": "t140"}, {"source": "t60", "target": "o41"}, {"source": "t140", "target": "o41"}, {"source": "t88", "target": "o41"}, {"source": "o41", "target": "t61"}, {"source": "t61", "target": "o42"}, {"source": "t52", "target": "o42"}, {"source": "t53", "target": "o42"}, {"source": "o42", "target": "t51"}, {"source": "t51", "target": "o43"}, {"source": "t38", "target": "o43"}, {"source": "o43", "target": "t39"}, {"source": "t39", "target": "o44"}, {"source": "t69", "target": "o44"}, {"source": "t88", "target": "o44"}, {"source": "o44", "target": "t79"}, {"source": "t85", "target": "o45"}, {"source": "o45", "target": "t144"}, {"source": "t79", "target": "o46"}, {"source": "t144", "target": "o46"}, {"source": "t88", "target": "o46"}, {"source": "o46", "target": "t80"}, {"source": "t80", "target": "o47"}, {"source": "t71", "target": "o47"}, {"source": "t78", "target": "o47"}, {"source": "o47", "target": "t70"}, {"source": "t70", "target": "o48"}, {"source": "t72", "target": "o48"}, {"source": "t101", "target": "o48"}, {"source": "o48", "target": "t81"}, {"source": "t86", "target": "o49"}, {"source": "o49", "target": "t138"}, {"source": "t81", "target": "o50"}, {"source": "t138", "target": "o50"}, {"source": "t101", "target": "o50"}, {"source": "o50", "target": "t82"}, {"source": "t82", "target": "o51"}, {"source": "t74", "target": "o51"}, {"source": "t78", "target": "o51"}, {"source": "o51", "target": "t73"}, {"source": "t73", "target": "o52"}, {"source": "t70", "target": "o52"}, {"source": "o52", "target": "t68"}, {"source": "t68", "target": "o53"}, {"source": "t75", "target": "o53"}, {"source": "t101", "target": "o53"}, {"source": "o53", "target": "t83"}, {"source": "t87", "target": "o54"}, {"source": "o54", "target": "t146"}, {"source": "t83", "target": "o55"}, {"source": "t146", "target": "o55"}, {"source": "t101", "target": "o55"}, {"source": "o55", "target": "t84"}, {"source": "t84", "target": "o56"}, {"source": "t77", "target": "o56"}, {"source": "t78", "target": "o56"}, {"source": "o56", "target": "t76"}, {"source": "t76", "target": "o57"}, {"source": "t68", "target": "o57"}, {"source": "o57", "target": "t67"}, {"source": "t67", "target": "o58"}, {"source": "t91", "target": "o58"}, {"source": "t101", "target": "o58"}, {"source": "o58", "target": "t102"}, {"source": "t108", "target": "o59"}, {"source": "o59", "target": "t143"}, {"source": "t102", "target": "o60"}, {"source": "t143", "target": "o60"}, {"source": "t101", "target": "o60"}, {"source": "o60", "target": "t103"}, {"source": "t103", "target": "o61"}, {"source": "t93", "target": "o61"}, {"source": "t100", "target": "o61"}, {"source": "o61", "target": "t92"}, {"source": "t92", "target": "o62"}, {"source": "t94", "target": "o62"}, {"source": "t115", "target": "o62"}, {"source": "o62", "target": "t104"}, {"source": "t109", "target": "o63"}, {"source": "o63", "target": "t147"}, {"source": "t104", "target": "o64"}, {"source": "t147", "target": "o64"}, {"source": "t115", "target": "o64"}, {"source": "o64", "target": "t105"}, {"source": "t105", "target": "o65"}, {"source": "t96", "target": "o65"}, {"source": "t100", "target": "o65"}, {"source": "o65", "target": "t95"}, {"source": "t95", "target": "o66"}, {"source": "t92", "target": "o66"}, {"source": "o66", "target": "t90"}, {"source": "t90", "target": "o67"}, {"source": "t97", "target": "o67"}, {"source": "t115", "target": "o67"}, {"source": "o67", "target": "t106"}, {"source": "t110", "target": "o68"}, {"source": "o68", "target": "t136"}, {"source": "t106", "target": "o69"}, {"source": "t136", "target": "o69"}, {"source": "t115", "target": "o69"}, {"source": "o69", "target": "t107"}, {"source": "t107", "target": "o70"}, {"source": "t99", "target": "o70"}, {"source": "t100", "target": "o70"}, {"source": "o70", "target": "t98"}, {"source": "t98", "target": "o71"}, {"source": "t90", "target": "o71"}, {"source": "o71", "target": "t89"}, {"source": "t89", "target": "o72"}, {"source": "t111", "target": "o72"}, {"source": "t115", "target": "o72"}, {"source": "o72", "target": "t116"}, {"source": "t118", "target": "o73"}, {"source": "o73", "target": "t148"}, {"source": "t116", "target": "o74"}, {"source": "t148", "target": "o74"}, {"source": "t115", "target": "o74"}, {"source": "o74", "target": "t117"}, {"source": "t117", "target": "o75"}, {"source": "t113", "target": "o75"}, {"source": "t114", "target": "o75"}, {"source": "o75", "target": "t112"}, {"source": "t112", "target": "o76"}, {"source": "t122", "target": "o76"}, {"source": "t123", "target": "o76"}, {"source": "o76", "target": "t124"}, {"source": "t124", "target": "o77"}, {"source": "o77", "target": "t126"}, {"source": "t126", "target": "o78"}, {"source": "t120", "target": "o78"}, {"source": "t121", "target": "o78"}, {"source": "o78", "target": "t119"}, {"source": "t119", "target": "o79"}, {"source": "t125", "target": "o79"}, {"source": "o79", "target": "t0"}]};
+
+      var svg = d3.select("#subgraph0")
+      var width = svg.attr("width");
+      var height = svg.attr("height");
+      // Make the graph scrollable.
+      svg = svg.call(d3.zoom().on("zoom", function() {
+        svg.attr("transform", d3.event.transform);
+      })).append("g");
+
+
+      var color = d3.scaleOrdinal(d3.schemeDark2);
+
+      var simulation = d3.forceSimulation()
+          .force("link", d3.forceLink().id(function(d) {return d.id;}))
+          .force("charge", d3.forceManyBody())
+          .force("center", d3.forceCenter(0.5 * width, 0.5 * height));
+
+      var edge = svg.append("g").attr("class", "edges").selectAll("line")
+        .data(graph.edges).enter().append("path").attr("stroke","black").attr("fill","none")
+
+      // Make the node group
+      var node = svg.selectAll(".nodes")
+        .data(graph.nodes)
+        .enter().append("g")
+        .attr("x", function(d){return d.x})
+        .attr("y", function(d){return d.y})
+        .attr("transform", function(d) {
+          return "translate( " + d.x + ", " + d.y + ")"
+        })
+        .attr("class", "nodes")
+          .call(d3.drag()
+              .on("start", function(d) {
+                if(!d3.event.active) simulation.alphaTarget(1.0).restart();
+                d.fx = d.x;d.fy = d.y;
+              })
+              .on("drag", function(d) {
+                d.fx = d3.event.x; d.fy = d3.event.y;
+              })
+              .on("end", function(d) {
+                if (!d3.event.active) simulation.alphaTarget(0);
+                d.fx = d.fy = null;
+              }));
+      // Within the group, draw a box for the node position and text
+      // on the side.
+
+      var node_width = 150;
+      var node_height = 30;
+
+      node.append("rect")
+          .attr("r", "5px")
+          .attr("width", node_width)
+          .attr("height", node_height)
+          .attr("rx", function(d) { return d.group == 1 ? 1 : 10; })
+          .attr("stroke", "#000000")
+          .attr("fill", function(d) { return d.group == 1 ? "#dddddd" : "#000000"; })
+      node.append("text")
+          .text(function(d) { return d.name; })
+          .attr("x", 5)
+          .attr("y", 20)
+          .attr("fill", function(d) { return d.group == 1 ? "#000000" : "#eeeeee"; })
+      // Setup force parameters and update position callback
+
+
+      var node = svg.selectAll(".nodes")
+        .data(graph.nodes);
+
+      // Bind the links
+      var name_to_g = {}
+      node.each(function(data, index, nodes) {
+        console.log(data.id)
+        name_to_g[data.id] = this;
+      });
+
+      function proc(w, t) {
+        return parseInt(w.getAttribute(t));
+      }
+      edge.attr("d", function(d) {
+        function lerp(t, a, b) {
+          return (1.0-t) * a + t * b;
+        }
+        var x1 = proc(name_to_g[d.source],"x") + node_width /2;
+        var y1 = proc(name_to_g[d.source],"y") + node_height;
+        var x2 = proc(name_to_g[d.target],"x") + node_width /2;
+        var y2 = proc(name_to_g[d.target],"y");
+        var s = "M " + x1 + " " + y1
+            + " C " + x1 + " " + lerp(.5, y1, y2)
+            + " " + x2 + " " + lerp(.5, y1, y2)
+            + " " + x2  + " " + y2
+      return s;
+    });
+
+  }
+  buildGraph()
+</script>
+</div><h2>Buffers</h2>
+<table><tr>
+<tr>
+<th>index</th><th>data</th></tr>
+<tr>
+<td>0</td><td>--</td>
+</tr>
+<tr>
+<td>1</td><td>8 bytes</td>
+</tr>
+<tr>
+<td>2</td><td>40 bytes</td>
+</tr>
+<tr>
+<td>3</td><td>12800 bytes</td>
+</tr>
+<tr>
+<td>4</td><td>5120 bytes</td>
+</tr>
+<tr>
+<td>5</td><td>409600 bytes</td>
+</tr>
+<tr>
+<td>6</td><td>1280 bytes</td>
+</tr>
+<tr>
+<td>7</td><td>307200 bytes</td>
+</tr>
+<tr>
+<td>8</td><td>8640 bytes</td>
+</tr>
+<tr>
+<td>9</td><td>3840 bytes</td>
+</tr>
+<tr>
+<td>10</td><td>153600 bytes</td>
+</tr>
+<tr>
+<td>11</td><td>640 bytes</td>
+</tr>
+<tr>
+<td>12</td><td>153600 bytes</td>
+</tr>
+<tr>
+<td>13</td><td>153600 bytes</td>
+</tr>
+<tr>
+<td>14</td><td>8640 bytes</td>
+</tr>
+<tr>
+<td>15</td><td>92160 bytes</td>
+</tr>
+<tr>
+<td>16</td><td>2304 bytes</td>
+</tr>
+<tr>
+<td>17</td><td>55296 bytes</td>
+</tr>
+<tr>
+<td>18</td><td>384 bytes</td>
+</tr>
+<tr>
+<td>19</td><td>55296 bytes</td>
+</tr>
+<tr>
+<td>20</td><td>5184 bytes</td>
+</tr>
+<tr>
+<td>21</td><td>55296 bytes</td>
+</tr>
+<tr>
+<td>22</td><td>55296 bytes</td>
+</tr>
+<tr>
+<td>23</td><td>36864 bytes</td>
+</tr>
+<tr>
+<td>24</td><td>1536 bytes</td>
+</tr>
+<tr>
+<td>25</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>26</td><td>256 bytes</td>
+</tr>
+<tr>
+<td>27</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>28</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>29</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>30</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>31</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>32</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>33</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>34</td><td>12288 bytes</td>
+</tr>
+<tr>
+<td>35</td><td>768 bytes</td>
+</tr>
+<tr>
+<td>36</td><td>6144 bytes</td>
+</tr>
+<tr>
+<td>37</td><td>128 bytes</td>
+</tr>
+<tr>
+<td>38</td><td>6144 bytes</td>
+</tr>
+<tr>
+<td>39</td><td>1728 bytes</td>
+</tr>
+<tr>
+<td>40</td><td>6144 bytes</td>
+</tr>
+<tr>
+<td>41</td><td>6144 bytes</td>
+</tr>
+<tr>
+<td>42</td><td>4608 bytes</td>
+</tr>
+<tr>
+<td>43</td><td>576 bytes</td>
+</tr>
+<tr>
+<td>44</td><td>1296 bytes</td>
+</tr>
+<tr>
+<td>45</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>46</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>47</td><td>1296 bytes</td>
+</tr>
+<tr>
+<td>48</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>49</td><td>96 bytes</td>
+</tr>
+<tr>
+<td>50</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>51</td><td>1536 bytes</td>
+</tr>
+<tr>
+<td>52</td><td>--</td>
+</tr>
+<tr>
+<td>53</td><td>--</td>
+</tr>
+<tr>
+<td>54</td><td>--</td>
+</tr>
+<tr>
+<td>55</td><td>--</td>
+</tr>
+<tr>
+<td>56</td><td>--</td>
+</tr>
+<tr>
+<td>57</td><td>--</td>
+</tr>
+<tr>
+<td>58</td><td>--</td>
+</tr>
+<tr>
+<td>59</td><td>--</td>
+</tr>
+<tr>
+<td>60</td><td>--</td>
+</tr>
+<tr>
+<td>61</td><td>--</td>
+</tr>
+<tr>
+<td>62</td><td>--</td>
+</tr>
+<tr>
+<td>63</td><td>--</td>
+</tr>
+<tr>
+<td>64</td><td>--</td>
+</tr>
+<tr>
+<td>65</td><td>--</td>
+</tr>
+<tr>
+<td>66</td><td>--</td>
+</tr>
+<tr>
+<td>67</td><td>--</td>
+</tr>
+<tr>
+<td>68</td><td>--</td>
+</tr>
+<tr>
+<td>69</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>70</td><td>--</td>
+</tr>
+<tr>
+<td>71</td><td>--</td>
+</tr>
+<tr>
+<td>72</td><td>--</td>
+</tr>
+<tr>
+<td>73</td><td>--</td>
+</tr>
+<tr>
+<td>74</td><td>--</td>
+</tr>
+<tr>
+<td>75</td><td>--</td>
+</tr>
+<tr>
+<td>76</td><td>--</td>
+</tr>
+<tr>
+<td>77</td><td>--</td>
+</tr>
+<tr>
+<td>78</td><td>--</td>
+</tr>
+<tr>
+<td>79</td><td>--</td>
+</tr>
+<tr>
+<td>80</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>81</td><td>--</td>
+</tr>
+<tr>
+<td>82</td><td>--</td>
+</tr>
+<tr>
+<td>83</td><td>5184 bytes</td>
+</tr>
+<tr>
+<td>84</td><td>--</td>
+</tr>
+<tr>
+<td>85</td><td>--</td>
+</tr>
+<tr>
+<td>86</td><td>--</td>
+</tr>
+<tr>
+<td>87</td><td>153600 bytes</td>
+</tr>
+<tr>
+<td>88</td><td>--</td>
+</tr>
+<tr>
+<td>89</td><td>--</td>
+</tr>
+<tr>
+<td>90</td><td>24576 bytes</td>
+</tr>
+<tr>
+<td>91</td><td>--</td>
+</tr>
+<tr>
+<td>92</td><td>55296 bytes</td>
+</tr>
+<tr>
+<td>93</td><td>153600 bytes</td>
+</tr>
+<tr>
+<td>94</td><td>--</td>
+</tr>
+<tr>
+<td>95</td><td>--</td>
+</tr>
+<tr>
+<td>96</td><td>8640 bytes</td>
+</tr>
+<tr>
+<td>97</td><td>--</td>
+</tr>
+<tr>
+<td>98</td><td>--</td>
+</tr>
+<tr>
+<td>99</td><td>--</td>
+</tr>
+<tr>
+<td>100</td><td>--</td>
+</tr>
+<tr>
+<td>101</td><td>1152 bytes</td>
+</tr>
+<tr>
+<td>102</td><td>--</td>
+</tr>
+<tr>
+<td>103</td><td>1728 bytes</td>
+</tr>
+<tr>
+<td>104</td><td>--</td>
+</tr>
+<tr>
+<td>105</td><td>--</td>
+</tr>
+<tr>
+<td>106</td><td>2304 bytes</td>
+</tr>
+<tr>
+<td>107</td><td>--</td>
+</tr>
+<tr>
+<td>108</td><td>--</td>
+</tr>
+<tr>
+<td>109</td><td>--</td>
+</tr>
+<tr>
+<td>110</td><td>--</td>
+</tr>
+<tr>
+<td>111</td><td>--</td>
+</tr>
+<tr>
+<td>112</td><td>--</td>
+</tr>
+<tr>
+<td>113</td><td>3456 bytes</td>
+</tr>
+<tr>
+<td>114</td><td>--</td>
+</tr>
+<tr>
+<td>115</td><td>--</td>
+</tr>
+<tr>
+<td>116</td><td>--</td>
+</tr>
+<tr>
+<td>117</td><td>1728 bytes</td>
+</tr>
+<tr>
+<td>118</td><td>6144 bytes</td>
+</tr>
+<tr>
+<td>119</td><td>5184 bytes</td>
+</tr>
+<tr>
+<td>120</td><td>--</td>
+</tr>
+<tr>
+<td>121</td><td>--</td>
+</tr>
+<tr>
+<td>122</td><td>--</td>
+</tr>
+<tr>
+<td>123</td><td>--</td>
+</tr>
+<tr>
+<td>124</td><td>--</td>
+</tr>
+<tr>
+<td>125</td><td>2048 bytes</td>
+</tr>
+<tr>
+<td>126</td><td>--</td>
+</tr>
+<tr>
+<td>127</td><td>--</td>
+</tr>
+<tr>
+<td>128</td><td>64 bytes</td>
+</tr>
+<tr>
+<td>129</td><td>--</td>
+</tr>
+<tr>
+<td>130</td><td>--</td>
+</tr>
+<tr>
+<td>131</td><td>--</td>
+</tr>
+<tr>
+<td>132</td><td>--</td>
+</tr>
+<tr>
+<td>133</td><td>--</td>
+</tr>
+<tr>
+<td>134</td><td>--</td>
+</tr>
+<tr>
+<td>135</td><td>5 bytes</td>
+</tr>
+</table>
+<h2>Operator Codes</h2>
+<table><tr>
+<tr>
+<th>index</th><th>builtin_code</th><th>custom_code</th><th>version</th></tr>
+<tr>
+<td>0</td><td>ADD</td>
+<td>None</td>
+<td>1</td>
+</tr>
+<tr>
+<td>1</td><td>AVERAGE_POOL_2D</td>
+<td>None</td>
+<td>1</td>
+</tr>
+<tr>
+<td>2</td><td>CONV_2D</td>
+<td>None</td>
+<td>2</td>
+</tr>
+<tr>
+<td>3</td><td>DEPTHWISE_CONV_2D</td>
+<td>None</td>
+<td>1</td>
+</tr>
+<tr>
+<td>4</td><td>RESHAPE</td>
+<td>None</td>
+<td>1</td>
+</tr>
+<tr>
+<td>5</td><td>DEQUANTIZE</td>
+<td>None</td>
+<td>2</td>
+</tr>
+</table>
+</body></html>
