@@ -2,6 +2,8 @@
 Copyright (c) 2020. All Rights Reserved.
 """
 import tensorflow as tf
+import six
+from six.moves import zip
 
 mu = 0
 sigma = 1e-2
@@ -1118,9 +1120,24 @@ def main(path):
                   metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
     model.fit(x_train, y_train, epochs=1)
     model.summary()
-    # print("logits: ", logits.get_shape())
-    # print("logits: ", logits.numpy())
+    # serialize your model to a SavedModel object
+    # It includes the entire graph, all variables and weights
+    model.save('model', save_format='tf')
 
+    # load your saved model
+    model = tf.keras.models.load_model('model')
+    # create a TF Lite converter 
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+    # performs model quantization to reduce the size of the model and improve latency
+    converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
+    input_arrays = converter.get_input_arrays()
+    converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
+    
+    tflite_model = converter.convert()
+
+    with open("model.tflite", "wb") as fp:
+        fp.write(six.ensure_binary(tflite_model))
 
 if __name__ == "__main__":
     import argparse
