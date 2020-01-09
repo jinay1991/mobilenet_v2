@@ -1,9 +1,11 @@
 """
 Copyright (c) 2020. All Rights Reserved.
 """
-import tensorflow as tf
+import os
+from datetime import datetime
+
 import six
-from six.moves import zip
+import tensorflow as tf
 
 mu = 0
 sigma = 1e-2
@@ -532,17 +534,20 @@ def load_image(path):
 class InputLayer(tf.keras.layers.Layer):
     def __init__(self):
         super(InputLayer, self).__init__()
-    
+
     def call(self, inputs):
         with tf.compat.v1.variable_scope('P0'):
             p0 = tf.image.resize(inputs, (224, 224))
+            p0 = tf.cast(p0, tf.float32) / 255.0
+            p0 -= 1
             print("P0: Input {} Output {}".format(inputs.get_shape(), p0.get_shape()))
         return p0
 
-    def compute_output_shape(self, input_shape):
-        shape = tf.TensorShape(input_shape).as_list()
-        shape[-1] = self.num_classes
-        return tf.TensorShape(shape)
+    # def compute_output_shape(self, input_shape):
+    #     shape = tf.TensorShape(input_shape).as_list()
+    #     shape[-1] = self.num_classes
+    #     return tf.TensorShape(shape)
+
 
 class Conv2D(tf.keras.layers.Layer):
     def __init__(self, in_ch, out_ch, ksize, stride, activation=True):
@@ -551,7 +556,7 @@ class Conv2D(tf.keras.layers.Layer):
         self.bias = tf.Variable(tf.zeros(shape=(out_ch)))
         self.stride = stride
         self.activation = activation
-    
+
     def call(self, inputs):
         with tf.compat.v1.variable_scope("C0"):
             conv = tf.nn.conv2d(inputs, self.weight, strides=(1, self.stride, self.stride, 1), padding="SAME")
@@ -574,7 +579,7 @@ class Bottleneck(tf.keras.layers.Layer):
         self.bias3 = tf.Variable(tf.zeros(shape=(out_ch)))
         self.stride = stride
         self.expand = expand
-    
+
     def call(self, inputs):
         with tf.compat.v1.variable_scope("B1"):
             if self.expand:
@@ -598,9 +603,9 @@ class Bottleneck(tf.keras.layers.Layer):
             print("B1/3: Input {} Output {}".format(conv2.get_shape(), conv3.get_shape()))
 
         return conv3
-        
-        
-       
+
+
+
 class MobileNetModel(tf.keras.Model):
     def __init__(self):
         super(MobileNetModel, self).__init__()
@@ -711,7 +716,7 @@ class MobileNetModel(tf.keras.Model):
         self.bias52 = tf.Variable(tf.zeros(shape=(1280)))
         self.weight54 = tf.Variable(tf.random.truncated_normal(shape=(1, 1, 1280, 10), mean=mu, stddev=sigma))
         self.bias54 = tf.Variable(tf.zeros(shape=(10)))
-        
+
     def call(self, inputs):
         # Input ?x?x3 Output 224x224x3
         tensor = self.input_layer(inputs)
@@ -719,11 +724,11 @@ class MobileNetModel(tf.keras.Model):
         # [conv2d 3x3] Input 224x224x3 Output 112x112x32
         # t = ?, c = 32, n = 1, s = 2
         tensor = self.conv2d_3x3(tensor)
-        
+
         # [bottleneck (1)] Input 112x112x32 Output 112x112x16
         # t = 1, c = 16, n = 1, s = 1
         conv3 = self.bottleneck_1(tensor)
-        
+
         # [bottleneck (2)] Input 112x112x16 Output 56x56x24
         # t = 6, c = 24, n = 2, s = 2
         with tf.compat.v1.variable_scope("B2"):
@@ -1100,7 +1105,7 @@ class MobileNetModel(tf.keras.Model):
         return squeeze55
 
 
-def main(path):
+def train(path):
     """ Main Function """
     (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
     dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
@@ -1111,39 +1116,62 @@ def main(path):
     x_train = x_train[:100]
     y_train = y_train[:100]
 
-    # MobileNet(load_image(path)) # init weights
-
     model = MobileNetModel()
 
     model.compile(optimizer=tf.keras.optimizers.Adadelta(),
                   loss=tf.keras.losses.SparseCategoricalCrossentropy(),
                   metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
-    model.fit(x_train, y_train, epochs=1)
+
+    # Define the Keras TensorBoard callback.
+    logdir="logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+
+    model.fit(x_train, y_train, epochs=1, validation_data=(x_val, y_val), callbacks=[tensorboard_callback])
+
     model.summary()
     # serialize your model to a SavedModel object
     # It includes the entire graph, all variables and weights
-    model.save('model', save_format='tf')
+    model.save(path, save_format='tf')
 
-    # load your saved model
-    model = tf.keras.models.load_model('model')
-    # create a TF Lite converter 
+
+    # # load your saved model
+    # model = tf.keras.models.load_model('model')
+    # # create a TF Lite converter
+    # converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+    # # performs model quantization to reduce the size of the model and improve latency
+    # converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
+    # input_arrays = converter.get_input_arrays()
+    # converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
+
+    # tflite_model = converter.convert()
+
+    # with open("model.tflite", "wb") as fp:
+    #     fp.write(six.ensure_binary(tflite_model))
+
+def convert(path):
+    model = tf.keras.models.load_model(path)
+
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
+    converter.optimizations = [tf.lite.Optimize.DEFAULT]
+    converter.experimental_new_converter = True
 
-    # performs model quantization to reduce the size of the model and improve latency
-    converter.inference_type = tf.lite.constants.QUANTIZED_UINT8
-    input_arrays = converter.get_input_arrays()
-    converter.quantized_input_stats = {input_arrays[0] : (0., 1.)}  # mean, std_dev
-    
     tflite_model = converter.convert()
 
-    with open("model.tflite", "wb") as fp:
+    with open(os.path.join(path, "saved_model.tflite"), "wb") as fp:
         fp.write(six.ensure_binary(tflite_model))
+
+
 
 if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("--image", help="Image Path", default="./grace_hopper.jpg")
+    parser.add_argument("--train", action="store_true", help="Train Model")
+    parser.add_argument("--save_model_to", help="Save Model to ", default="model")
     args = parser.parse_args()
 
-    main(args.image)
+    if args.train:
+        train(args.save_model_to)
+    else:
+        convert(args.save_model_to)
