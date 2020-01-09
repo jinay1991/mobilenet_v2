@@ -138,12 +138,12 @@ class MobileNetV2(tf.keras.Model):
                 conv2 = tf.nn.depthwise_conv2d(conv1, self.weight2, strides=(1, 1, 1, 1), padding="SAME")
                 conv2 = tf.add(conv2, self.bias2)
                 conv2 = tf.nn.relu(conv2)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv1.get_shape(), conv2.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv1.get_shape(), conv2.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv3 = tf.nn.conv2d(conv2, self.weight3, strides=(1, 1, 1, 1), padding="SAME")
                 conv3 = tf.add(conv3, self.bias3)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv2.get_shape(), conv3.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv2.get_shape(), conv3.get_shape()))
 
         # [bottleneck (2)] Input 112x112x16 Output 56x56x24
         # t = 6, c = 24, n = 2, s = 2
@@ -153,40 +153,40 @@ class MobileNetV2(tf.keras.Model):
                 conv4 = tf.nn.conv2d(conv3, self.weight4, strides=(1, 1, 1, 1), padding="SAME")
                 conv4 = tf.add(conv4, self.bias4)
                 conv4 = tf.nn.relu(conv4)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv3.get_shape(), conv4.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv3.get_shape(), conv4.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv5 = tf.nn.depthwise_conv2d(conv4, self.weight5, strides=(1, 2, 2, 1), padding="SAME")
                 conv5 = tf.add(conv5, self.bias5)
                 conv5 = tf.nn.relu(conv5)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv4.get_shape(), conv5.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv4.get_shape(), conv5.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv6 = tf.nn.conv2d(conv5, self.weight6, strides=(1, 1, 1, 1), padding="SAME")
                 conv6 = tf.add(conv6, self.bias6)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv5.get_shape(), conv6.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv5.get_shape(), conv6.get_shape()))
 
             # ------ n = 2 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv7 = tf.nn.conv2d(conv6, self.weight7, strides=(1, 1, 1, 1), padding="SAME")
                 conv7 = tf.add(conv7, self.bias7)
                 conv7 = tf.nn.relu(conv7)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv6.get_shape(), conv7.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv6.get_shape(), conv7.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv8 = tf.nn.depthwise_conv2d(conv7, self.weight8, strides=(1, 1, 1, 1), padding="SAME")
                 conv8 = tf.add(conv8, self.bias8)
                 conv8 = tf.nn.relu(conv8)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv7.get_shape(), conv8.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv7.get_shape(), conv8.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv9 = tf.nn.conv2d(conv8, self.weight9, strides=(1, 1, 1, 1), padding="SAME")
                 conv9 = tf.add(conv9, self.bias9)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv8.get_shape(), conv9.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv8.get_shape(), conv9.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv9 = tf.add(conv9, conv6)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv9.get_shape(), conv9.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv9.get_shape(), conv9.get_shape()))
 
         # [bottleneck (3)] Input 56x56x24 Output 28x28x32
         # t = 6, c = 32, n = 3, s = 2
@@ -196,62 +196,62 @@ class MobileNetV2(tf.keras.Model):
                 conv10 = tf.nn.conv2d(conv9, self.weight10, strides=(1, 1, 1, 1), padding="SAME")
                 conv10 = tf.add(conv10, self.bias10)
                 conv10 = tf.nn.relu(conv10)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv9.get_shape(), conv10.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv9.get_shape(), conv10.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv11 = tf.nn.depthwise_conv2d(conv10, self.weight11, strides=(1, 2, 2, 1), padding="SAME")
                 conv11 = tf.add(conv11, self.bias11)
                 conv11 = tf.nn.relu(conv11)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv10.get_shape(), conv11.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv10.get_shape(), conv11.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv12 = tf.nn.conv2d(conv11, self.weight12, strides=(1, 1, 1, 1), padding="SAME")
                 conv12 = tf.add(conv12, self.bias12)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv11.get_shape(), conv12.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv11.get_shape(), conv12.get_shape()))
 
             # ------ n = 2 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv13 = tf.nn.conv2d(conv12, self.weight13, strides=(1, 1, 1, 1), padding="SAME")
                 conv13 = tf.add(conv13, self.bias13)
                 conv13 = tf.nn.relu(conv13)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv12.get_shape(), conv13.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv12.get_shape(), conv13.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv14 = tf.nn.depthwise_conv2d(conv13, self.weight14, strides=(1, 1, 1, 1), padding="SAME")
                 conv14 = tf.add(conv14, self.bias14)
                 conv14 = tf.nn.relu(conv14)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv13.get_shape(), conv14.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv13.get_shape(), conv14.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv15 = tf.nn.conv2d(conv14, self.weight15, strides=(1, 1, 1, 1), padding="SAME")
                 conv15 = tf.add(conv15, self.bias15)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv14.get_shape(), conv15.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv14.get_shape(), conv15.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv15 = tf.add(conv15, conv12)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv15.get_shape(), conv15.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv15.get_shape(), conv15.get_shape()))
 
             # ------ n = 3 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv16 = tf.nn.conv2d(conv15, self.weight16, strides=(1, 1, 1, 1), padding="SAME")
                 conv16 = tf.add(conv16, self.bias16)
                 conv16 = tf.nn.relu(conv16)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv15.get_shape(), conv16.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv15.get_shape(), conv16.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv17 = tf.nn.depthwise_conv2d(conv16, self.weight17, strides=(1, 1, 1, 1), padding="SAME")
                 conv17 = tf.add(conv17, self.bias17)
                 conv17 = tf.nn.relu(conv17)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv16.get_shape(), conv17.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv16.get_shape(), conv17.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv18 = tf.nn.conv2d(conv17, self.weight18, strides=(1, 1, 1, 1), padding="SAME")
                 conv18 = tf.add(conv18, self.bias18)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv17.get_shape(), conv18.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv17.get_shape(), conv18.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv18 = tf.add(conv18, conv15)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv18.get_shape(), conv18.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv18.get_shape(), conv18.get_shape()))
 
         # [bottleneck (4)] Input 28x28x32 Output 14x14x64
         # t = 6, c = 64, n = 4, s = 2
@@ -261,84 +261,84 @@ class MobileNetV2(tf.keras.Model):
                 conv19 = tf.nn.conv2d(conv18, self.weight19, strides=(1, 1, 1, 1), padding="SAME")
                 conv19 = tf.add(conv19, self.bias19)
                 conv19 = tf.nn.relu(conv19)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv18.get_shape(), conv19.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv18.get_shape(), conv19.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv20 = tf.nn.depthwise_conv2d(conv19, self.weight20, strides=(1, 2, 2, 1), padding="SAME")
                 conv20 = tf.add(conv20, self.bias20)
                 conv20 = tf.nn.relu(conv20)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv19.get_shape(), conv20.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv19.get_shape(), conv20.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv21 = tf.nn.conv2d(conv20, self.weight21, strides=(1, 1, 1, 1), padding="SAME")
                 conv21 = tf.add(conv21, self.bias21)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv20.get_shape(), conv21.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv20.get_shape(), conv21.get_shape()))
 
             # ------ n = 2 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv22 = tf.nn.conv2d(conv21, self.weight22, strides=(1, 1, 1, 1), padding="SAME")
                 conv22 = tf.add(conv22, self.bias22)
                 conv22 = tf.nn.relu(conv22)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv21.get_shape(), conv22.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv21.get_shape(), conv22.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv23 = tf.nn.depthwise_conv2d(conv22, self.weight23, strides=(1, 1, 1, 1), padding="SAME")
                 conv23 = tf.add(conv23, self.bias23)
                 conv23 = tf.nn.relu(conv23)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv22.get_shape(), conv23.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv22.get_shape(), conv23.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv24 = tf.nn.conv2d(conv23, self.weight24, strides=(1, 1, 1, 1), padding="SAME")
                 conv24 = tf.add(conv24, self.bias24)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv23.get_shape(), conv24.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv23.get_shape(), conv24.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv24 = tf.add(conv24, conv21)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv24.get_shape(), conv24.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv24.get_shape(), conv24.get_shape()))
 
             # ------ n = 3 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv25 = tf.nn.conv2d(conv24, self.weight25, strides=(1, 1, 1, 1), padding="SAME")
                 conv25 = tf.add(conv25, self.bias25)
                 conv25 = tf.nn.relu(conv25)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv24.get_shape(), conv25.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv24.get_shape(), conv25.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv26 = tf.nn.depthwise_conv2d(conv25, self.weight26, strides=(1, 1, 1, 1), padding="SAME")
                 conv26 = tf.add(conv26, self.bias26)
                 conv26 = tf.nn.relu(conv26)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv25.get_shape(), conv26.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv25.get_shape(), conv26.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv27 = tf.nn.conv2d(conv26, self.weight27, strides=(1, 1, 1, 1), padding="SAME")
                 conv27 = tf.add(conv27, self.bias27)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv26.get_shape(), conv27.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv26.get_shape(), conv27.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv27 = tf.add(conv27, conv24)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv24.get_shape(), conv24.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv24.get_shape(), conv24.get_shape()))
 
             # ------ n = 4 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv28 = tf.nn.conv2d(conv27, self.weight28, strides=(1, 1, 1, 1), padding="SAME")
                 conv28 = tf.add(conv28, self.bias28)
                 conv28 = tf.nn.relu(conv28)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv27.get_shape(), conv28.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv27.get_shape(), conv28.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv29 = tf.nn.depthwise_conv2d(conv28, self.weight29, strides=(1, 1, 1, 1), padding="SAME")
                 conv29 = tf.add(conv29, self.bias29)
                 conv29 = tf.nn.relu(conv29)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv28.get_shape(), conv29.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv28.get_shape(), conv29.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv30 = tf.nn.conv2d(conv29, self.weight30, strides=(1, 1, 1, 1), padding="SAME")
                 conv30 = tf.add(conv30, self.bias30)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv29.get_shape(), conv30.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv29.get_shape(), conv30.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv30 = tf.add(conv30, conv27)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv30.get_shape(), conv30.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv30.get_shape(), conv30.get_shape()))
 
         # [bottleneck (5)] Input 14x14x64 Output 14x14x96
         # t = 6, c = 96, n = 3, s = 1
@@ -348,62 +348,62 @@ class MobileNetV2(tf.keras.Model):
                 conv31 = tf.nn.conv2d(conv30, self.weight31, strides=(1, 1, 1, 1), padding="SAME")
                 conv31 = tf.add(conv31, self.bias31)
                 conv31 = tf.nn.relu(conv31)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv30.get_shape(), conv31.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv30.get_shape(), conv31.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv32 = tf.nn.depthwise_conv2d(conv31, self.weight32, strides=(1, 1, 1, 1), padding="SAME")
                 conv32 = tf.add(conv32, self.bias32)
                 conv32 = tf.nn.relu(conv32)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv31.get_shape(), conv32.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv31.get_shape(), conv32.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv33 = tf.nn.conv2d(conv32, self.weight33, strides=(1, 1, 1, 1), padding="SAME")
                 conv33 = tf.add(conv33, self.bias33)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv32.get_shape(), conv33.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv32.get_shape(), conv33.get_shape()))
 
             # ------ n = 2 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv34 = tf.nn.conv2d(conv33, self.weight34, strides=(1, 1, 1, 1), padding="SAME")
                 conv34 = tf.add(conv34, self.bias34)
                 conv34 = tf.nn.relu(conv34)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv33.get_shape(), conv34.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv33.get_shape(), conv34.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv35 = tf.nn.depthwise_conv2d(conv34, self.weight35, strides=(1, 1, 1, 1), padding="SAME")
                 conv35 = tf.add(conv35, self.bias35)
                 conv35 = tf.nn.relu(conv35)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv34.get_shape(), conv35.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv34.get_shape(), conv35.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv36 = tf.nn.conv2d(conv35, self.weight36, strides=(1, 1, 1, 1), padding="SAME")
                 conv36 = tf.add(conv36, self.bias36)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv35.get_shape(), conv36.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv35.get_shape(), conv36.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv36 = tf.add(conv36, conv33)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv36.get_shape(), conv36.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv36.get_shape(), conv36.get_shape()))
 
             # ------ n = 3 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv37 = tf.nn.conv2d(conv36, self.weight37, strides=(1, 1, 1, 1), padding="SAME")
                 conv37 = tf.add(conv37, self.bias37)
                 conv37 = tf.nn.relu(conv37)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv36.get_shape(), conv37.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv36.get_shape(), conv37.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv38 = tf.nn.depthwise_conv2d(conv37, self.weight38, strides=(1, 1, 1, 1), padding="SAME")
                 conv38 = tf.add(conv38, self.bias38)
                 conv38 = tf.nn.relu(conv38)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv37.get_shape(), conv38.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv37.get_shape(), conv38.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv39 = tf.nn.conv2d(conv38, self.weight39, strides=(1, 1, 1, 1), padding="SAME")
                 conv39 = tf.add(conv39, self.bias39)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv38.get_shape(), conv39.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv38.get_shape(), conv39.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv39 = tf.add(conv39, conv36)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv39.get_shape(), conv39.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv39.get_shape(), conv39.get_shape()))
 
         # [bottleneck (6)] Input 14x14x96 Output 7x7x160
         # t = 6, c = 160, n = 3, s = 2
@@ -413,62 +413,62 @@ class MobileNetV2(tf.keras.Model):
                 conv40 = tf.nn.conv2d(conv39, self.weight40, strides=(1, 1, 1, 1), padding="SAME")
                 conv40 = tf.add(conv40, self.bias40)
                 conv40 = tf.nn.relu(conv40)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv39.get_shape(), conv40.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv39.get_shape(), conv40.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv41 = tf.nn.depthwise_conv2d(conv40, self.weight41, strides=(1, 2, 2, 1), padding="SAME")
                 conv41 = tf.add(conv41, self.bias41)
                 conv41 = tf.nn.relu(conv41)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv40.get_shape(), conv41.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv40.get_shape(), conv41.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv42 = tf.nn.conv2d(conv41, self.weight42, strides=(1, 1, 1, 1), padding="SAME")
                 conv42 = tf.add(conv42, self.bias42)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv41.get_shape(), conv42.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv41.get_shape(), conv42.get_shape()))
 
             # ------ n = 2 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv43 = tf.nn.conv2d(conv42, self.weight43, strides=(1, 1, 1, 1), padding="SAME")
                 conv43 = tf.add(conv43, self.bias43)
                 conv43 = tf.nn.relu(conv43)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv42.get_shape(), conv43.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv42.get_shape(), conv43.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv44 = tf.nn.depthwise_conv2d(conv43, self.weight44, strides=(1, 1, 1, 1), padding="SAME")
                 conv44 = tf.add(conv44, self.bias44)
                 conv44 = tf.nn.relu(conv44)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv43.get_shape(), conv44.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv43.get_shape(), conv44.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv45 = tf.nn.conv2d(conv44, self.weight45, strides=(1, 1, 1, 1), padding="SAME")
                 conv45 = tf.add(conv45, self.bias45)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv44.get_shape(), conv45.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv44.get_shape(), conv45.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv45 = tf.add(conv45, conv42)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv45.get_shape(), conv45.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv45.get_shape(), conv45.get_shape()))
 
             # ------ n = 3 ------
             with tf.compat.v1.variable_scope("expand") as vsn:
                 conv46 = tf.nn.conv2d(conv45, self.weight46, strides=(1, 1, 1, 1), padding="SAME")
                 conv46 = tf.add(conv46, self.bias46)
                 conv46 = tf.nn.relu(conv46)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv45.get_shape(), conv46.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv45.get_shape(), conv46.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv47 = tf.nn.depthwise_conv2d(conv46, self.weight47, strides=(1, 1, 1, 1), padding="SAME")
                 conv47 = tf.add(conv47, self.bias47)
                 conv47 = tf.nn.relu(conv47)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv46.get_shape(), conv47.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv46.get_shape(), conv47.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv48 = tf.nn.conv2d(conv47, self.weight48, strides=(1, 1, 1, 1), padding="SAME")
                 conv48 = tf.add(conv48, self.bias48)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv47.get_shape(), conv48.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv47.get_shape(), conv48.get_shape()))
 
             with tf.compat.v1.variable_scope("add") as vsn:
                 conv48 = tf.add(conv48, conv45)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv48.get_shape(), conv48.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv48.get_shape(), conv48.get_shape()))
 
         # [bottleneck (7)] Input 7x7x160 Output 7x7x320
         # t = 6, c = 320, n = 1, s = 1
@@ -478,18 +478,18 @@ class MobileNetV2(tf.keras.Model):
                 conv49 = tf.nn.conv2d(conv48, self.weight49, strides=(1, 1, 1, 1), padding="SAME")
                 conv49 = tf.add(conv49, self.bias49)
                 conv49 = tf.nn.relu(conv49)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv48.get_shape(), conv49.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv48.get_shape(), conv49.get_shape()))
 
             with tf.compat.v1.variable_scope("depthwise") as vsn:
                 conv50 = tf.nn.depthwise_conv2d(conv49, self.weight50, strides=(1, 1, 1, 1), padding="SAME")
                 conv50 = tf.add(conv50, self.bias50)
                 conv50 = tf.nn.relu(conv50)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv49.get_shape(), conv50.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv49.get_shape(), conv50.get_shape()))
 
             with tf.compat.v1.variable_scope("project") as vsn:
                 conv51 = tf.nn.conv2d(conv50, self.weight51, strides=(1, 1, 1, 1), padding="SAME")
                 conv51 = tf.add(conv51, self.bias51)
-                logging.info("{}/{}: Input {} Output {}".format(vs.name, vsn.name, conv50.get_shape(), conv51.get_shape()))
+                logging.info("{}: Input {} Output {}".format(vsn.name, conv50.get_shape(), conv51.get_shape()))
 
         # [conv2d 1x1] Input 7x7x320 Output 7x7x1280
         # t = ?, c = 1280, n = 1, s = 1
@@ -554,9 +554,6 @@ def main(path, train=True):
     else:
         model = tf.keras.models.load_model('model')
 
-    weights = model.get_weights()
-    model.save_weights("weights.h5")
-    
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     converter.experimental_new_converter = True
@@ -574,5 +571,10 @@ if __name__ == "__main__":
     parser.add_argument("--save_model_to", help="Save Model to ", default="model")
     parser.add_argument("--verbose", action="store_true", help="Enable/Disable verbose printing")
     args = parser.parse_args()
+
+    if args.verbose:
+        logging.basicConfig(level=logging.INFO)
+    else:
+        logging.basicConfig(level=logging.FATAL)
 
     main(args.save_model_to, args.train)
