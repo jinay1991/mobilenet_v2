@@ -14,7 +14,7 @@ class Conv2D(tf.keras.layers.Layer):
         filter_shape = [kernel_height, kernel_width, in_channel, out_channel]
         """
         super(Conv2D, self).__init__()
-        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, out_ch)))
+        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, out_ch), dtype=tf.uint8))
         self.bias = tf.Variable(tf.zeros(shape=out_ch))
         self.strides = strides
         self.activation = activation
@@ -34,7 +34,7 @@ class DepthwiseConv2D(tf.keras.layers.Layer):
         filter_shape = [kernel_height, kernel_width, in_channel, out_channel]
         """
         super(DepthwiseConv2D, self).__init__()
-        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, 1)))
+        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, 1), dtype=tf.uint8))
         self.bias = tf.Variable(tf.zeros(shape=in_ch))
         self.strides = strides
 
