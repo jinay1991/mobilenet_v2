@@ -14,7 +14,7 @@ class Conv2D(tf.keras.layers.Layer):
         filter_shape = [kernel_height, kernel_width, in_channel, out_channel]
         """
         super(Conv2D, self).__init__()
-        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, out_ch)))
+        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, out_ch), dtype=tf.uint8))
         self.bias = tf.Variable(tf.zeros(shape=out_ch))
         self.strides = strides
         self.activation = activation
@@ -34,7 +34,7 @@ class DepthwiseConv2D(tf.keras.layers.Layer):
         filter_shape = [kernel_height, kernel_width, in_channel, out_channel]
         """
         super(DepthwiseConv2D, self).__init__()
-        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, 1)))
+        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, 1), dtype=tf.uint8))
         self.bias = tf.Variable(tf.zeros(shape=in_ch))
         self.strides = strides
 
@@ -194,6 +194,11 @@ if __name__ == "__main__":
         model.save(args.save_model_to, save_format='tf')
     else:
         model = tf.keras.models.load_model('model')
+
+    # imagenet_model = tf.keras.applications.MobileNetV2(weights="imagenet", input_shape=(224, 224, 3))
+
+    # print("number of weights: {}".format(len(imagenet_model.get_weights())))
+    # print("number of weights: {}".format(len(model.get_weights())))
 
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
