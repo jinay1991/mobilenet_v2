@@ -195,6 +195,11 @@ if __name__ == "__main__":
     else:
         model = tf.keras.models.load_model('model')
 
+    # imagenet_model = tf.keras.applications.MobileNetV2(weights="imagenet", input_shape=(224, 224, 3))
+
+    # print("number of weights: {}".format(len(imagenet_model.get_weights())))
+    # print("number of weights: {}".format(len(model.get_weights())))
+
     converter = tf.lite.TFLiteConverter.from_keras_model(model)
     converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     converter.experimental_new_converter = True
