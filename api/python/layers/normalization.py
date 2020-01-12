@@ -74,12 +74,6 @@ class BatchNormalization(tf.keras.layers.Layer):
         if self._trainable_var is not None:
             self._trainable_var.update_value(value)
 
-    def _get_trainable_var(self):
-        if self._trainable_var is None:
-            self._trainable_var = K.freezable_variable(
-                self._trainable, name=self.name + '_trainable')
-        return self._trainable_var
-
     def build(self, input_shape):
         input_shape = tensor_shape.TensorShape(input_shape)
         if not input_shape.ndims:
@@ -157,21 +151,6 @@ class BatchNormalization(tf.keras.layers.Layer):
             experimental_autocast=False)
 
         self.built = True
-
-    def _get_training_value(self, training=None):
-        if training is None:
-            training = K.learning_phase()
-        if isinstance(training, int):
-            training = bool(training)
-        if base_layer_utils.is_in_keras_graph():
-            training = math_ops.logical_and(training, self._get_trainable_var())
-        else:
-            training = math_ops.logical_and(training, self.trainable)
-        return training
-
-    def _moments(self, inputs, reduction_axes, keep_dims):
-        mean, variance = tf.nn.moments(inputs, reduction_axes, keepdims=keep_dims)
-        return mean, variance
 
     def call(self, inputs, training=None):
         training = self._get_training_value(training)
@@ -288,6 +267,27 @@ class BatchNormalization(tf.keras.layers.Layer):
             return dtypes.float32
         else:
             return self.dtype or dtypes.float32
+
+    def _get_trainable_var(self):
+        if self._trainable_var is None:
+            self._trainable_var = K.freezable_variable(
+                self._trainable, name=self.name + '_trainable')
+        return self._trainable_var
+
+    def _get_training_value(self, training=None):
+        if training is None:
+            training = K.learning_phase()
+        if isinstance(training, int):
+            training = bool(training)
+        if base_layer_utils.is_in_keras_graph():
+            training = math_ops.logical_and(training, self._get_trainable_var())
+        else:
+            training = math_ops.logical_and(training, self.trainable)
+        return training
+
+    def _moments(self, inputs, reduction_axes, keep_dims):
+        mean, variance = tf.nn.moments(inputs, reduction_axes, keepdims=keep_dims)
+        return mean, variance
 
     def _assign_moving_average(self, variable, value, momentum, inputs_size):
         with K.name_scope('AssignMovingAvg') as scope:
