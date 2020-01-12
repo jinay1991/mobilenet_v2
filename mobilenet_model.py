@@ -1,11 +1,11 @@
+#!/usr/bin/python
+
 """
 Copyright (c) 2020. All Rights Reserved.
 """
-import os
-from datetime import datetime
+import logging
 
 import tensorflow as tf
-import logging
 
 
 class Conv2D(tf.keras.layers.Layer):
@@ -14,16 +14,19 @@ class Conv2D(tf.keras.layers.Layer):
         filter_shape = [kernel_height, kernel_width, in_channel, out_channel]
         """
         super(Conv2D, self).__init__()
-        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, out_ch), dtype=tf.uint8))
-        self.bias = tf.Variable(tf.zeros(shape=out_ch))
+        self.weight = tf.Variable(tf.random.truncated_normal(
+            shape=(ksize, ksize, in_ch, out_ch), mean=0, stddev=1e-2), name="weight")
+        self.bias = tf.Variable(tf.zeros(shape=out_ch), name="bias")
         self.strides = strides
         self.activation = activation
 
-    def call(self, inputs):
+    def call(self, inputs, training=True):
         conv = tf.nn.conv2d(inputs, self.weight, strides=(1, self.strides, self.strides, 1), padding="SAME")
         conv = tf.add(conv, self.bias)
         if self.activation:
             conv = tf.nn.relu(conv)
+            if training:
+                conv = tf.nn.dropout(conv, 0.5)
         logging.info("  Conv2D: Input {} Output {}".format(inputs.get_shape(), conv.get_shape()))
         return conv
 
@@ -34,14 +37,17 @@ class DepthwiseConv2D(tf.keras.layers.Layer):
         filter_shape = [kernel_height, kernel_width, in_channel, out_channel]
         """
         super(DepthwiseConv2D, self).__init__()
-        self.weight = tf.Variable(tf.random.truncated_normal(shape=(ksize, ksize, in_ch, 1), dtype=tf.uint8))
-        self.bias = tf.Variable(tf.zeros(shape=in_ch))
+        self.weight = tf.Variable(tf.random.truncated_normal(
+            shape=(ksize, ksize, in_ch, 1), mean=0, stddev=1e-2), name="weight")
+        self.bias = tf.Variable(tf.zeros(shape=in_ch), name="bias")
         self.strides = strides
 
-    def call(self, inputs):
+    def call(self, inputs, training=True):
         conv = tf.nn.depthwise_conv2d(inputs, self.weight, strides=(1, self.strides, self.strides, 1), padding="SAME")
         conv = tf.add(conv, self.bias)
         conv = tf.nn.relu(conv)
+        if training:
+            conv = tf.nn.dropout(conv, 0.5)
         logging.info("  DepthwiseConv2D: Input {} Output {}".format(inputs.get_shape(), conv.get_shape()))
         return conv
 
@@ -148,62 +154,3 @@ class MobileNetV2(tf.keras.Model):
         tensor = self.conv2d_1x1_2(tensor)
         tensor = self.squeeze(tensor)
         return tensor
-
-
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--train", action="store_true", help="Train Model")
-    parser.add_argument("--save_model_to", help="Save Model to ", default="model")
-    parser.add_argument("--verbose", action="store_true", help="Enable/Disable verbose printing")
-    args = parser.parse_args()
-
-    if args.verbose:
-        logging.basicConfig(level=logging.INFO)
-    else:
-        logging.basicConfig(level=logging.FATAL)
-
-    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.cifar10.load_data()
-    dataset = tf.data.Dataset.from_tensor_slices((x_train, y_train))
-    dataset = dataset.batch(32)
-
-    def normalize_and_resize(image):
-        image = tf.cast(image, tf.float32)
-        image = tf.subtract(tf.divide(image, 127.5), 1)
-        image = tf.image.resize(image, (224, 224))
-        return image
-
-    x_val = normalize_and_resize(x_train[-100:])
-    y_val = tf.convert_to_tensor(y_train[-100:])
-    x_train = normalize_and_resize(x_train[:100])
-    y_train = tf.convert_to_tensor(y_train[:100])
-
-    if args.train:
-        model = MobileNetV2()
-
-        model.compile(optimizer=tf.keras.optimizers.Adadelta(),
-                      loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-                      metrics=[tf.keras.metrics.SparseCategoricalAccuracy()])
-
-        logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-        tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-
-        model.fit(x_train, y_train, epochs=2, validation_data=(x_val, y_val), callbacks=[tensorboard_callback])
-        model.summary()
-        model.save(args.save_model_to, save_format='tf')
-    else:
-        model = tf.keras.models.load_model('model')
-
-    # imagenet_model = tf.keras.applications.MobileNetV2(weights="imagenet", input_shape=(224, 224, 3))
-
-    # print("number of weights: {}".format(len(imagenet_model.get_weights())))
-    # print("number of weights: {}".format(len(model.get_weights())))
-
-    converter = tf.lite.TFLiteConverter.from_keras_model(model)
-    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
-    converter.experimental_new_converter = True
-    tflite_model = converter.convert()
-
-    with open("model.tflite", "wb") as fp:
-        fp.write(tflite_model)

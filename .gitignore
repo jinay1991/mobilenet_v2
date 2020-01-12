@@ -2,6 +2,9 @@
 model/
 logs/
 *.tflite
+*.pb
+*.index
+*.data-*
 
 # Byte-compiled / optimized / DLL files
 __pycache__/
