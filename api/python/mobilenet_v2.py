@@ -100,13 +100,6 @@ def preprocess_input(x, data_format=None):
 def decode_predictions(preds, top=5):
     return imagenet_utils.decode_predictions(preds, top=top)
 
-
-# This function is taken from the original tf repo.
-# It ensures that all layers have a channel number that is divisible by 8
-# It can be seen here:
-# https://github.com/tensorflow/models/blob/master/research/slim/nets/mobilenet/mobilenet.py
-
-
 def _make_divisible(v, divisor, min_value=None):
     if min_value is None:
         min_value = divisor
