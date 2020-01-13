@@ -96,6 +96,7 @@ if __name__ == '__main__':
 
     top_k = results.argsort()[-5:][::-1]
     labels = load_labels(args.label_file)
+    print(top_k)
     for i in top_k:
         if floating_model:
             print('{:08.6f}: {}'.format(float(results[i]), labels[i]))
