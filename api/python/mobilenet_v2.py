@@ -296,62 +296,35 @@ def MobileNetV2(input_shape=None,
     channel_axis = 1 if backend.image_data_format() == 'channels_first' else -1
 
     first_block_filters = _make_divisible(32 * alpha, 8)
-    x = layers.ZeroPadding2D(
-        padding=imagenet_utils.correct_pad(img_input, 3),
-        name='Conv1_pad')(img_input)
-    x = Conv2D(
-        first_block_filters,
-        kernel_size=3,
-        strides=(2, 2),
-        padding='valid',
-        use_bias=False,
-        name='Conv1')(
-            x)
-    x = BatchNormalization(
-        axis=channel_axis, epsilon=1e-3, momentum=0.999, name='bn_Conv1')(
-            x)
+    x = layers.ZeroPadding2D(padding=imagenet_utils.correct_pad(img_input, 3), name='Conv1_pad')(img_input)
+
+    x = Conv2D(first_block_filters, kernel_size=3, strides=(2, 2), padding='valid', use_bias=False, name='Conv1')(x)
+    x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='bn_Conv1')(x)
     x = Activation('relu', name='Conv1_relu')(x)
 
-    x = _inverted_res_block(
-        x, filters=16, alpha=alpha, stride=1, expansion=1, block_id=0)
+    x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1, expansion=1, block_id=0)
 
-    x = _inverted_res_block(
-        x, filters=24, alpha=alpha, stride=2, expansion=6, block_id=1)
-    x = _inverted_res_block(
-        x, filters=24, alpha=alpha, stride=1, expansion=6, block_id=2)
+    x = _inverted_res_block(x, filters=24, alpha=alpha, stride=2, expansion=6, block_id=1)
+    x = _inverted_res_block(x, filters=24, alpha=alpha, stride=1, expansion=6, block_id=2)
 
-    x = _inverted_res_block(
-        x, filters=32, alpha=alpha, stride=2, expansion=6, block_id=3)
-    x = _inverted_res_block(
-        x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=4)
-    x = _inverted_res_block(
-        x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=5)
+    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=2, expansion=6, block_id=3)
+    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=4)
+    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=5)
 
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=2, expansion=6, block_id=6)
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=7)
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=8)
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=9)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=2, expansion=6, block_id=6)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=7)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=8)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=9)
 
-    x = _inverted_res_block(
-        x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=10)
-    x = _inverted_res_block(
-        x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=11)
-    x = _inverted_res_block(
-        x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=12)
+    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=10)
+    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=11)
+    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=12)
 
-    x = _inverted_res_block(
-        x, filters=160, alpha=alpha, stride=2, expansion=6, block_id=13)
-    x = _inverted_res_block(
-        x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=14)
-    x = _inverted_res_block(
-        x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=15)
+    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=2, expansion=6, block_id=13)
+    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=14)
+    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=15)
 
-    x = _inverted_res_block(
-        x, filters=320, alpha=alpha, stride=1, expansion=6, block_id=16)
+    x = _inverted_res_block(x, filters=320, alpha=alpha, stride=1, expansion=6, block_id=16)
 
     # no alpha applied to last conv as stated in the paper:
     # if the width multiplier is greater than 1 we
@@ -361,19 +334,13 @@ def MobileNetV2(input_shape=None,
     else:
         last_block_filters = 1280
 
-    x = Conv2D(
-        last_block_filters, kernel_size=1, use_bias=False, name='Conv_1')(
-            x)
-    x = BatchNormalization(
-        axis=channel_axis, epsilon=1e-3, momentum=0.999, name='Conv_1_bn')(
-            x)
+    x = Conv2D(last_block_filters, kernel_size=1, use_bias=False, name='Conv_1')(x)
+    x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='Conv_1_bn')(x)
     x = Activation('relu', name='out_relu')(x)
 
     if include_top:
         x = layers.GlobalAveragePooling2D()(x)
-        x = layers.Dense(
-            classes, activation='softmax', use_bias=True, name='Logits')(
-                x)
+        x = layers.Dense(classes, activation='softmax', use_bias=True, name='Logits')(x)
     else:
         if pooling == 'avg':
             x = layers.GlobalAveragePooling2D()(x)

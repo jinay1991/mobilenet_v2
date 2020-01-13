@@ -5,8 +5,8 @@ from datetime import datetime
 import numpy as np
 
 import tensorflow as tf
-from mobilenet_keras_model import MobileNetV2
-from vae_model import VariationalAutoEncoder
+from mobilenet_model import MobileNetV2
+
 
 
 @tf.function
@@ -39,18 +39,20 @@ if __name__ == "__main__":
     test_ds = tf.data.Dataset.from_tensor_slices((x_test, y_test)).batch(32)
 
     model = MobileNetV2()
-
-    model.compile(optimizer=tf.keras.optimizers.Adam(),
-                  loss=tf.keras.losses.SparseCategoricalCrossentropy(),
-                  metrics=['accuracy'])
-
-    logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
-    tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
-
-    model.fit(x_train, y_train,
-              epochs=args.epochs,
-              validation_data=(x_test, y_test),
-              callbacks=[tensorboard_callback])
-    model.summary()
+    model.build(input_shape=(None, 224, 224, 3))
     model.trainable = False
-    model.save("model", save_format="tf")
+    model.summary()
+    # model.compile(optimizer=tf.keras.optimizers.Adam(),
+    #               loss=tf.keras.losses.SparseCategoricalCrossentropy(),
+    #               metrics=['accuracy'])
+
+    # logdir = "logs/fit/" + datetime.now().strftime("%Y%m%d-%H%M%S")
+    # tensorboard_callback = tf.keras.callbacks.TensorBoard(log_dir=logdir)
+
+    # model.fit(x_train, y_train,
+    #           epochs=args.epochs,
+    #           validation_data=(x_test, y_test),
+    #           callbacks=[tensorboard_callback])
+    # model.summary()
+    # model.trainable = False
+    # model.save("model", save_format="tf")
