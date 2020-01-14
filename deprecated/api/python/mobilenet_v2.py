@@ -100,6 +100,7 @@ def preprocess_input(x, data_format=None):
 def decode_predictions(preds, top=5):
     return imagenet_utils.decode_predictions(preds, top=top)
 
+
 def _make_divisible(v, divisor, min_value=None):
     if min_value is None:
         min_value = divisor
@@ -396,14 +397,12 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
             padding='same',
             use_bias=False,
             activation=None,
-            name=prefix + 'expand')(
-                x)
+            name=prefix + 'expand')(x)
         x = BatchNormalization(
             axis=channel_axis,
             epsilon=1e-3,
             momentum=0.999,
-            name=prefix + 'expand_BN')(
-                x)
+            name=prefix + 'expand_BN')(x)
         x = Activation('relu', name=prefix + 'expand_relu')(x)
     else:
         prefix = 'expanded_conv_'
