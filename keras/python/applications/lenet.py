@@ -1,22 +1,35 @@
 # copyright (c) 2020. All Rights Reserved.
 
+import os
+
 import tensorflow as tf
-from tensorflow.keras.layers import Conv2D, MaxPooling2D, Flatten, Dense
+from tensorflow.keras.layers import Conv2D, Dense, Flatten, MaxPooling2D
+from tensorflow.python.keras.utils import data_utils
+
+BASE_WEIGHT_PATH = "saved_model"
 
 
-def LeNet(input_shape=None,
+def LeNet(input_shape=(32, 32, 3),
           classes=10,
+          weights=None,
           **kwargs):
 
     model = tf.keras.models.Sequential()
-    model.add(tf.keras.layers.Conv2D(32, (3, 3), activation='relu', input_shape=(32, 32, 3)))
+
+    model.add(tf.keras.layers.Input(shape=input_shape))
+    model.add(tf.keras.layers.Conv2D(32, (3, 3), activation='relu'))
     model.add(tf.keras.layers.MaxPooling2D((2, 2)))
     model.add(tf.keras.layers.Conv2D(64, (3, 3), activation='relu'))
     model.add(tf.keras.layers.MaxPooling2D((2, 2)))
     model.add(tf.keras.layers.Conv2D(64, (3, 3), activation='relu'))
     model.add(tf.keras.layers.Flatten())
     model.add(tf.keras.layers.Dense(64, activation='relu'))
-    model.add(tf.keras.layers.Dense(10, activation='softmax'))
+    model.add(tf.keras.layers.Dense(classes, activation='softmax'))
+
+    if weights == 'cifar10':
+        model_name = "lenet.h5"
+        weights_path = os.path.join(BASE_WEIGHT_PATH, model_name)
+        model.load_weights(weights_path)
 
     return model
 
@@ -24,9 +37,13 @@ def LeNet(input_shape=None,
 if __name__ == "__main__":
     import os
 
-    model = LeNet()
-    # model.trainable = False
-    # model.summary()
+    model = LeNet(weights="cifar10")
+    model.trainable = False
+    model.summary()
+
+    dirname = "saved_model"
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
 
     (train_images, train_labels), (test_images, test_labels) = tf.keras.datasets.cifar10.load_data()
 
@@ -43,10 +60,7 @@ if __name__ == "__main__":
     model.fit(train_images, train_labels, epochs=1,
               validation_data=(test_images, test_labels))
 
-    dirname = "saved_model"
-    if not os.path.exists(dirname):
-        os.mkdir(dirname)
-
+    model.save_weights(os.path.join(dirname, "lenet.h5"))
     model.save(dirname, save_format="tf")
 
     test_loss, test_acc = model.evaluate(test_images,  test_labels, verbose=2)
