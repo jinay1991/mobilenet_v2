@@ -35,17 +35,17 @@ if __name__ == '__main__':
     parser.add_argument(
         '-i',
         '--image',
-        default='/tmp/grace_hopper.bmp',
+        default='./data/grace_hopper.jpg',
         help='image to be classified')
     parser.add_argument(
         '-m',
         '--model_file',
-        default='/tmp/mobilenet_v1_1.0_224_quant.tflite',
+        default='./data/mobilenet_v2_1.0_224_quant.tflite',
         help='.tflite model to be executed')
     parser.add_argument(
         '-l',
         '--label_file',
-        default='/tmp/labels.txt',
+        default='./data/labels.txt',
         help='name of file containing labels')
     parser.add_argument(
         '--input_mean',
@@ -76,16 +76,8 @@ if __name__ == '__main__':
         tensor = interpreter.get_tensor(tensor_index)
         tensor = tensor.astype(np.uint8)
 
-        if tensor_name == "mobilenetv2_1.00_224_block_1_depthwise_depthwise_ReadVariableOp":
-            print("Original Shape: ", tensor.shape)
         np.save(os.path.join(dirname, tensor_name), tensor)
     # ---------
-    weight_bin = np.load(
-        "intermediate_layers_py/mobilenetv2_1.00_224_block_1_depthwise_depthwise_ReadVariableOp.npy")
-    # weight_bin = weight_bin.astype(np.uint8)
-    print("Post save shape: ", weight_bin.shape)
-    print("weight: ", weight_bin)
-    # weight = tf.Variable(weight_bin)
 
     # check the type of the input tensor
     floating_model = input_details[0]['dtype'] == np.float32

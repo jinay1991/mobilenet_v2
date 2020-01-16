@@ -1,3 +1,4 @@
 Pillow
 pathlib
 scipy
+tensorflow

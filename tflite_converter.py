@@ -5,6 +5,7 @@ import pathlib
 import numpy as np
 
 import tensorflow as tf
+import logging
 
 
 def download_imagenette():
@@ -33,10 +34,10 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--model", required=True)
+    parser.add_argument("-m", "--model", default="./data/mobilenet_v2_1.0_224_quant_frozen.pb")
     args = parser.parse_args()
 
-    converter = tf.lite.TFLiteConverter.from_keras_model(args.model)
+    converter = tf.lite.TFLiteConverter.from_saved_model(args.model)
 
     converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     converter.experimental_new_converter = True
@@ -48,7 +49,7 @@ if __name__ == "__main__":
     tflite_model = converter.convert()
 
     dirname = os.path.dirname(args.model)
-    fname = args.model.split("/")[-1] + ".tflite"
+    fname = args.model.split("/")[-1] + "_converted.tflite"
     tflite_modelname = os.path.join(dirname,  fname)
 
     with open(tflite_modelname, "wb") as fp:

@@ -81,10 +81,9 @@ import warnings
 import numpy as np
 
 import imagenet_utils
-from layers.activation import Activation
-from layers.convolution import Conv2D
-from layers.normalization import BatchNormalization
+import tensorflow as tf
 from tensorflow.keras import layers
+from tensorflow.keras.layers import Activation, BatchNormalization, Conv2D
 from tensorflow.python.keras import backend
 from tensorflow.python.keras.engine import training
 from tensorflow.python.keras.utils import data_utils, layer_utils
@@ -448,3 +447,48 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
     if in_channels == pointwise_filters and stride == 1:
         return layers.Add(name=prefix + 'add')([inputs, x])
     return x
+
+
+if __name__ == "__main__":
+
+    model = MobileNetV2(weights="imagenet", input_shape=(224, 224, 3), include_top=True)
+    model.trainable = False
+    model.summary()
+
+    dirname = "saved_model"
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
+
+    model.save(dirname, save_format="tf")
+
+    def representative_data_gen():
+        data_dir = tf.keras.utils.get_file(origin="https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+                                           fname='imagenette2-160',
+                                           untar=True)
+
+        data_dir = os.path.join(data_dir, "val")
+
+        CLASS_NAMES = np.array([item for item in os.listdir(data_dir) if item != "LICENSE.txt"])
+        image_generator = tf.keras.preprocessing.image.ImageDataGenerator(samplewise_center=True,
+                                                                          samplewise_std_normalization=True)
+
+        train_data_gen = image_generator.flow_from_directory(directory=str(data_dir),
+                                                             batch_size=1,
+                                                             shuffle=True,
+                                                             target_size=(224, 224),
+                                                             classes=list(CLASS_NAMES))
+        yield [next(train_data_gen)[0]]
+
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+    converter.experimental_new_converter = True
+    converter.representative_dataset = representative_data_gen
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    converter.inference_input_type = tf.uint8
+    converter.inference_output_type = tf.uint8
+
+    tflite_model = converter.convert()
+
+    with open(os.path.join(dirname, "mobilenet_v2.tflite"), "wb") as fp:
+        fp.write(tflite_model)
