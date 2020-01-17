@@ -1,10 +1,15 @@
 # Project specific
+bazel-*
 model/
 logs/
+intermediate_layers_py/
 *.tflite
 *.pb
 *.index
 *.data-*
+*.tar.gz
+*.tgz
+
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

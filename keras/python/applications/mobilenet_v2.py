@@ -81,10 +81,9 @@ import warnings
 import numpy as np
 
 import imagenet_utils
-from layers.activation import Activation
-from layers.convolution import Conv2D
-from layers.normalization import BatchNormalization
+import tensorflow as tf
 from tensorflow.keras import layers
+from tensorflow.keras.layers import Activation, BatchNormalization, Conv2D
 from tensorflow.python.keras import backend
 from tensorflow.python.keras.engine import training
 from tensorflow.python.keras.utils import data_utils, layer_utils
@@ -99,6 +98,7 @@ def preprocess_input(x, data_format=None):
 
 def decode_predictions(preds, top=5):
     return imagenet_utils.decode_predictions(preds, top=top)
+
 
 def _make_divisible(v, divisor, min_value=None):
     if min_value is None:
@@ -296,62 +296,35 @@ def MobileNetV2(input_shape=None,
     channel_axis = 1 if backend.image_data_format() == 'channels_first' else -1
 
     first_block_filters = _make_divisible(32 * alpha, 8)
-    x = layers.ZeroPadding2D(
-        padding=imagenet_utils.correct_pad(img_input, 3),
-        name='Conv1_pad')(img_input)
-    x = Conv2D(
-        first_block_filters,
-        kernel_size=3,
-        strides=(2, 2),
-        padding='valid',
-        use_bias=False,
-        name='Conv1')(
-            x)
-    x = BatchNormalization(
-        axis=channel_axis, epsilon=1e-3, momentum=0.999, name='bn_Conv1')(
-            x)
+    x = layers.ZeroPadding2D(padding=imagenet_utils.correct_pad(img_input, 3), name='Conv1_pad')(img_input)
+
+    x = Conv2D(first_block_filters, kernel_size=3, strides=(2, 2), padding='valid', use_bias=False, name='Conv1')(x)
+    x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='bn_Conv1')(x)
     x = Activation('relu', name='Conv1_relu')(x)
 
-    x = _inverted_res_block(
-        x, filters=16, alpha=alpha, stride=1, expansion=1, block_id=0)
+    x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1, expansion=1, block_id=0)
 
-    x = _inverted_res_block(
-        x, filters=24, alpha=alpha, stride=2, expansion=6, block_id=1)
-    x = _inverted_res_block(
-        x, filters=24, alpha=alpha, stride=1, expansion=6, block_id=2)
+    x = _inverted_res_block(x, filters=24, alpha=alpha, stride=2, expansion=6, block_id=1)
+    x = _inverted_res_block(x, filters=24, alpha=alpha, stride=1, expansion=6, block_id=2)
 
-    x = _inverted_res_block(
-        x, filters=32, alpha=alpha, stride=2, expansion=6, block_id=3)
-    x = _inverted_res_block(
-        x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=4)
-    x = _inverted_res_block(
-        x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=5)
+    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=2, expansion=6, block_id=3)
+    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=4)
+    x = _inverted_res_block(x, filters=32, alpha=alpha, stride=1, expansion=6, block_id=5)
 
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=2, expansion=6, block_id=6)
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=7)
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=8)
-    x = _inverted_res_block(
-        x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=9)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=2, expansion=6, block_id=6)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=7)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=8)
+    x = _inverted_res_block(x, filters=64, alpha=alpha, stride=1, expansion=6, block_id=9)
 
-    x = _inverted_res_block(
-        x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=10)
-    x = _inverted_res_block(
-        x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=11)
-    x = _inverted_res_block(
-        x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=12)
+    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=10)
+    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=11)
+    x = _inverted_res_block(x, filters=96, alpha=alpha, stride=1, expansion=6, block_id=12)
 
-    x = _inverted_res_block(
-        x, filters=160, alpha=alpha, stride=2, expansion=6, block_id=13)
-    x = _inverted_res_block(
-        x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=14)
-    x = _inverted_res_block(
-        x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=15)
+    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=2, expansion=6, block_id=13)
+    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=14)
+    x = _inverted_res_block(x, filters=160, alpha=alpha, stride=1, expansion=6, block_id=15)
 
-    x = _inverted_res_block(
-        x, filters=320, alpha=alpha, stride=1, expansion=6, block_id=16)
+    x = _inverted_res_block(x, filters=320, alpha=alpha, stride=1, expansion=6, block_id=16)
 
     # no alpha applied to last conv as stated in the paper:
     # if the width multiplier is greater than 1 we
@@ -361,19 +334,13 @@ def MobileNetV2(input_shape=None,
     else:
         last_block_filters = 1280
 
-    x = Conv2D(
-        last_block_filters, kernel_size=1, use_bias=False, name='Conv_1')(
-            x)
-    x = BatchNormalization(
-        axis=channel_axis, epsilon=1e-3, momentum=0.999, name='Conv_1_bn')(
-            x)
+    x = Conv2D(last_block_filters, kernel_size=1, use_bias=False, name='Conv_1')(x)
+    x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='Conv_1_bn')(x)
     x = Activation('relu', name='out_relu')(x)
 
     if include_top:
         x = layers.GlobalAveragePooling2D()(x)
-        x = layers.Dense(
-            classes, activation='softmax', use_bias=True, name='Logits')(
-                x)
+        x = layers.Dense(classes, activation='softmax', use_bias=True, name='Logits')(x)
     else:
         if pooling == 'avg':
             x = layers.GlobalAveragePooling2D()(x)
@@ -429,14 +396,12 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
             padding='same',
             use_bias=False,
             activation=None,
-            name=prefix + 'expand')(
-                x)
+            name=prefix + 'expand')(x)
         x = BatchNormalization(
             axis=channel_axis,
             epsilon=1e-3,
             momentum=0.999,
-            name=prefix + 'expand_BN')(
-                x)
+            name=prefix + 'expand_BN')(x)
         x = Activation('relu', name=prefix + 'expand_relu')(x)
     else:
         prefix = 'expanded_conv_'
@@ -482,3 +447,48 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
     if in_channels == pointwise_filters and stride == 1:
         return layers.Add(name=prefix + 'add')([inputs, x])
     return x
+
+
+if __name__ == "__main__":
+
+    model = MobileNetV2(weights="imagenet", input_shape=(224, 224, 3), include_top=True)
+    model.trainable = False
+    model.summary()
+
+    dirname = "saved_model"
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
+
+    model.save(dirname, save_format="tf")
+
+    def representative_data_gen():
+        data_dir = tf.keras.utils.get_file(origin="https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+                                           fname='imagenette2-160',
+                                           untar=True)
+
+        data_dir = os.path.join(data_dir, "val")
+
+        CLASS_NAMES = np.array([item for item in os.listdir(data_dir) if item != "LICENSE.txt"])
+        image_generator = tf.keras.preprocessing.image.ImageDataGenerator(samplewise_center=True,
+                                                                          samplewise_std_normalization=True)
+
+        train_data_gen = image_generator.flow_from_directory(directory=str(data_dir),
+                                                             batch_size=1,
+                                                             shuffle=True,
+                                                             target_size=(224, 224),
+                                                             classes=list(CLASS_NAMES))
+        yield [next(train_data_gen)[0]]
+
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
+
+    converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
+    converter.experimental_new_converter = True
+    converter.representative_dataset = representative_data_gen
+    converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
+    converter.inference_input_type = tf.uint8
+    converter.inference_output_type = tf.uint8
+
+    tflite_model = converter.convert()
+
+    with open(os.path.join(dirname, "mobilenet_v2.tflite"), "wb") as fp:
+        fp.write(tflite_model)

@@ -14,17 +14,15 @@
 # ==============================================================================
 """label_image for tflite."""
 
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import argparse
+import os
 
 import numpy as np
 
-from PIL import Image
-
 import tensorflow as tf  # TF2
+from PIL import Image
 
 
 def load_labels(filename):
@@ -37,17 +35,17 @@ if __name__ == '__main__':
     parser.add_argument(
         '-i',
         '--image',
-        default='/tmp/grace_hopper.bmp',
+        default='./data/grace_hopper.jpg',
         help='image to be classified')
     parser.add_argument(
         '-m',
         '--model_file',
-        default='/tmp/mobilenet_v1_1.0_224_quant.tflite',
+        default='./data/mobilenet_v2_1.0_224_quant.tflite',
         help='.tflite model to be executed')
     parser.add_argument(
         '-l',
         '--label_file',
-        default='/tmp/labels.txt',
+        default='./data/labels.txt',
         help='name of file containing labels')
     parser.add_argument(
         '--input_mean',
@@ -67,10 +65,18 @@ if __name__ == '__main__':
 
     # ---------
     intermediate_details = interpreter.get_tensor_details()
-    print("Input: {}".format(input_details))
-    print("Output: {}".format(output_details))
-    for t in intermediate_details:
-        print("Intermediate ({}): {} {}".format(t["index"], t['name'], t["dtype"]))
+
+    dirname = "intermediate_layers_py"
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
+
+    for tensor_detail in intermediate_details:
+        tensor_index = tensor_detail['index']
+        tensor_name = tensor_detail['name'].replace('/', '_')
+        tensor = interpreter.get_tensor(tensor_index)
+        tensor = tensor.astype(np.uint8)
+
+        np.save(os.path.join(dirname, tensor_name), tensor)
     # ---------
 
     # check the type of the input tensor
@@ -96,6 +102,7 @@ if __name__ == '__main__':
 
     top_k = results.argsort()[-5:][::-1]
     labels = load_labels(args.label_file)
+    print(top_k)
     for i in top_k:
         if floating_model:
             print('{:08.6f}: {}'.format(float(results[i]), labels[i]))

@@ -11,6 +11,12 @@ This repository contains the code in two variants.
 
 To try these implementation, you might need `TensorFlow v2.0` which can be installed as explained in [TensorFlow Installation Guide](https://www.tensorflow.org/install)
 
+```
+python -m pip install -U pip
+python -m pip install -U tensorflow==2.0.0b1
+python -m pip install -U -r requirements.txt
+```
+
 ## Build/Run
 
 To run this programs,

@@ -1,0 +1,4 @@
+Pillow
+pathlib
+scipy
+tensorflow
