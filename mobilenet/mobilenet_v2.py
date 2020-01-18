@@ -81,11 +81,11 @@ import warnings
 
 import numpy as np
 
-import imagenet_utils
+from mobilenet import imagenet_utils
 import tensorflow as tf
-from layers import (Activation, Add, BatchNormalization, Conv2D, Dense,
-                    DepthwiseConv2D, GlobalAveragePooling2D,
-                    GlobalMaxPooling2D, ZeroPadding2D)
+from mobilenet.layers import (Activation, Add, BatchNormalization, Conv2D, Dense,
+                              DepthwiseConv2D, GlobalAveragePooling2D,
+                              GlobalMaxPooling2D, ZeroPadding2D)
 from tensorflow.keras.layers import Input
 from tensorflow.python.keras import backend
 from tensorflow.python.keras.engine import training

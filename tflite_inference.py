@@ -23,6 +23,7 @@ import numpy as np
 
 import tensorflow as tf  # TF2
 from PIL import Image
+from mobilenet import decode_predictions
 
 
 def load_labels(filename):
@@ -42,11 +43,6 @@ if __name__ == '__main__':
         '--model_file',
         default='./data/mobilenet_v2_1.0_224_quant.tflite',
         help='.tflite model to be executed')
-    parser.add_argument(
-        '-l',
-        '--label_file',
-        default='./data/labels.txt',
-        help='name of file containing labels')
     parser.add_argument(
         '--input_mean',
         default=127.5, type=float,
@@ -98,13 +94,6 @@ if __name__ == '__main__':
     interpreter.invoke()
 
     output_data = interpreter.get_tensor(output_details[0]['index'])
-    results = np.squeeze(output_data)
-
-    top_k = results.argsort()[-5:][::-1]
-    labels = load_labels(args.label_file)
-    print(top_k)
-    for i in top_k:
-        if floating_model:
-            print('{:08.6f}: {}'.format(float(results[i]), labels[i]))
-        else:
-            print('{:08.6f}: {}'.format(float(results[i] / 255.0), labels[i]))
+    top_k_results = decode_predictions(output_data)[0]
+    for class_id, class_name, class_score in top_k_results:
+        print("{} {} {}".format(class_id.encode("ascii"), class_name.encode("ascii"), class_score))

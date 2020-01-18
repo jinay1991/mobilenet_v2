@@ -12,12 +12,10 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""Keras layers API."""
+"""MobileNet API"""
 
 from __future__ import absolute_import, division, print_function
 
-from .convolution import Conv2D, DepthwiseConv2D, ZeroPadding2D
-from .core import Activation, Dense
-from .merge import Add
-from .normalization import BatchNormalization
-from .pooling import GlobalAveragePooling2D, GlobalMaxPooling2D
+from mobilenet import imagenet_utils, layers
+from mobilenet.imagenet_utils import decode_predictions
+from mobilenet.mobilenet_v2 import MobileNetV2
