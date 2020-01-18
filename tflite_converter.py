@@ -6,6 +6,7 @@ import numpy as np
 
 import tensorflow as tf
 import logging
+from mobilenet import MobileNetV2
 
 
 def download_imagenette():
@@ -34,23 +35,44 @@ if __name__ == "__main__":
     import argparse
 
     parser = argparse.ArgumentParser()
-    parser.add_argument("-m", "--model", default="./data/mobilenet_v2_1.0_224_quant_frozen.pb")
+    parser.add_argument("--save_to", default="saved_model", help="Path to use for saving converted *.tflite model")
     args = parser.parse_args()
 
-    converter = tf.lite.TFLiteConverter.from_saved_model(args.model)
+    model = MobileNetV2(weights="imagenet")
+    model.trainable = False
+    model.summary()
+
+    def representative_data_gen():
+        data_dir = tf.keras.utils.get_file(origin="https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz",
+                                           fname='imagenette2-160',
+                                           untar=True)
+
+        data_dir = os.path.join(data_dir, "val")
+
+        CLASS_NAMES = np.array([item for item in os.listdir(data_dir) if item != "LICENSE.txt"])
+        image_generator = tf.keras.preprocessing.image.ImageDataGenerator(samplewise_center=True,
+                                                                          samplewise_std_normalization=True)
+
+        train_data_gen = image_generator.flow_from_directory(directory=str(data_dir),
+                                                             batch_size=1,
+                                                             shuffle=True,
+                                                             target_size=(224, 224),
+                                                             classes=list(CLASS_NAMES))
+        yield [next(train_data_gen)[0]]
+
+    converter = tf.lite.TFLiteConverter.from_keras_model(model)
 
     converter.optimizations = [tf.lite.Optimize.OPTIMIZE_FOR_SIZE]
     converter.experimental_new_converter = True
-    converter.representative_dataset = download_imagenette
+    converter.representative_dataset = representative_data_gen
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-    converter.inference_input_type = tf.uint8
-    converter.inference_output_type = tf.uint8
 
     tflite_model = converter.convert()
 
-    dirname = os.path.dirname(args.model)
-    fname = args.model.split("/")[-1] + "_converted.tflite"
-    tflite_modelname = os.path.join(dirname,  fname)
+    dirname = args.save_to
+    if not os.path.exists(dirname):
+        os.mkdir(dirname)
 
-    with open(tflite_modelname, "wb") as fp:
+    fname = "mobilenet_v2_1.0_224_quant.tflite"
+    with open(os.path.join(dirname,  fname), "wb") as fp:
         fp.write(tflite_model)

@@ -12,32 +12,23 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 # ==============================================================================
-"""label_image for tflite."""
-
-from __future__ import absolute_import, division, print_function
-
-import argparse
+"""label_image for tf."""
 import os
 
 import numpy as np
 
-import tensorflow as tf  # TF2
+from mobilenet import MobileNetV2, decode_predictions
 from PIL import Image
-from mobilenet import decode_predictions
 
+if __name__ == "__main__":
+    import argparse
 
-if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
         '-i',
         '--image',
         default='./data/grace_hopper.jpg',
         help='image to be classified')
-    parser.add_argument(
-        '-m',
-        '--model_file',
-        default='./data/mobilenet_v2_1.0_224_quant.tflite',
-        help='.tflite model to be executed')
     parser.add_argument(
         '--input_mean',
         default=127.5, type=float,
@@ -48,31 +39,20 @@ if __name__ == '__main__':
         help='input standard deviation')
     args = parser.parse_args()
 
-    interpreter = tf.lite.Interpreter(model_path=args.model_file)
-    interpreter.allocate_tensors()
-
-    input_details = interpreter.get_input_details()
-    output_details = interpreter.get_output_details()
-
-    # check the type of the input tensor
-    floating_model = input_details[0]['dtype'] == np.float32
+    model = MobileNetV2(weights="imagenet", input_shape=(224, 224, 3), include_top=True)
+    model.trainable = False
+    model.summary()
 
     # NxHxWxC, H:1, W:2
-    height = input_details[0]['shape'][1]
-    width = input_details[0]['shape'][2]
-    img = Image.open(args.image).resize((width, height))
+    img = Image.open(args.image).resize((224, 224))
 
     # add N dim
     input_data = np.expand_dims(img, axis=0)
 
-    if floating_model:
-        input_data = (np.float32(input_data) - args.input_mean) / args.input_std
+    input_data = (np.float32(input_data) - args.input_mean) / args.input_std
 
-    interpreter.set_tensor(input_details[0]['index'], input_data)
+    outputs = model.predict(input_data)
 
-    interpreter.invoke()
-
-    output_data = interpreter.get_tensor(output_details[0]['index'])
-    top_k_results = decode_predictions(output_data)[0]
+    top_k_results = decode_predictions(outputs)[0]
     for class_id, class_name, class_score in top_k_results:
         print("{} {} {}".format(class_id.encode("ascii"), class_name.encode("ascii"), class_score))
