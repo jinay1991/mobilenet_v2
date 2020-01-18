@@ -75,6 +75,7 @@ Reference paper:
 """
 from __future__ import absolute_import, division, print_function
 
+import logging
 import os
 import warnings
 
@@ -82,12 +83,13 @@ import numpy as np
 
 import imagenet_utils
 import tensorflow as tf
-from tensorflow.keras import layers
-from tensorflow.keras.layers import Activation, BatchNormalization, Conv2D
+from layers import (Activation, Add, BatchNormalization, Conv2D, Dense,
+                    DepthwiseConv2D, GlobalAveragePooling2D,
+                    GlobalMaxPooling2D, ZeroPadding2D)
+from tensorflow.keras.layers import Input
 from tensorflow.python.keras import backend
 from tensorflow.python.keras.engine import training
 from tensorflow.python.keras.utils import data_utils, layer_utils
-from tensorflow.python.platform import tf_logging as logging
 
 BASE_WEIGHT_PATH = ('https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/')
 
@@ -286,17 +288,17 @@ def MobileNetV2(input_shape=None,
                             ' loaded as the default.')
 
     if input_tensor is None:
-        img_input = layers.Input(shape=input_shape)
+        img_input = Input(shape=input_shape)
     else:
         if not backend.is_keras_tensor(input_tensor):
-            img_input = layers.Input(tensor=input_tensor, shape=input_shape)
+            img_input = Input(tensor=input_tensor, shape=input_shape)
         else:
             img_input = input_tensor
 
     channel_axis = 1 if backend.image_data_format() == 'channels_first' else -1
 
     first_block_filters = _make_divisible(32 * alpha, 8)
-    x = layers.ZeroPadding2D(padding=imagenet_utils.correct_pad(img_input, 3), name='Conv1_pad')(img_input)
+    x = ZeroPadding2D(padding=imagenet_utils.correct_pad(img_input, 3), name='Conv1_pad')(img_input)
 
     x = Conv2D(first_block_filters, kernel_size=3, strides=(2, 2), padding='valid', use_bias=False, name='Conv1')(x)
     x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='bn_Conv1')(x)
@@ -339,13 +341,13 @@ def MobileNetV2(input_shape=None,
     x = Activation('relu', name='out_relu')(x)
 
     if include_top:
-        x = layers.GlobalAveragePooling2D()(x)
-        x = layers.Dense(classes, activation='softmax', use_bias=True, name='Logits')(x)
+        x = GlobalAveragePooling2D()(x)
+        x = Dense(classes, activation='softmax', use_bias=True, name='Logits')(x)
     else:
         if pooling == 'avg':
-            x = layers.GlobalAveragePooling2D()(x)
+            x = GlobalAveragePooling2D()(x)
         elif pooling == 'max':
-            x = layers.GlobalMaxPooling2D()(x)
+            x = GlobalMaxPooling2D()(x)
 
     # Ensure that the model takes into account
     # any potential predecessors of `input_tensor`.
@@ -408,10 +410,10 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
 
     # Depthwise
     if stride == 2:
-        x = layers.ZeroPadding2D(
+        x = ZeroPadding2D(
             padding=imagenet_utils.correct_pad(x, 3),
             name=prefix + 'pad')(x)
-    x = layers.DepthwiseConv2D(
+    x = DepthwiseConv2D(
         kernel_size=3,
         strides=stride,
         activation=None,
@@ -445,7 +447,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
             x)
 
     if in_channels == pointwise_filters and stride == 1:
-        return layers.Add(name=prefix + 'add')([inputs, x])
+        return Add(name=prefix + 'add')([inputs, x])
     return x
 
 

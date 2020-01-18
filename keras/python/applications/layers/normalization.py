@@ -1,31 +1,24 @@
+# Copyright 2015 The TensorFlow Authors. All Rights Reserved.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+# You may obtain a copy of the License at
+#
+#     http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS,
+# WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+# See the License for the specific language governing permissions and
+# limitations under the License.
+# ==============================================================================
+"""Normalization layers.
+"""
 import tensorflow as tf
-
-from tensorflow.python.framework import tensor_shape
-from tensorflow.python.keras import activations, initializers
-from tensorflow.python.ops import array_ops
-from tensorflow.python.keras.utils import tf_utils
-
-from tensorflow.python.distribute import distribution_strategy_context
-from tensorflow.python.framework import constant_op
-from tensorflow.python.framework import dtypes
-from tensorflow.python.framework import ops
-from tensorflow.python.framework import tensor_shape
 from tensorflow.python.keras import backend as K
-from tensorflow.python.keras import constraints
 from tensorflow.python.keras import initializers
-from tensorflow.python.keras import regularizers
 from tensorflow.python.keras.engine import base_layer_utils
-from tensorflow.python.keras.engine.base_layer import Layer
-from tensorflow.python.keras.engine.input_spec import InputSpec
 from tensorflow.python.keras.utils import tf_utils
-from tensorflow.python.ops import array_ops
-from tensorflow.python.ops import init_ops
-from tensorflow.python.ops import math_ops
-from tensorflow.python.ops import nn
-from tensorflow.python.ops import state_ops
-from tensorflow.python.ops import variables as tf_variables
-from tensorflow.python.platform import tf_logging as logging
-from tensorflow.python.util.tf_export import keras_export
 
 
 class BatchNormalization(tf.keras.layers.Layer):
@@ -75,7 +68,7 @@ class BatchNormalization(tf.keras.layers.Layer):
             self._trainable_var.update_value(value)
 
     def build(self, input_shape):
-        input_shape = tensor_shape.TensorShape(input_shape)
+        input_shape = tf.TensorShape(input_shape)
         if not input_shape.ndims:
             raise ValueError('Input has undefined rank:', input_shape)
         ndims = len(input_shape)
@@ -135,9 +128,9 @@ class BatchNormalization(tf.keras.layers.Layer):
             shape=param_shape,
             dtype=self._param_dtype,
             initializer=self.moving_mean_initializer,
-            synchronization=tf_variables.VariableSynchronization.ON_READ,
+            synchronization=tf.VariableSynchronization.ON_READ,
             trainable=False,
-            aggregation=tf_variables.VariableAggregation.MEAN,
+            aggregation=tf.VariableAggregation.MEAN,
             experimental_autocast=False)
 
         self.moving_variance = self.add_weight(
@@ -145,9 +138,9 @@ class BatchNormalization(tf.keras.layers.Layer):
             shape=param_shape,
             dtype=self._param_dtype,
             initializer=self.moving_variance_initializer,
-            synchronization=tf_variables.VariableSynchronization.ON_READ,
+            synchronization=tf.VariableSynchronization.ON_READ,
             trainable=False,
-            aggregation=tf_variables.VariableAggregation.MEAN,
+            aggregation=tf.VariableAggregation.MEAN,
             experimental_autocast=False)
 
         self.built = True
@@ -168,7 +161,7 @@ class BatchNormalization(tf.keras.layers.Layer):
         def _broadcast(v):
             if (v is not None and len(v.shape) != ndims and
                     reduction_axes != list(range(ndims - 1))):
-                return array_ops.reshape(v, broadcast_shape)
+                return tf.reshape(v, broadcast_shape)
             return v
 
         scale, offset = _broadcast(self.gamma), _broadcast(self.beta)
@@ -190,7 +183,7 @@ class BatchNormalization(tf.keras.layers.Layer):
             # but not a constant. However, this makes the code simpler.
             keep_dims = len(self.axis) > 1
             mean, variance = self._moments(
-                math_ops.cast(inputs, self._param_dtype),
+                tf.cast(inputs, self._param_dtype),
                 reduction_axes,
                 keep_dims=keep_dims)
 
@@ -199,11 +192,11 @@ class BatchNormalization(tf.keras.layers.Layer):
 
             mean = tf_utils.smart_cond(training,
                                        lambda: mean,
-                                       lambda: ops.convert_to_tensor(moving_mean))
+                                       lambda: tf.convert_to_tensor(moving_mean))
             variance = tf_utils.smart_cond(
                 training,
                 lambda: variance,
-                lambda: ops.convert_to_tensor(moving_variance))
+                lambda: tf.convert_to_tensor(moving_variance))
             new_mean, new_variance = mean, variance
 
             inputs_size = None
@@ -228,12 +221,12 @@ class BatchNormalization(tf.keras.layers.Layer):
             self.add_update(mean_update)
             self.add_update(variance_update)
 
-        mean = math_ops.cast(mean, inputs.dtype)
-        variance = math_ops.cast(variance, inputs.dtype)
+        mean = tf.cast(mean, inputs.dtype)
+        variance = tf.cast(variance, inputs.dtype)
         if offset is not None:
-            offset = math_ops.cast(offset, inputs.dtype)
+            offset = tf.cast(offset, inputs.dtype)
         if scale is not None:
-            scale = math_ops.cast(scale, inputs.dtype)
+            scale = tf.cast(scale, inputs.dtype)
         outputs = tf.nn.batch_normalization(inputs, _broadcast(mean), _broadcast(variance), offset, scale, self.epsilon)
         # If some components of the shape got lost due to adjustments, fix that.
         outputs.set_shape(input_shape)
@@ -263,10 +256,10 @@ class BatchNormalization(tf.keras.layers.Layer):
     @property
     def _param_dtype(self):
         # Raise parameters of fp16 batch norm to fp32
-        if self.dtype == dtypes.float16 or self.dtype == dtypes.bfloat16:
-            return dtypes.float32
+        if self.dtype == tf.float16 or self.dtype == tf.bfloat16:
+            return tf.float32
         else:
-            return self.dtype or dtypes.float32
+            return self.dtype or tf.float32
 
     def _get_trainable_var(self):
         if self._trainable_var is None:
@@ -280,9 +273,9 @@ class BatchNormalization(tf.keras.layers.Layer):
         if isinstance(training, int):
             training = bool(training)
         if base_layer_utils.is_in_keras_graph():
-            training = math_ops.logical_and(training, self._get_trainable_var())
+            training = tf.math.logical_and(training, self._get_trainable_var())
         else:
-            training = math_ops.logical_and(training, self.trainable)
+            training = tf.math.logical_and(training, self.trainable)
         return training
 
     def _moments(self, inputs, reduction_axes, keep_dims):
@@ -291,13 +284,13 @@ class BatchNormalization(tf.keras.layers.Layer):
 
     def _assign_moving_average(self, variable, value, momentum, inputs_size):
         with K.name_scope('AssignMovingAvg') as scope:
-            with ops.colocate_with(variable):
-                decay = ops.convert_to_tensor(1.0 - momentum, name='decay')
+            with tf.colocate_with(variable):
+                decay = tf.convert_to_tensor(1.0 - momentum, name='decay')
                 if decay.dtype != variable.dtype.base_dtype:
-                    decay = math_ops.cast(decay, variable.dtype.base_dtype)
+                    decay = tf.cast(decay, variable.dtype.base_dtype)
                 update_delta = (
-                    variable - math_ops.cast(value, variable.dtype)) * decay
+                    variable - tf.cast(value, variable.dtype)) * decay
                 if inputs_size is not None:
-                    update_delta = array_ops.where(inputs_size > 0, update_delta,
-                                                   K.zeros_like(update_delta))
-                return state_ops.assign_sub(variable, update_delta, name=scope)
+                    update_delta = tf.where(inputs_size > 0, update_delta,
+                                            K.zeros_like(update_delta))
+                return tf.state_ops.assign_sub(variable, update_delta, name=scope)
