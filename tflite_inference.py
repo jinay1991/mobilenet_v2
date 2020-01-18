@@ -58,9 +58,10 @@ if __name__ == '__main__':
 
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
-
-    # # ---------
+    # ---------
     # intermediate_details = interpreter.get_tensor_details()
+    # for tensor_detail in intermediate_details:
+    #     print("[{}] {} {}".format(tensor_detail['index'], tensor_detail['name'], tensor_detail['dtype']))
 
     # dirname = "intermediate_layers_py"
     # if not os.path.exists(dirname):

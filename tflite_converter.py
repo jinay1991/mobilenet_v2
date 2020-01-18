@@ -38,7 +38,7 @@ if __name__ == "__main__":
     parser.add_argument("--save_to", default="saved_model", help="Path to use for saving converted *.tflite model")
     args = parser.parse_args()
 
-    model = MobileNetV2(weights="imagenet", input_shape=(224, 224, 3), include_top=True)
+    model = MobileNetV2(weights="imagenet")
     model.trainable = False
     model.summary()
 
@@ -66,8 +66,6 @@ if __name__ == "__main__":
     converter.experimental_new_converter = True
     converter.representative_dataset = representative_data_gen
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
-    converter.inference_input_type = tf.uint8
-    converter.inference_output_type = tf.uint8
 
     tflite_model = converter.convert()
 
