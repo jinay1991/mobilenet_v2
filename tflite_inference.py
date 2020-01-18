@@ -26,11 +26,6 @@ from PIL import Image
 from mobilenet import decode_predictions
 
 
-def load_labels(filename):
-    with open(filename, 'r') as f:
-        return [line.strip() for line in f.readlines()]
-
-
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
     parser.add_argument(
@@ -58,23 +53,6 @@ if __name__ == '__main__':
 
     input_details = interpreter.get_input_details()
     output_details = interpreter.get_output_details()
-    # ---------
-    # intermediate_details = interpreter.get_tensor_details()
-    # for tensor_detail in intermediate_details:
-    #     print("[{}] {} {}".format(tensor_detail['index'], tensor_detail['name'], tensor_detail['dtype']))
-
-    # dirname = "intermediate_layers_py"
-    # if not os.path.exists(dirname):
-    #     os.mkdir(dirname)
-
-    # for tensor_detail in intermediate_details:
-    #     tensor_index = tensor_detail['index']
-    #     tensor_name = tensor_detail['name'].replace('/', '_')
-    #     tensor = interpreter.get_tensor(tensor_index)
-    #     tensor = tensor.astype(np.uint8)
-
-    #     np.save(os.path.join(dirname, tensor_name), tensor)
-    # # ---------
 
     # check the type of the input tensor
     floating_model = input_details[0]['dtype'] == np.float32

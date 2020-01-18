@@ -302,7 +302,7 @@ def MobileNetV2(input_shape=None,
 
     x = Conv2D(first_block_filters, kernel_size=3, strides=(2, 2), padding='valid', use_bias=False, name='Conv1')(x)
     x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='bn_Conv1')(x)
-    x = Activation('relu', name='Conv1_relu')(x)
+    x = Activation(tf.nn.relu6, name='Conv1_relu')(x)
 
     x = _inverted_res_block(x, filters=16, alpha=alpha, stride=1, expansion=1, block_id=0)
 
@@ -338,7 +338,7 @@ def MobileNetV2(input_shape=None,
 
     x = Conv2D(last_block_filters, kernel_size=1, use_bias=False, name='Conv_1')(x)
     x = BatchNormalization(axis=channel_axis, epsilon=1e-3, momentum=0.999, name='Conv_1_bn')(x)
-    x = Activation('relu', name='out_relu')(x)
+    x = Activation(tf.nn.relu6, name='out_relu')(x)
 
     if include_top:
         x = GlobalAveragePooling2D()(x)
@@ -404,7 +404,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
             epsilon=1e-3,
             momentum=0.999,
             name=prefix + 'expand_BN')(x)
-        x = Activation('relu', name=prefix + 'expand_relu')(x)
+        x = Activation(tf.nn.relu6, name=prefix + 'expand_relu')(x)
     else:
         prefix = 'expanded_conv_'
 
@@ -428,7 +428,7 @@ def _inverted_res_block(inputs, expansion, stride, alpha, filters, block_id):
         name=prefix + 'depthwise_BN')(
             x)
 
-    x = Activation('relu', name=prefix + 'depthwise_relu')(x)
+    x = Activation(tf.nn.relu6, name=prefix + 'depthwise_relu')(x)
 
     # Project
     x = Conv2D(
