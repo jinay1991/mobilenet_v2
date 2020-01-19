@@ -16,6 +16,10 @@ python -m pip install -U pip
 python -m pip install -U -r requirements.txt
 ```
 
+## Implementation 
+
+This repository contains custom layer implementation with Low Level APIs from TensorFlow (such as `tf.nn.relu`, `tf.nn.conv2d` etc.) implemented as custom layer classes (see `mobilenet/layers/*.py`) which is being modelled into MobileNet V2 Artchitecture (see `mobilenet/mobilenet_v2.py`).
+
 ## Build/Run
 
 There are three programs this repository provides
