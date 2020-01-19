@@ -12,6 +12,9 @@ py_binary(
     srcs = ["tf_inference.py"],
     data = [":testdata"],
     python_version = "PY2",
+    deps = [
+        "//mobilenet:mobilenet_v2",
+    ],
 )
 
 py_binary(
@@ -19,6 +22,9 @@ py_binary(
     srcs = ["tflite_converter.py"],
     data = [":testdata"],
     python_version = "PY2",
+    deps = [
+        "//mobilenet:mobilenet_v2",
+    ],
 )
 
 py_binary(
@@ -28,4 +34,7 @@ py_binary(
         ":testdata",
     ],
     python_version = "PY2",
+    deps = [
+        "//mobilenet:mobilenet_v2",
+    ],
 )

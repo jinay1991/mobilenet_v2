@@ -7,5 +7,5 @@ py_library(
         "mobilenet_v2.py",
     ],
     srcs_version = "PY2AND3",
-    deps = ["//keras/python/layers"],
+    deps = ["//mobilenet/layers"],
 )
