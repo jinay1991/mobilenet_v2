@@ -31,13 +31,7 @@ def download_imagenette():
     return train_data_gen
 
 
-if __name__ == "__main__":
-    import argparse
-
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--save_to", default="saved_model", help="Path to use for saving converted *.tflite model")
-    args = parser.parse_args()
-
+def convert_mobilenet():
     model = MobileNetV2(weights="imagenet")
     model.trainable = False
     model.summary()
@@ -68,6 +62,18 @@ if __name__ == "__main__":
     converter.target_spec.supported_ops = [tf.lite.OpsSet.TFLITE_BUILTINS_INT8]
 
     tflite_model = converter.convert()
+
+    return tflite_model
+
+
+if __name__ == "__main__":
+    import argparse
+
+    parser = argparse.ArgumentParser()
+    parser.add_argument("--save_to", default="saved_model", help="Path to use for saving converted *.tflite model")
+    args = parser.parse_args()
+
+    tflite_model = convert_mobilenet()
 
     dirname = args.save_to
     if not os.path.exists(dirname):

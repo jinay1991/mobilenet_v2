@@ -24,7 +24,7 @@ import numpy as np
 import tensorflow as tf  # TF2
 from PIL import Image
 from mobilenet import decode_predictions
-
+from tflite_converter import convert_mobilenet
 
 if __name__ == '__main__':
     parser = argparse.ArgumentParser()
@@ -33,11 +33,6 @@ if __name__ == '__main__':
         '--image',
         default='./data/grace_hopper.jpg',
         help='image to be classified')
-    parser.add_argument(
-        '-m',
-        '--model_file',
-        default='./data/mobilenet_v2_1.0_224_quant.tflite',
-        help='.tflite model to be executed')
     parser.add_argument(
         '--input_mean',
         default=127.5, type=float,
@@ -48,7 +43,9 @@ if __name__ == '__main__':
         help='input standard deviation')
     args = parser.parse_args()
 
-    interpreter = tf.lite.Interpreter(model_path=args.model_file)
+    tflite_model = convert_mobilenet()
+
+    interpreter = tf.lite.Interpreter(model_content=tflite_model)
     interpreter.allocate_tensors()
 
     input_details = interpreter.get_input_details()
