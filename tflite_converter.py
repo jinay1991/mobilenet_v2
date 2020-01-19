@@ -1,11 +1,12 @@
-#!/usr/bin/python
+# Copyright (c) 2020. All Rights Reserved.
+
+import logging
 import os
 import pathlib
 
 import numpy as np
 
 import tensorflow as tf
-import logging
 from mobilenet import MobileNetV2
 
 
