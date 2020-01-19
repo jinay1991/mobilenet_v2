@@ -22,8 +22,8 @@ import os
 import numpy as np
 
 import tensorflow as tf  # TF2
-from PIL import Image
 from mobilenet import decode_predictions
+from PIL import Image
 from tflite_converter import convert_mobilenet
 
 if __name__ == '__main__':

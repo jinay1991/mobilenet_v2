@@ -13,7 +13,6 @@ To try these implementation, you might need `TensorFlow v2.0` which can be insta
 
 ```
 python -m pip install -U pip
-python -m pip install -U tensorflow==2.0.0b1
 python -m pip install -U -r requirements.txt
 ```
 
@@ -22,30 +21,20 @@ python -m pip install -U -r requirements.txt
 To run this programs,
 
 ```
-python mobilenet.py
+python tflite_inference.py -i <path/to/image>
 ```
 
 or
 
 ```
-python model_fn.py
+bazel run //:tflite_inference
 ```
 
-To know on command line arguments, run following command to print help
+1. To infer TensorFlow graph with pre-trained weights, run `python tf_inference.py`.
 
-```
-python mobilenet.py -h
-```
+2. To infer TensorFlow Lite Conversion with pre-trained imagenet graph, run `python tflite_converter.py`.
 
-or
-
-```
-python model_fn.py
-```
-
-## Dataset
-
-By default, model is trained on `cifar10` dataset if `--train` option is provided for `1` epoch.
+3. To infer TensorFlow Lite Model Inference with pre-trained imagenet weights, run `python tflite_inference.py`.
 
 
 ## Architecture
