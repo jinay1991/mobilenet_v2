@@ -22,6 +22,66 @@ from tensorflow.python.keras.utils import tf_utils
 
 
 class BatchNormalization(tf.keras.layers.Layer):
+    """Normalize and scale inputs or activations. (Ioffe and Szegedy, 2014).
+
+    Normalize the activations of the previous layer at each batch,
+    i.e. applies a transformation that maintains the mean activation
+    close to 0 and the activation standard deviation close to 1.
+
+    Batch normalization differs from other layers in several key aspects:
+
+    1) Adding BatchNormalization with `training=True` to a model causes the
+    result of one example to depend on the contents of all other examples in a
+    minibatch. Be careful when padding batches or masking examples, as these can
+    change the minibatch statistics and affect other examples.
+
+    2) Updates to the weights (moving statistics) are based on the forward pass
+    of a model rather than the result of gradient computations.
+
+    3) When performing inference using a model containing batch normalization, it
+    is generally (though not always) desirable to use accumulated statistics
+    rather than mini-batch statistics. This is acomplished by passing
+    `training=False` when calling the model, or using `model.predict`.
+
+    Arguments:
+        axis: Integer, the axis that should be normalized
+            (typically the features axis).
+            For instance, after a `Conv2D` layer with
+            `data_format="channels_first"`,
+            set `axis=1` in `BatchNormalization`.
+        momentum: Momentum for the moving average.
+        epsilon: Small float added to variance to avoid dividing by zero.
+        center: If True, add offset of `beta` to normalized tensor.
+            If False, `beta` is ignored.
+        scale: If True, multiply by `gamma`.
+            If False, `gamma` is not used.
+            When the next layer is linear (also e.g. `nn.relu`),
+            this can be disabled since the scaling
+            will be done by the next layer.
+        beta_initializer: Initializer for the beta weight.
+        gamma_initializer: Initializer for the gamma weight.
+        moving_mean_initializer: Initializer for the moving mean.
+        moving_variance_initializer: Initializer for the moving variance.
+        trainable: Boolean, if `True` the variables will be marked as trainable.
+
+    Call arguments:
+        inputs: Input tensor (of any rank).
+        training: Python boolean indicating whether the layer should behave in
+            training mode or in inference mode.
+            - `training=True`: The layer will normalize its inputs using the
+                mean and variance of the current batch of inputs.
+            - `training=False`: The layer will normalize its inputs using the
+                mean and variance of its moving statistics, learned during training.
+
+    Input shape:
+        Arbitrary. Use the keyword argument `input_shape`
+        (tuple of integers, does not include the samples axis)
+        when using this layer as the first layer in a model.
+
+    Output shape:
+        Same shape as input.
+    """
+
     def __init__(self,
                  axis=-1,
                  momentum=0.99,
@@ -176,7 +236,7 @@ class BatchNormalization(tf.keras.layers.Layer):
 
         # Determine a boolean value for `training`: could be True, False, or None.
         training_value = tf_utils.constant_value(training)
-        if training_value == False:  # pylint: disable=singleton-comparison,g-explicit-bool-comparison
+        if training_value == False:
             mean, variance = self.moving_mean, self.moving_variance
         else:
             # Some of the computations here are not necessary when training==False
