@@ -107,6 +107,86 @@ def normalize_padding(value):
 
 
 class Conv2D(tf.keras.layers.Layer):
+    """2D convolution layer (e.g. spatial convolution over images).
+
+    This layer creates a convolution kernel that is convolved
+    with the layer input to produce a tensor of
+    outputs. If `use_bias` is True,
+    a bias vector is created and added to the outputs. Finally, if
+    `activation` is not `None`, it is applied to the outputs as well.
+
+    When using this layer as the first layer in a model,
+    provide the keyword argument `input_shape`
+    (tuple of integers, does not include the sample axis),
+    e.g. `input_shape=(128, 128, 3)` for 128x128 RGB pictures
+    in `data_format="channels_last"`.
+
+    Arguments:
+        filters: Integer, the dimensionality of the output space
+            (i.e. the number of output filters in the convolution).
+        kernel_size: An integer or tuple/list of 2 integers, specifying the
+            height and width of the 2D convolution window.
+            Can be a single integer to specify the same value for
+            all spatial dimensions.
+        strides: An integer or tuple/list of 2 integers,
+            specifying the strides of the convolution along the height and width.
+            Can be a single integer to specify the same value for
+            all spatial dimensions.
+            Specifying any stride value != 1 is incompatible with specifying
+            any `dilation_rate` value != 1.
+        padding: one of `"valid"` or `"same"` (case-insensitive).
+        data_format: A string,
+            one of `channels_last` (default) or `channels_first`.
+            The ordering of the dimensions in the inputs.
+            `channels_last` corresponds to inputs with shape
+            `(batch_size, height, width, channels)` while `channels_first`
+            corresponds to inputs with shape
+            `(batch_size, channels, height, width)`.
+            It defaults to the `image_data_format` value found in your
+            Keras config file at `~/.keras/keras.json`.
+            If you never set it, then it will be "channels_last".
+        activation: Activation function to use.
+            If you don't specify anything, no activation is applied (
+            see `keras.activations`).
+        use_bias: Boolean, whether the layer uses a bias vector.
+        kernel_initializer: Initializer for the `kernel` weights matrix (
+            see `keras.initializers`).
+        bias_initializer: Initializer for the bias vector (
+            see `keras.initializers`).
+        kernel_regularizer: Regularizer function applied to
+            the `kernel` weights matrix (see `keras.regularizers`).
+        bias_regularizer: Regularizer function applied to the bias vector (
+            see `keras.regularizers`).
+        activity_regularizer: Regularizer function applied to
+            the output of the layer (its "activation") (
+            see `keras.regularizers`).
+        kernel_constraint: Constraint function applied to the kernel matrix (
+            see `keras.constraints`).
+        bias_constraint: Constraint function applied to the bias vector (
+            see `keras.constraints`).
+
+    Input shape:
+        4D tensor with shape:
+        `(batch_size, channels, rows, cols)` if data_format='channels_first'
+        or 4D tensor with shape:
+        `(batch_size, rows, cols, channels)` if data_format='channels_last'.
+
+    Output shape:
+        4D tensor with shape:
+        `(batch_size, filters, new_rows, new_cols)` if data_format='channels_first'
+        or 4D tensor with shape:
+        `(batch_size, new_rows, new_cols, filters)` if data_format='channels_last'.
+        `rows` and `cols` values might have changed due to padding.
+
+    Returns:
+        A tensor of rank 4 representing
+        `activation(conv2d(inputs, kernel) + bias)`.
+
+    Raises:
+        ValueError: if `padding` is "causal".
+        ValueError: when both `strides` > 1 and `dilation_rate` > 1.
+    """
+
     def __init__(self,
                  filters,
                  kernel_size,
@@ -120,17 +200,6 @@ class Conv2D(tf.keras.layers.Layer):
                  trainable=True,
                  name=None,
                  **kwargs):
-        """
-        Arguments:
-            filters: Integer, the dimensionality of the output space (i.e. the number of filters in the convolution).
-            kernel_size: An integer or tuple/list of n integers, specifying the length of the convolution window.
-            strides: An integer or tuple/list of n integers, specifying the stride length of the convolution. Specifying any stride value != 1 is incompatible with specifying any `dilation_rate` value != 1.
-            padding: One of `"valid"`,  `"same"`, or `"causal"` (case-insensitive).
-            activation: Activation function to use. If you don't specify anything, no activation is applied.
-            use_bias: Boolean, whether the layer uses a bias.
-            trainable: Boolean, if `True` the weights of this layer will be marked as trainable (and listed in `layer.trainable_weights`).
-            name: A string, the name of the layer.
-        """
         super(Conv2D, self).__init__(trainable=trainable, name=name, **kwargs)
         rank = 2
         self.activation = activation

@@ -92,14 +92,6 @@ class Dense(tf.keras.layers.Layer):
       use_bias: Boolean, whether the layer uses a bias vector.
       kernel_initializer: Initializer for the `kernel` weights matrix.
       bias_initializer: Initializer for the bias vector.
-      kernel_regularizer: Regularizer function applied to
-        the `kernel` weights matrix.
-      bias_regularizer: Regularizer function applied to the bias vector.
-      activity_regularizer: Regularizer function applied to
-        the output of the layer (its "activation")..
-      kernel_constraint: Constraint function applied to
-        the `kernel` weights matrix.
-      bias_constraint: Constraint function applied to the bias vector.
 
     Input shape:
       N-D tensor with shape: `(batch_size, ..., input_dim)`.
