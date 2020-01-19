@@ -13,19 +13,15 @@
 # limitations under the License.
 # ==============================================================================
 """Utilities for ImageNet data preprocessing & prediction decoding."""
-from __future__ import absolute_import
-from __future__ import division
-from __future__ import print_function
+from __future__ import absolute_import, division, print_function
 
 import json
 import warnings
 
 import numpy as np
 
+import tensorflow as tf
 from tensorflow.python.keras import backend
-from tensorflow.python.keras.utils import data_utils
-from tensorflow.python.util.tf_export import keras_export
-
 
 CLASS_INDEX = None
 CLASS_INDEX_PATH = ('https://storage.googleapis.com/download.tensorflow.org/'
@@ -95,7 +91,7 @@ def decode_predictions(preds, top=5):
                          '(i.e. a 2D array of shape (samples, 1000)). '
                          'Found array with shape: ' + str(preds.shape))
     if CLASS_INDEX is None:
-        fpath = data_utils.get_file(
+        fpath = tf.keras.utils.get_file(
             'imagenet_class_index.json',
             CLASS_INDEX_PATH,
             cache_subdir='models',
@@ -227,14 +223,14 @@ def _preprocess_symbolic_input(x, data_format, mode):
         mean = [103.939, 116.779, 123.68]
         std = None
 
-    mean_tensor = backend.constant(-np.array(mean))
+    mean_tensor = tf.constant(-np.array(mean))
 
     # Zero-center by mean pixel
-    if backend.dtype(x) != backend.dtype(mean_tensor):
-        x = backend.bias_add(
-            x, backend.cast(mean_tensor, backend.dtype(x)), data_format=data_format)
+    if tf.dtype(x) != tf.dtype(mean_tensor):
+        x = tf.nn.bias_add(
+            x, tf.cast(mean_tensor, tf.dtype(x)), data_format=data_format)
     else:
-        x = backend.bias_add(x, mean_tensor, data_format)
+        x = tf.nn.bias_add(x, mean_tensor, data_format)
     if std is not None:
         x /= std
     return x

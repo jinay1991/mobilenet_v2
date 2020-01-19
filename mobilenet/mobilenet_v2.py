@@ -88,8 +88,6 @@ from mobilenet.layers import (Activation, Add, BatchNormalization, Conv2D,
                               GlobalMaxPooling2D, ZeroPadding2D)
 from tensorflow.keras.layers import Input
 from tensorflow.python.keras import backend
-from tensorflow.python.keras.engine import training
-from tensorflow.python.keras.utils import data_utils, layer_utils
 
 BASE_WEIGHT_PATH = ('https://storage.googleapis.com/tensorflow/keras-applications/mobilenet_v2/')
 
@@ -198,7 +196,7 @@ def MobileNetV2(input_shape=None,
         except ValueError:
             try:
                 is_input_t_tensor = backend.is_keras_tensor(
-                    layer_utils.get_source_inputs(input_tensor))
+                    tf.keras.utils.get_source_inputs(input_tensor))
             except ValueError:
                 raise ValueError('input_tensor: ', input_tensor,
                                  'is not type input_tensor')
@@ -352,7 +350,7 @@ def MobileNetV2(input_shape=None,
     # Ensure that the model takes into account
     # any potential predecessors of `input_tensor`.
     if input_tensor is not None:
-        inputs = layer_utils.get_source_inputs(input_tensor)
+        inputs = tf.keras.utils.get_source_inputs(input_tensor)
     else:
         inputs = img_input
 
@@ -365,13 +363,13 @@ def MobileNetV2(input_shape=None,
             model_name = ('mobilenet_v2_weights_tf_dim_ordering_tf_kernels_' +
                           str(alpha) + '_' + str(rows) + '.h5')
             weight_path = BASE_WEIGHT_PATH + model_name
-            weights_path = data_utils.get_file(
+            weights_path = tf.keras.utils.get_file(
                 model_name, weight_path, cache_subdir='models')
         else:
             model_name = ('mobilenet_v2_weights_tf_dim_ordering_tf_kernels_' +
                           str(alpha) + '_' + str(rows) + '_no_top' + '.h5')
             weight_path = BASE_WEIGHT_PATH + model_name
-            weights_path = data_utils.get_file(
+            weights_path = tf.keras.utils.get_file(
                 model_name, weight_path, cache_subdir='models')
         model.load_weights(weights_path)
     elif weights is not None:
