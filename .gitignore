@@ -9,6 +9,7 @@ intermediate_layers_py/
 *.data-*
 *.tar.gz
 *.tgz
+.DS_Store
 
 
 # Byte-compiled / optimized / DLL files

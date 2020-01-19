@@ -25,15 +25,41 @@ There are three programs this repository provides
 
 `python tf_inference.py -i <path/to/image>` or `bazel run //:tf_inference -- -i <path/to/image>`
 
+```
+n03763968 military_uniform 0.892423510551
+n04350905 suit 0.0122225638479
+n04591157 Windsor_tie 0.00553366355598
+n02817516 bearskin 0.00538204563782
+n09835506 ballplayer 0.0041116909124
+```
 
 2. TensorFlow Lite Model Conversion: Use MobileNet V2 Model definition and convert that to Integer TFLite Model.
 
 `python tflite_converter.py --save_to <path/to/save/dir>` or `bazel run //:tflite_converter -- --save_to <path/to/save/dir>`
 
+```
+...
+2020-01-19 20:08:01.124998: I tensorflow/core/grappler/optimizers/meta_optimizer.cc:718]   constant folding: Graph size after: 549 nodes (0), 577 edges (0), time = 30.773ms.
+INFO: Initialized TensorFlow Lite runtime.
+Downloading data from https://s3.amazonaws.com/fast-ai-imageclas/imagenette2-160.tgz
+98951168/98948031 [==============================] - 15s 0us/step
+98959360/98948031 [==============================] - 15s 0us/step
+Found 3925 images belonging to 10 classes.
+```
 
-3. TensorFlow Lite Inference: Run inference for given image and provided TFLite Model.
+3. TensorFlow Lite Inference: Run inference for given image and provided TFLite Model (`INT8`).
 
 `python tflite_inference.py -i <path/to/image>` or `bazel run //:tflite_inference -- -i <path/to/image>`
+
+```
+...
+INFO: Initialized TensorFlow Lite runtime.
+n03763968 military_uniform 0.640625
+n04350905 suit 0.0546875
+n04591157 Windsor_tie 0.0234375
+n09835506 ballplayer 0.01953125
+n02817516 bearskin 0.01953125
+```
 
 ## Architecture
 
@@ -48,3 +74,8 @@ All the MobileNet V2 layer implementations with Low Level APIs from TensorFlow (
 
 1. [MobileNetV2: Inverted Residuals and Linear Bottlenecks](https://arxiv.org/abs/1801.04381)
 2. Architecture and layer definitions were referred or reused from [TensorFlow GitHub](https://github.com/tensorflow/tensorflow)
+
+
+## Generated Model Architecture Diagram
+
+![model](data/model.png)
