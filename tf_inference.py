@@ -16,7 +16,7 @@
 import os
 
 import numpy as np
-
+import tensorflow as tf
 from mobilenet import MobileNetV2, decode_predictions
 from PIL import Image
 
@@ -42,6 +42,7 @@ if __name__ == "__main__":
     model = MobileNetV2(weights="imagenet", input_shape=(224, 224, 3), include_top=True)
     model.trainable = False
     model.summary()
+    # tf.keras.utils.plot_model(model, to_file='model.png', show_shapes=True)
 
     # NxHxWxC, H:1, W:2
     img = Image.open(args.image).resize((224, 224))
