@@ -355,7 +355,7 @@ def MobileNetV2(input_shape=None,
         inputs = img_input
 
     # Create model.
-    model = tf.keras.Model(inputs, x, name='mobilenetv2_%0.2f_%s' % (alpha, rows))
+    model = tf.keras.Model(inputs, x, name='MobileNetV2')
 
     # Load weights.
     if weights == 'imagenet':
