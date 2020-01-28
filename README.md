@@ -61,6 +61,14 @@ n09835506 ballplayer 0.01953125
 n02817516 bearskin 0.01953125
 ```
 
+Note: To know all the supported arguments run `python tflite_inference.py -h`.
+
+4. TensorFlow Lite Inference: Save Intermediate Tensors to file.
+
+`python tflite_inference.py --save_to <path/to/resultdir> -i <path/to/image>`
+
+Note, it is advisable to use `data_format` as `channel_first` due to reduced complexity while interpreting tensors from txt file. Hence, default `data_format` is always set to `channel_first` for saving tensors. (i.e. Tensors are internally converted to `NCHW` from `NHWC`)
+
 ## Architecture
 
 Details on MobileNet v2 Architecture and layer information can be found in `layers_to_tensor_map.xlsx`
