@@ -25,9 +25,6 @@ class TFLiteInferenceEngine(object):
         self.output_details = self._interpreter.get_output_details()
         self.intermediate_details = self._interpreter.get_tensor_details()
 
-    def get_tensor(self, index):
-        return self._interpreter.get_tensor(index)
-
     def __call__(self, image_path, input_mean, input_std):
         # NxHxWxC, H:1, W:2
         height = self.input_details[0]['shape'][1]
@@ -45,8 +42,35 @@ class TFLiteInferenceEngine(object):
 
         return self._interpreter.get_tensor(self.output_details[0]['index'])
 
+    def save_intermediate_tensors(self, data_format, dirname):
+        """
+        Save intermediate tensors to files
+        """
+        for tensor_details in self.intermediate_details:
+            tensor_name = tensor_details['name']
+            tensor_index = tensor_details['index']
+            tensor = self._interpreter.get_tensor(tensor_index)
+            tensor = tensor.astype(np.uint8)
 
-def main(image, input_mean, input_std, data_format):
+            channel_info = "#\n"
+            if len(tensor.shape) == 4:
+                if data_format == "channel_first":
+                    tensor = np.transpose(tensor, (0, 3, 2, 1))
+                    channel_order = "NCHW"
+                else:
+                    channel_order = "NHWC"
+                channel_info = "# Note: Writing Matrix in {} format.\n#\n".format(channel_order)
+            header = "#\n# Tensor Detail: \n#  name: {}\n#  type: {}\n#  shape: {}\n{}".format(
+                tensor_name, tensor.dtype, tensor.shape, channel_info)
+
+            if not os.path.exists(dirname):
+                os.mkdir(dirname)
+            fname = os.path.join(dirname, tensor_details['name'].replace("/", "_") + "_tensor.txt")
+            with open(fname, "wb") as fp:
+                fp.write("{}{}".format(header, np.array2string(tensor, threshold=sys.maxsize)))
+
+
+def main(image, input_mean, input_std, data_format, save_to):
     tflite_inference_engine = TFLiteInferenceEngine()
     output_data = tflite_inference_engine(image, input_mean, input_std)
 
@@ -54,29 +78,8 @@ def main(image, input_mean, input_std, data_format):
     for class_id, class_name, class_score in top_k_results:
         print("{} {} {}".format(class_id.encode("ascii"), class_name.encode("ascii"), class_score))
 
-    for tensor_details in tflite_inference_engine.intermediate_details:
-        tensor_name = tensor_details['name']
-        tensor_index = tensor_details['index']
-        tensor = tflite_inference_engine.get_tensor(tensor_index)
-        tensor = tensor.astype(np.uint8)
-
-        channel_info = "#\n"
-        if len(tensor.shape) == 4:
-            if data_format == "channel_first":
-                tensor = np.transpose(tensor, (0, 3, 2, 1))
-                channel_order = "NCHW"
-            else:
-                channel_order = "NHWC"
-            channel_info = "# Note: Writing Matrix in {} format.\n#\n".format(channel_order)
-        header = "#\n# Tensor Detail: \n#  name: {}\n#  type: {}\n#  shape: {}\n{}".format(
-            tensor_name, tensor.dtype, tensor.shape, channel_info)
-
-        dirname = "intermediate_outputs"
-        if not os.path.exists(dirname):
-            os.mkdir(dirname)
-        fname = os.path.join(dirname, tensor_details['name'].replace("/", "_") + "_tensor.txt")
-        with open(fname, "wb") as fp:
-            fp.write("{}{}".format(header, np.array2string(tensor, threshold=sys.maxsize)))
+    if save_to is not None:
+        tflite_inference_engine.save_intermediate_tensors(data_format, save_to)
 
 
 if __name__ == '__main__':
@@ -98,8 +101,12 @@ if __name__ == '__main__':
         help='input standard deviation')
     parser.add_argument(
         '--data_format',
-        default="channel_last", type=str,
+        default="channel_first", type=str,
         help='data format (channel_first or channel_last)')
+    parser.add_argument(
+        '--save_to',
+        default=None, type=str,
+        help='directory name for saving intermediate_outputs')
     args = parser.parse_args()
 
-    main(args.image, args.input_mean, args.input_std, args.data_format)
+    main(args.image, args.input_mean, args.input_std, args.data_format, args.save_to)
