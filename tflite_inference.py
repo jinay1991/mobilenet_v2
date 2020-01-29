@@ -50,7 +50,8 @@ class TFLiteInferenceEngine(object):
             tensor_name = tensor_details['name']
             tensor_index = tensor_details['index']
             tensor = self._interpreter.get_tensor(tensor_index)
-            tensor = tensor.astype(np.uint8)
+            if tensor.dtype == np.int8:
+                tensor = tensor.astype(np.uint8)
 
             channel_info = "#\n"
             if len(tensor.shape) == 4:
@@ -60,8 +61,8 @@ class TFLiteInferenceEngine(object):
                 else:
                     channel_order = "NHWC"
                 channel_info = "# Note: Writing Matrix in {} format.\n#\n".format(channel_order)
-            header = "#\n# Tensor Detail: \n#  name: {}\n#  type: {}\n#  shape: {}\n{}".format(
-                tensor_name, tensor.dtype, tensor.shape, channel_info)
+            header = "#\n# Tensor Detail: \n#  name: {}\n#  type: {}\n#  index: {}\n#  shape: {}\n{}".format(
+                tensor_name, tensor.dtype, tensor_index, tensor.shape, channel_info)
 
             if not os.path.exists(dirname):
                 os.mkdir(dirname)
