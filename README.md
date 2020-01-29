@@ -63,9 +63,28 @@ n02817516 bearskin 0.01953125
 
 Note: To know all the supported arguments run `python tflite_inference.py -h`.
 
+```
+python tflite_inference.py -h
+usage: tflite_inference.py [-h] [-i IMAGE] [--input_mean INPUT_MEAN]
+                           [--input_std INPUT_STD] [--data_format DATA_FORMAT]
+                           [--save_to SAVE_TO]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  -i IMAGE, --image IMAGE
+                        image to be classified
+  --input_mean INPUT_MEAN
+                        input_mean
+  --input_std INPUT_STD
+                        input standard deviation
+  --data_format DATA_FORMAT
+                        data format (channel_first or channel_last)
+  --save_to SAVE_TO     directory name for saving intermediate_outputs
+```
+
 4. TensorFlow Lite Inference: Save Intermediate Tensors to file.
 
-`python tflite_inference.py --save_to <path/to/resultdir> -i <path/to/image>`
+`python tflite_inference.py --save_to <path/to/resultdir> -i <path/to/image> --data_format channel_first`
 
 Note, it is advisable to use `data_format` as `channel_first` due to reduced complexity while interpreting tensors from txt file. Hence, default `data_format` is always set to `channel_first` for saving tensors. (i.e. Tensors are internally converted to `NCHW` from `NHWC`)
 
